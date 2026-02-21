@@ -221,18 +221,15 @@ func hands():
 		var boost_pwr = hand.global_position.direction_to(get_global_mouse_position()) * -1 * hand.global_position.distance_to(get_global_mouse_position())
 		if abs(boost_pwr) <= Vector2(100, 100):
 			velocity += boost_pwr
-			print(boost_pwr)
 			is_hand_grabbing = false
 	
 	
 	if ("RigidBody2D" in str(hand_touch)) and is_hands_used:
 		hand_joint.node_a = hand.get_path()
 		hand_joint.node_b = hand_touch.get_path()
-		print("GRABBED")
 	if not is_hands_used or not Input.is_action_pressed("use"):
 		is_hand_grabbing = false
 		hand_joint.node_b = ""
-		print("UNGRAB")
 	
 	hand.move_and_slide()
 

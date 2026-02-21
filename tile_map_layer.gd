@@ -51,18 +51,19 @@ func gen_dungeon(rooms_count):
 		hall_tilt = 0
 		while true:
 			if (hall_tilt + doors_height + old_room_doors_height - 1) != 0:
-				if hall_length % (hall_tilt + doors_height + old_room_doors_height - 1) != 0:
+				if (room_anchor + Vector2(hall_length * -1, hall_tilt)) % (hall_tilt + doors_height + old_room_doors_height - 1) != 0:
 					hall_tilt = randi_range(hall_length * -1, hall_length)
 					hall_length = randi_range(5, 12)
 				else:
 					break
 			else:
 				break
+		print(hall_tilt)
 		print("delta: ", hall_tilt + doors_height + old_room_doors_height, " len: ", hall_length)
 		if gen_direction == "right":
 			room_anchor += Vector2(hall_length + 3, hall_tilt)
 		elif gen_direction == "left":
-			room_anchor += Vector2(hall_length * -1 - 3, hall_tilt)
+			room_anchor += Vector2(hall_length * -1, hall_tilt)
 		
 		if gen_direction == "right":
 			hall_pos1 = old_room_anchor + old_room_size + Vector2(0, old_room_doors_height)
@@ -190,9 +191,9 @@ func generate_hall(pos1, pos2):
 				$bg.set_cell(Vector2(pos1 + Vector2(x, -1 + y * -1)), 0, Vector2(1, 0))
 	else:
 		var points_delta = pos1.y - pos2.y
-		var num_stairs = abs(points_delta) + 1
-		var stair_len : int = ceil((abs(pos1.x - pos2.x) + 1) / num_stairs)
-		print(num_stairs, " ", stair_len)
+		var num_stairs : int = abs(points_delta) + 1
+		var stair_len : int = round((abs(pos1.x - pos2.x) + 1) / num_stairs)
+		print(num_stairs, " ", stair_len, " pos1 == ", pos1, " pos2 == ", pos2)
 		for y in range(num_stairs):
 			for x in range(stair_len):
 				set_cell(pos1 + Vector2(x + (stair_len * y), y * -1 * sign(points_delta)), 1, Vector2(4, 0))
@@ -201,32 +202,3 @@ func generate_hall(pos1, pos2):
 						set_cell(pos1 + Vector2(x + (stair_len * y), y * -1 * sign(points_delta) - 1), 1, Vector2(9, 1))
 					elif points_delta < 0:
 						set_cell(pos1 + Vector2(x + 1 + (stair_len * y), y * -1 * sign(points_delta)), 1, Vector2(7, 2))
-	#var y = 1
-	#var num_stairs = abs(abs(pos1.y) - abs(pos2.y)) + 1
-	#if num_stairs != 0:
-		#stairs_length = abs(abs(pos1.x) - abs(pos2.x)) / num_stairs
-	#else:
-		#stairs_length = abs(pos1.x - pos2.x)
-	#print("pos1 == ", pos1, " pos2 == ", pos2)
-	#print("num_stairs: ", num_stairs, "   length of 1 stair:  ", stairs_length, "   total:  ", abs(pos1.x - pos2.x))
-	#for i in range(1, num_stairs + 1):
-		#for x in range(stairs_length):
-			#set_cell(Vector2((pos1.x + x) + stairs_length * (i - 1), pos1.y - ((i - 1) * sign(pos1.y - pos2.y)) - 1), 1, Vector2(1, 2))
-			#set_cell(Vector2((pos1.x + x) + stairs_length * (i - 1), pos1.y - ((i - 1) * sign(pos1.y - pos2.y)) - 1 - 5), 1, Vector2(1, 2))
-			##for p in range(3):
-				##set_cells_terrain_connect(get_surrounding_cells(Vector2((pos1.x + x) + (p - 1) + stairs_length * (i - 1), pos1.y + 1 - (i - 1) * sign(pos1.y - pos2.y))), 0, 0, false)
-				##set_cells_terrain_connect(get_surrounding_cells(Vector2((pos1.x + x) + (p - 1) + stairs_length * (i - 1), pos1.y - 7 - (i - 1) * sign(pos1.y - pos2.y))), 0, 0, false)
-			#if x == stairs_length - 1 and i != num_stairs:
-				#if sign(pos1.y - pos2.y) > 0:
-					#set_cell(Vector2((pos1.x + x) + stairs_length * (i - 1), pos1.y - ((i - 1) * sign(pos1.y - pos2.y)) - 2), 1, Vector2(9, 1))
-					#set_cell(Vector2((pos1.x + x) + 1 + stairs_length * (i - 1), pos1.y + 1 - ((i - 1) * sign(pos1.y - pos2.y)) - 2), 1, Vector2(2, 2))
-					##set_cell(Vector2((pos1.x + x) + 1 + stairs_length * (i - 1), pos1.y + - ((i - 1) * sign(pos1.y - pos2.y)) - 2), 1, Vector2(0, 0))
-				#else:
-					#set_cell(Vector2((pos1.x + x + 1) + stairs_length * (i - 1), pos1.y - ((i - 1) * sign(pos1.y - pos2.y)) - 1), 1, Vector2(7, 2))
-					#set_cell(Vector2((pos1.x + x + 1) - 1 + stairs_length * (i - 1), pos1.y + 1 - ((i - 1) * sign(pos1.y - pos2.y)) - 1), 1, Vector2(0, 2))
-		#y = i
-	#for x in range(abs(pos1.x - pos2.x) - (stairs_length * num_stairs)):
-		#print("ФИКСИМ КОРРИДОР")
-		#set_cell(Vector2((pos1.x + x + 1) + stairs_length * (y - 1), pos1.y - ((y - 1) * sign(pos1.y - pos2.y)) - 1), 1, Vector2(1, 2))
-		#set_cell(Vector2((pos1.x + x + 1) + stairs_length * (y - 1), pos1.y - ((y - 1) * sign(pos1.y - pos2.y)) - 1 - 5), 1, Vector2(1, 2))
-	#print("------------------------------")
