@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://x2aibfdis1lc"]
+
+[ext_resource type="Script" uid="uid://bccve60gh6x3p" path="res://enemy.gd" id="1_4gyqm"]
+[ext_resource type="Texture2D" uid="uid://ckpacdte3gvhm" path="res://textures/idk2.png" id="2_qi2p4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iifgy"]
+size = Vector2(16, 16)
+
+[node name="enemy" type="CharacterBody2D" unique_id=1596230914]
+script = ExtResource("1_4gyqm")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1932871353]
+texture = ExtResource("2_qi2p4")
+region_enabled = true
+region_rect = Rect2(0, 16, 16, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=310853667]
+shape = SubResource("RectangleShape2D_iifgy")
+
+[node name="rifle" type="Sprite2D" parent="." unique_id=435936451]
+visible = false
+position = Vector2(-12, 0)
+texture = ExtResource("2_qi2p4")
+region_enabled = true
+region_rect = Rect2(0, 1, 23, 6)
+
+[node name="shotgun" type="Sprite2D" parent="." unique_id=176246608]
+visible = false
+position = Vector2(-13, 0)
+texture = ExtResource("2_qi2p4")
+region_enabled = true
+region_rect = Rect2(0, 7, 20, 6)
+
+[node name="pistol" type="Sprite2D" parent="." unique_id=1047778783]
+visible = false
+position = Vector2(-15, 0)
+texture = ExtResource("2_qi2p4")
+region_enabled = true
+region_rect = Rect2(21, 8, 11, 7)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=107405280]
