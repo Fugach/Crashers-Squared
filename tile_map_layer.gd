@@ -49,15 +49,15 @@ func gen_dungeon(rooms_count):
 		hall_length = randi_range(5, 12)
 		doors_height = randi_range(-2, 0)
 		hall_tilt = 0
-		while true:
-			if (hall_tilt + doors_height + old_room_doors_height - 1) != 0:
-				if (room_anchor + Vector2(hall_length * -1, hall_tilt)) % (hall_tilt + doors_height + old_room_doors_height - 1) != 0:
-					hall_tilt = randi_range(hall_length * -1, hall_length)
-					hall_length = randi_range(5, 12)
-				else:
-					break
-			else:
-				break
+		#while true:
+			#if (hall_tilt + doors_height + old_room_doors_height - 1) != 0:
+				#if (room_anchor.x + Vector2(hall_length * -1, hall_tilt)) % (hall_tilt + doors_height + old_room_doors_height - 1) != 0:
+					#hall_tilt = randi_range(hall_length * -1, hall_length)
+					#hall_length = randi_range(5, 12)
+				#else:
+					#break
+			#else:
+				#break
 		print(hall_tilt)
 		print("delta: ", hall_tilt + doors_height + old_room_doors_height, " len: ", hall_length)
 		if gen_direction == "right":

@@ -19,23 +19,39 @@ shape = SubResource("RectangleShape2D_iifgy")
 
 [node name="rifle" type="Sprite2D" parent="." unique_id=435936451]
 visible = false
-position = Vector2(-12, 0)
+scale = Vector2(2, 2)
 texture = ExtResource("2_qi2p4")
+offset = Vector2(16.01, 0)
+flip_h = true
+flip_v = true
 region_enabled = true
-region_rect = Rect2(0, 1, 23, 6)
+region_rect = Rect2(20, 0, 24, 9)
 
 [node name="shotgun" type="Sprite2D" parent="." unique_id=176246608]
 visible = false
-position = Vector2(-13, 0)
+scale = Vector2(2, 2)
 texture = ExtResource("2_qi2p4")
+offset = Vector2(14.055, 0)
+flip_h = true
+flip_v = true
 region_enabled = true
-region_rect = Rect2(0, 7, 20, 6)
+region_rect = Rect2(0, 0, 20, 7)
 
 [node name="pistol" type="Sprite2D" parent="." unique_id=1047778783]
 visible = false
-position = Vector2(-15, 0)
+scale = Vector2(2, 2)
 texture = ExtResource("2_qi2p4")
+offset = Vector2(11, 0)
+flip_h = true
+flip_v = true
 region_enabled = true
-region_rect = Rect2(21, 8, 11, 7)
+region_rect = Rect2(48, 0, 14, 10)
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=107405280]
+visible = false
+
+[node name="shoot_timeout" type="Timer" parent="." unique_id=1030061003]
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="shoot_timeout" to="." method="_on_shoot_timeout_timeout"]
