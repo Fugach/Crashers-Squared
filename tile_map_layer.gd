@@ -1,6 +1,7 @@
 extends TileMapLayer
 
 const door = preload("res://door.tscn")
+const enemy = preload("res://enemy.tscn")
 
 var room_anchor = Vector2(0, 0)
 var room_size = Vector2(0, 0)
@@ -154,6 +155,12 @@ func generate_room(pos, size, doors, height):
 					$bg.set_cell(vhod2_pos + Vector2(x, y), 0, Vector2(0, 0))
 				else:
 					$bg.set_cell(vhod2_pos + Vector2(x, y), 0, Vector2(1, 0))
+		for x in range(randi_range(1, 16)):
+			var new_enemy = enemy.instantiate()
+			print(new_enemy)
+			new_enemy.global_position = (pos + size / 2) * 32 + Vector2(0, -5000)
+			get_parent().add_child(new_enemy)
+		
 		#set_cell(vhod2_pos + Vector2(2, 2), 1, Vector2(1, 2))
 		#set_cell(vhod2_pos + Vector2(1, 2), 1, Vector2(5, 1))
 		#if height != 0:

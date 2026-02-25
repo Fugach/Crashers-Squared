@@ -1,19 +1,17 @@
 [gd_scene format=3 uid="uid://csr8w1qcnqlbd"]
 
 [ext_resource type="Script" uid="uid://c4lx4k1v2surv" path="res://shot.gd" id="1_awion"]
-[ext_resource type="Texture2D" uid="uid://b2tvfl8cqi60j" path="res://textures/babax.png" id="2_3ldfn"]
 
 [node name="Node2D" type="Node2D" unique_id=1568785125]
 script = ExtResource("1_awion")
 
 [node name="RayCast2D" type="RayCast2D" parent="." unique_id=631787966]
-target_position = Vector2(1000, 0)
+position = Vector2(-9, 0)
+target_position = Vector2(60, 0)
+hit_from_inside = true
 
 [node name="Line2D" type="Line2D" parent="." unique_id=1527437106]
-width = 3.0
+z_index = -1
+points = PackedVector2Array(0, 0, 50, 0)
+width = 1.0
 default_color = Color(1, 0.6666667, 0, 1)
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=847003692]
-position = Vector2(-1.9073486e-06, 0)
-scale = Vector2(0.46875, 0.328125)
-texture = ExtResource("2_3ldfn")

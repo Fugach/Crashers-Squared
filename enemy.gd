@@ -21,40 +21,67 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	if global_position.y - player.global_position.y > 50 and is_on_floor() and global_position.distance_to(player.global_position) < 100:
+	if hp > 0 and global_position.y - player.global_position.y > 50 and is_on_floor() and global_position.distance_to(player.global_position) < 100:
 		velocity.y = JUMP_VELOCITY
 
 	direction = global_position.direction_to(player.global_position)
-	if direction and global_position.distance_to(player.global_position) < 600 and abs(velocity.x) < 300:
+	if hp > 0 and direction and global_position.distance_to(player.global_position) < 300 and abs(velocity.x) < 300:
 		velocity.x += direction.x * SPEED * delta
 		if sign(velocity.x) != sign(global_position.direction_to(player.global_position).x):
 			velocity.x += velocity.x * -0.05
-	else:
+	elif hp > 0:
 		velocity.x *= 0.9
 	if hp <= 0:
-		queue_free()
+		self.self_modulate = Color(1, 1, 1, 0)
+		$CollisionShape2D.disabled = true
+		WEAPON.hide()
+		velocity = Vector2(0, 0)
+		$CPUParticles2D.show()
+		$CPUParticles2D.emitting = true
 	move_and_slide()
 
 func _process(delta: float) -> void:
-	WEAPON.look_at(player.global_position)
-	if -1.5 <= ((get_global_mouse_position() - WEAPON.global_position).normalized().angle()) and ((get_global_mouse_position() - WEAPON.global_position).normalized().angle()) <= 1.5:
+	if global_position.distance_to(player.global_position) < 400:
+		WEAPON.global_rotation = lerp_angle(WEAPON.global_rotation, (player.global_position - global_position).angle(), 20 * delta)
+	else:
+		WEAPON.global_rotation = 0
+		
+	if -1.5 <= WEAPON.global_rotation and WEAPON.global_rotation <= 1.5:
 		WEAPON.scale.y = -2
 	else:
 		WEAPON.scale.y = 2
 	
-	if can_shoot:
+	if can_shoot and hp > 0 and global_position.distance_to(player.global_position) < 400:
 		var new_shot = shot.instantiate()
 		new_shot.global_position = global_position
-		new_shot.global_rotation = WEAPON.global_rotation
-		get_parent().add_child(new_shot)
+		if ("rifle" in str(WEAPON)) and ("Player" in str($rifle/RayCast2D.get_collider()) or randi_range(0, 1)):
+			new_shot.global_rotation = WEAPON.global_rotation
+			WEAPON.global_rotation += randf_range(-0.0, -0.1) * sign(WEAPON.global_rotation)
+			new_shot.global_position += Vector2(60, 0).rotated(WEAPON.global_rotation)
+			get_parent().add_child(new_shot)
+			print("NAH")
+		elif "shotgun" in str(WEAPON) and "Player" in str($shotgun/ShapeCast2D.collision_result):
+			for x in range(5):
+				print("shotgun")
+				new_shot = shot.instantiate()
+				new_shot.global_position = global_position + Vector2(50, 0).rotated(WEAPON.global_rotation)
+				new_shot.global_rotation = WEAPON.global_rotation + randf_range(-0.2, 0.2)
+				get_parent().add_child(new_shot)
+			WEAPON.global_rotation += randf_range(-0.15, -0.25) * sign(WEAPON.global_rotation)
+		elif "pistol" in str(WEAPON) and "Player" in str($pistol/RayCast2D.get_collider()):
+			print("NAH")
+			new_shot.global_rotation = WEAPON.global_rotation
+			WEAPON.global_rotation += randf_range(-0.15, -0.25) # * sign(WEAPON.global_rotation + 0.5)
+			new_shot.global_position += Vector2(30, 0).rotated(WEAPON.global_rotation)
+			get_parent().add_child(new_shot)
+		
 		can_shoot = false
 		shoot_timer.start()
-		
 
 func push(pwr, dir):
 	velocity += pwr * dir
-	hp -= 15
-
-
+	hp -= 100
 func _on_shoot_timeout_timeout() -> void:
 	can_shoot = true
+func _on_cpu_particles_2d_finished() -> void:
+	queue_free()

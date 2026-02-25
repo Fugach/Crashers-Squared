@@ -209,7 +209,7 @@ func hands():
 		is_hand_grabbing = false
 		hand_joint.node_b = ""
 		hand.look_at(global_position)
-		hand.velocity = lerp((hand.global_position - global_position) * -5, global_position, global_position)
+		hand.velocity = lerp((hand.global_position - global_position) * -14, global_position, global_position)
 	if is_hands_used == false and hand.global_position.distance_to(global_position) < 20:
 		hand.hide()
 	

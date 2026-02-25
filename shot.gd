@@ -4,13 +4,14 @@ extends Node2D
 @onready var player = GlobalVars.player
 
 func _ready() -> void:
-	print("HAIII :3333")
-	line.add_point(global_position)
-	line.add_point(global_position + Vector2(1000, 0))
-	await get_tree().create_timer(0.5).timeout
-	print("BAIII :3333")
+	raycast.force_raycast_update()
+	await get_tree().create_timer(5).timeout
 	queue_free()
 
 
 func _process(delta: float) -> void:
-	pass
+	raycast.force_raycast_update()
+	if raycast.is_colliding():
+		if "TileMapLayer" in str(raycast.get_collider()):
+			queue_free()
+	position += Vector2(2500 * delta, 0).rotated(global_rotation)
