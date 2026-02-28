@@ -92,6 +92,12 @@ func jump():
 		velocity.y += JUMP_VELOCITY
 		if $AnimationPlayer.current_animation == "slam_stop":
 			$AnimationPlayer.play("RESET")
+	elif $Timer.time_left > 0 and Input.is_action_just_pressed("jump"):
+		velocity.y += JUMP_VELOCITY
+		if $AnimationPlayer.current_animation == "slam_stop":
+			$AnimationPlayer.play("RESET")
+	if Input.is_action_just_released("jump") and not is_on_floor() and velocity.y < 0:
+		velocity.y *= 0.5
 	elif Input.is_action_just_pressed("jump") and is_on_wall_only() and availible_jumps > 0:
 		if is_slamming:
 			is_slamming = false
@@ -101,6 +107,7 @@ func jump():
 		availible_jumps -= 1
 	if is_on_floor():
 		availible_jumps = 3
+		$Timer.start()
 
 func fall():
 	if position.y > 10000:
@@ -168,7 +175,7 @@ func get_input(delta: float) -> void:
 		is_slamming = false
 	if int(Input.is_action_pressed("move_left")) == int(Input.is_action_pressed("move_right")) and\
 	is_on_floor():
-		velocity.x *= 0.95
+		velocity.x *= 0.8
 	
 	if Input.is_action_just_pressed("item1"):
 		GlobalVars.current_item = GlobalVars.items.item1
@@ -189,6 +196,7 @@ func get_input(delta: float) -> void:
 		is_sliding = false
 		velocity = Vector2(0, 0)
 		global_position = Vector2(233, 233)
+		GlobalVars.player_hp = 100
 		$Camera2D.reset_smoothing()
 		$Camera2D.global_position = Vector2(233, 233)
 		$AnimationPlayer.play("RESET")
@@ -238,3 +246,4 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	hand_touch = body
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	hand_touch = null
+	

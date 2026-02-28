@@ -8,3 +8,4 @@ var items = {
 }
 var player_velocity = Vector2(0, 0)
 var player_pos = Vector2(0, 0)
+var player_hp : int = 100

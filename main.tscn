@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://cvwrfokt5v8ue"]
 
+[ext_resource type="Script" uid="uid://yow5y37d3njq" path="res://main.gd" id="1_074og"]
 [ext_resource type="Script" uid="uid://do5lfpq2dysdi" path="res://player.gd" id="1_h2yge"]
+[ext_resource type="Shader" uid="uid://difxyhauojrf4" path="res://crt.gdshader" id="2_getpj"]
 [ext_resource type="Texture2D" uid="uid://ckpacdte3gvhm" path="res://textures/idk2.png" id="2_w48qg"]
 [ext_resource type="AudioStream" uid="uid://dw3mvu3mvae08" path="res://sounds/step1.ogg" id="3_7mycd"]
 [ext_resource type="Script" uid="uid://dril8mbc5mtsp" path="res://RL.gd" id="3_lquwl"]
@@ -9,11 +11,43 @@
 [ext_resource type="AudioStream" uid="uid://dvnq8vpcug76f" path="res://sounds/step2.ogg" id="4_272bh"]
 [ext_resource type="AudioStream" uid="uid://b7rod44b0q0dn" path="res://sounds/wall_slide_loop.mp3" id="5_5vw27"]
 [ext_resource type="Texture2D" uid="uid://4u0nd6rl015b" path="res://textures/2d_lights_and_shadows_neutral_point_light.webp" id="7_dg77c"]
+[ext_resource type="Texture2D" uid="uid://dhnhnqnk2f7ox" path="res://textures/console_background.png" id="7_ryguw"]
+[ext_resource type="Texture2D" uid="uid://de4xq5wbfud5r" path="res://textures/hp_bg.png" id="7_yaehf"]
+[ext_resource type="Texture2D" uid="uid://b3nvrfnmoup83" path="res://textures/hp_overlay.png" id="8_074og"]
 [ext_resource type="Texture2D" uid="uid://d3ochxhdlaiso" path="res://textures/hands.png" id="8_w48qg"]
 [ext_resource type="Texture2D" uid="uid://f25fcmkhqx3c" path="res://textures/tilemap.png" id="9_4c57u"]
+[ext_resource type="Texture2D" uid="uid://d0ssfxit4xgte" path="res://textures/hp_bar.png" id="9_cegan"]
 [ext_resource type="Script" uid="uid://dvc3p8ct78t58" path="res://tile_map_layer.gd" id="10_efxa6"]
 [ext_resource type="AudioStream" uid="uid://bm560oxyglbri" path="res://sounds/done.ogg" id="11_efxa6"]
+[ext_resource type="FontFile" uid="uid://bt6dalva50viv" path="res://cyrillic.tres" id="12_cegan"]
 [ext_resource type="Texture2D" uid="uid://82wcjdgprt2i" path="res://textures/backgrounds.png" id="13_ycdy4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_getpj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ryguw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d13ii"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1u8w0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0odxb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d13ii"]
+shader = ExtResource("2_getpj")
+shader_parameter/resolution = Vector2(1280, 720)
+shader_parameter/scan_line_amount = 1.0
+shader_parameter/warp_amount = 0.2570000122075
+shader_parameter/noise_amount = 0.02000000095
+shader_parameter/interference_amount = 0.3
+shader_parameter/grille_amount = 0.0
+shader_parameter/grille_size = 0.0
+shader_parameter/vignette_amount = 1.0000000475
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/aberation_amount = 0.5
+shader_parameter/roll_line_amount = 0.3
+shader_parameter/roll_speed = 1.0
+shader_parameter/scan_line_strength = -8.0
+shader_parameter/pixel_strength = -0.9999998575000002
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0hol4"]
 size = Vector2(16, 16)
@@ -289,6 +323,107 @@ size = Vector2(8, 8)
 size = Vector2(6, 6)
 
 [node name="main" type="Node2D" unique_id=1260506371]
+script = ExtResource("1_074og")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=932941366]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1956633857]
+
+[node name="HPBar" type="TextureProgressBar" parent="CanvasLayer" unique_id=1735031832]
+offset_right = 111.0
+offset_bottom = 19.0
+scale = Vector2(2, 2)
+texture_under = ExtResource("7_yaehf")
+texture_over = ExtResource("8_074og")
+texture_progress = ExtResource("9_cegan")
+texture_progress_offset = Vector2(7, 4)
+tint_over = Color(0.9234164, 0.9234164, 0.9234164, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="CanvasLayer/HPBar" unique_id=857614475]
+layout_mode = 0
+offset_left = 34.499996
+offset_top = -3.5000038
+offset_right = 74.5
+offset_bottom = 19.499996
+theme_override_fonts/font = ExtResource("12_cegan")
+text = "0"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=1233357972]
+
+[node name="bg" type="Sprite2D" parent="CanvasLayer2" unique_id=1059365235]
+position = Vector2(640, 360.00003)
+scale = Vector2(20, 11.250001)
+texture = ExtResource("7_ryguw")
+
+[node name="НЕТ" type="Button" parent="CanvasLayer2" unique_id=1998850139]
+modulate = Color(6.840123, 6.840123, 6.840123, 1)
+offset_left = 741.0
+offset_top = 350.0
+offset_right = 873.0
+offset_bottom = 397.0
+theme_override_colors/font_color = Color(0.4627451, 0.25882354, 0.050980393, 1)
+theme_override_colors/font_focus_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
+theme_override_colors/font_pressed_color = Color(0.63671875, 0.3662476, 0.08705139, 1)
+theme_override_colors/font_hover_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.63529414, 0.3647059, 0.08627451, 1)
+theme_override_fonts/font = ExtResource("12_cegan")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_getpj")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ryguw")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_d13ii")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_1u8w0")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0odxb")
+text = "НЕТ
+"
+
+[node name="ДА" type="Button" parent="CanvasLayer2" unique_id=156103576]
+modulate = Color(6.840123, 6.840123, 6.840123, 1)
+offset_left = 423.0
+offset_top = 346.0
+offset_right = 555.0
+offset_bottom = 393.0
+theme_override_colors/font_color = Color(0.4627451, 0.25882354, 0.050980393, 1)
+theme_override_colors/font_focus_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
+theme_override_colors/font_pressed_color = Color(0.63671875, 0.3662476, 0.08705139, 1)
+theme_override_colors/font_hover_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.63529414, 0.3647059, 0.08627451, 1)
+theme_override_fonts/font = ExtResource("12_cegan")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_getpj")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ryguw")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_d13ii")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_1u8w0")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0odxb")
+text = "ДА
+"
+
+[node name="Снова" type="Label" parent="CanvasLayer2" unique_id=1644070117]
+modulate = Color(6.840123, 6.840123, 6.840123, 1)
+offset_left = 526.0
+offset_top = 209.0
+offset_right = 605.0
+offset_bottom = 232.0
+scale = Vector2(3.027097, 3.027097)
+theme_override_colors/font_color = Color(0.4627451, 0.25882354, 0.050980393, 1)
+theme_override_fonts/font = ExtResource("12_cegan")
+text = "Снова?"
+horizontal_alignment = 1
+
+[node name="CRT" type="ColorRect" parent="CanvasLayer2" unique_id=206969452]
+material = SubResource("ShaderMaterial_d13ii")
+use_parent_material = true
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+
+[node name="Чёрный" type="ColorRect" parent="CanvasLayer2" unique_id=375020702]
+visible = false
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 1282.0
+offset_bottom = 722.0
+color = Color(0, 0, 0, 1)
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=616164754]
 visible = false
@@ -317,13 +452,6 @@ autoplay = true
 [node name="steps" type="AudioStreamPlayer2D" parent="Player" unique_id=1928414028]
 stream = SubResource("AudioStreamRandomizer_5vw27")
 
-[node name="Camera2D" type="Camera2D" parent="Player" unique_id=562808154]
-position = Vector2(7.275958e-12, 0)
-rotation = 0.8292999
-scale = Vector2(-7.4272766, 3.077939)
-zoom = Vector2(0.65, 0.65)
-position_smoothing_enabled = true
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Player" unique_id=1903460861]
 libraries/ = SubResource("AnimationLibrary_q6r6c")
 
@@ -336,6 +464,15 @@ position = Vector2(0, -1)
 shadow_enabled = true
 texture = ExtResource("7_dg77c")
 texture_scale = 3.0
+
+[node name="Timer" type="Timer" parent="Player" unique_id=503293756]
+wait_time = 0.1
+one_shot = true
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=562808154]
+rotation = -3.1415925
+zoom = Vector2(0.65, 0.65)
+position_smoothing_enabled = true
 
 [node name="RL" type="Node2D" parent="." unique_id=1240772053]
 script = ExtResource("3_lquwl")
@@ -372,6 +509,7 @@ tile_set = SubResource("TileSet_vivmo")
 [node name="hand" type="CharacterBody2D" parent="." unique_id=351713303]
 position = Vector2(233, 222)
 rotation = 1.5707964
+scale = Vector2(1, 1.0000001)
 
 [node name="Area2D" type="Area2D" parent="hand" unique_id=545542684]
 
@@ -396,6 +534,9 @@ region_rect = Rect2(0, 4, 7, 7)
 position = Vector2(-1, 0)
 node_a = NodePath("..")
 
+[connection signal="mouse_entered" from="CanvasLayer2/НЕТ" to="." method="_on_нет_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer2/НЕТ" to="." method="_on_нет_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer2/НЕТ" to="." method="_on_нет_pressed"]
 [connection signal="animation_finished" from="Player/AnimationPlayer" to="Player" method="animation_finished"]
 [connection signal="timeout" from="Player/BoostTime" to="Player" method="_on_boost_time_timeout"]
 [connection signal="timeout" from="RL/ShootTimer" to="RL" method="_on_shoot_timer_timeout"]

@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-@onready var player = get_tree().get_first_node_in_group("player")
+@onready var player = GlobalVars.player
 var is_touching_cursor : bool = false
 var is_grabbed : bool = false
 var is_holding : bool = false

@@ -14,4 +14,7 @@ func _process(delta: float) -> void:
 	if raycast.is_colliding():
 		if "TileMapLayer" in str(raycast.get_collider()):
 			queue_free()
+		if "Player" in str(raycast.get_collider()):
+			GlobalVars.player_hp -= 15
+			queue_free()
 	position += Vector2(2500 * delta, 0).rotated(global_rotation)
