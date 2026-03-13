@@ -40,6 +40,7 @@ func wait(x):
 	await get_tree().create_timer(x).timeout
 
 func _on_НАЧАТЬ_button_pressed() -> void:
+	GlobalVars.lifes = 3
 	get_tree().change_scene_to_file("res://main.tscn")
 func _on_НАЧАТЬ_button_mouse_entered() -> void:
 	$choose.play()

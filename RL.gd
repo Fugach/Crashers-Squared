@@ -30,7 +30,7 @@ func RL_logic(delta):
 		$RotationOffset/RL_sprite.scale.y = -0.75
 	global_position = get_node("/root/main/Player").global_position
 
-	if Input.is_action_just_pressed("shoot") and can_shoot:
+	if Input.is_action_just_pressed("lmb") and can_shoot:
 		can_shoot = false
 		$ShootTimer.start()
 		shoot()

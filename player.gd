@@ -1,14 +1,10 @@
 extends CharacterBody2D
 
-const SPEED : float = 325.0
-const ACCELERATION : float = 1000.0
+var SPEED : float = 325.0
+#const ACCELERATION : float = 1000.0
 const JUMP_VELOCITY : float = -500.0
 var availible_jumps : int = 3
-var boost_direction : int = 1
-var boosts_available : float = 3.0
-var is_boosting : bool = false
-var velocity_buffer : Vector2 = velocity
-var player_hp : int = 100
+var direction : int = 1
 const push_power : float = 15.0
 const box = preload("res://box.tscn")
 const nailbreaker = preload("res://nailbreaker.tscn")
@@ -20,6 +16,7 @@ var is_slamming : bool = false
 var is_hands_used : bool = false
 var is_hand_grabbing : bool = false
 var hand_touch : Node2D = null
+
 @onready var steps: AudioStreamPlayer2D = $steps
 @onready var wall_slide_loop: AudioStreamPlayer2D = $wall_slide_loop
 @onready var wind: AudioStreamPlayer2D = $wind
@@ -34,7 +31,7 @@ func _ready() -> void:
 	hand.add_collision_exception_with(self)
 
 func _physics_process(delta: float) -> void:
-	if is_on_wall_only() and (not is_on_floor()) and velocity.y > 0 and sign(get_wall_normal().x) == boost_direction * -1 and\
+	if is_on_wall_only() and (not is_on_floor()) and velocity.y > 0 and\
 	(Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")):
 		is_sliding = true
 		velocity.y += get_gravity().y * delta * 0.1 # скользим по стенам
@@ -44,19 +41,18 @@ func _physics_process(delta: float) -> void:
 	else:
 		is_sliding = false
 	
-	if is_sliding:
+	if is_sliding and GlobalVars.player_hp > 0:
 		wall_slide_loop.volume_db = 0.0
 	else:
 		wall_slide_loop.volume_db = -80.0
-	if boosts_available < 3:
-		boosts_available += 0.5 * delta
 	
 	var previous_velocity = velocity
 	
-	wind_ambient()
-	get_input(delta)
-	fall()
-	move_and_slide()
+	if GlobalVars.player_hp > 0:
+		wind_ambient()
+		get_input(delta)
+		fall()
+		move_and_slide()
 
 	
 	for i in get_slide_collision_count():
@@ -67,8 +63,6 @@ func _physics_process(delta: float) -> void:
 			collider.apply_central_impulse(previous_velocity * normal * -0.15)
 
 func _process(_delta: float) -> void:
-	GlobalVars.player_velocity = velocity
-	GlobalVars.player_pos = global_position
 	jump()
 	if Input.is_action_just_pressed("spawn_BOX"):
 		var new_box = box.instantiate()
@@ -97,7 +91,7 @@ func jump():
 		if $AnimationPlayer.current_animation == "slam_stop":
 			$AnimationPlayer.play("RESET")
 	if Input.is_action_just_released("jump") and not is_on_floor() and velocity.y < 0:
-		velocity.y *= 0.5
+		velocity.y *= 0.6
 	elif Input.is_action_just_pressed("jump") and is_on_wall_only() and availible_jumps > 0:
 		if is_slamming:
 			is_slamming = false
@@ -111,9 +105,10 @@ func jump():
 
 func fall():
 	if position.y > 10000:
-		position.y = 233
-		position.x = 233
-		velocity = Vector2(0, 0)
+		respawn()
+		#position.y = 233
+		#position.x = 233
+		#velocity = Vector2(0, 0)
 		is_sliding = false
 		is_slamming = false
 		$Camera2D.reset_smoothing()
@@ -129,11 +124,6 @@ func wind_ambient():
 func animation_finished(anim_name: StringName) -> void:
 	if anim_name == "slam_start" and is_on_floor():
 		$AnimationPlayer.play("slam_stop")
-	if anim_name == "boost_start":
-		if boost_direction > 0:
-			$AnimationPlayer.play("boost_finish_right")
-		else:
-			$AnimationPlayer.play("boost_finish_left")
 
 func push(pwr, _dir):
 	if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
@@ -142,30 +132,26 @@ func push(pwr, _dir):
 		velocity += pwr * Vector2(5.5, -1)
 	else:
 		velocity += pwr * Vector2(0, -1)
+	GlobalVars.damage(pwr / 100)
 
 func get_input(delta: float) -> void:
 	hands()
 	if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
-		boost_direction = -1
-		if not is_boosting:
-			velocity.x -= ACCELERATION * delta
-			if not steps.is_playing() and is_on_floor() and velocity.x != 0:
-				steps.play()
-			if velocity.x < SPEED * -1:
-				velocity.x = SPEED * -1
+		direction = -1
+		if sign(velocity.x) != direction:
+			velocity.x += 15 * direction
+		velocity.x += (SPEED - abs(velocity.x)) * direction * delta * 5
 	if Input.is_action_pressed("move_right") and not Input.is_action_pressed("move_left"):
-		boost_direction = 1
-		if not is_boosting:
-			velocity.x += ACCELERATION * delta
-			if not steps.is_playing() and is_on_floor() and velocity.x != 0:
-				steps.play()
-			if velocity.x > SPEED:
-				velocity.x = SPEED
+		direction = 1
+		if sign(velocity.x) != direction:
+			velocity.x += 15 * direction
+		velocity.x += (SPEED - abs(velocity.x)) * direction * delta * 10
+	if not steps.is_playing() and is_on_floor() and velocity.x != 0:
+			steps.play()
 	if Input.is_action_just_pressed("slam") and not is_on_floor() and not Input.is_action_just_pressed("jump"):
 		$AnimationPlayer.play("slam_start")
 		velocity.y = 1500
 		velocity.x = 0
-		is_boosting = false
 		is_slamming = true
 	elif is_slamming and is_on_floor():
 		$AnimationPlayer.play("slam_stop")
@@ -173,9 +159,11 @@ func get_input(delta: float) -> void:
 	elif is_slamming and is_sliding:
 		$AnimationPlayer.stop()
 		is_slamming = false
-	if int(Input.is_action_pressed("move_left")) == int(Input.is_action_pressed("move_right")) and\
-	is_on_floor():
-		velocity.x *= 0.8
+	if int(Input.is_action_pressed("move_left")) == int(Input.is_action_pressed("move_right")):
+		if is_on_floor():
+			velocity.x *= 0.8
+		else:
+			velocity.x *= 0.99
 	
 	if Input.is_action_just_pressed("item1"):
 		GlobalVars.current_item = GlobalVars.items.item1
@@ -192,14 +180,7 @@ func get_input(delta: float) -> void:
 		$Camera2D.zoom.y = max($Camera2D.zoom.y - 0.3 * delta, 0.4)
 	
 	if Input.is_action_just_pressed("respawn"):
-		is_slamming = false
-		is_sliding = false
-		velocity = Vector2(0, 0)
-		global_position = Vector2(233, 233)
-		GlobalVars.player_hp = 100
-		$Camera2D.reset_smoothing()
-		$Camera2D.global_position = Vector2(233, 233)
-		$AnimationPlayer.play("RESET")
+		respawn()
 
 func hands():
 	if Input.is_action_just_pressed("hands"):
@@ -246,4 +227,15 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	hand_touch = body
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	hand_touch = null
-	
+
+func respawn():
+	is_slamming = false
+	is_sliding = false
+	velocity = Vector2(0, 0)
+	global_position = Vector2(233, 233)
+	GlobalVars.player_hp = 100
+	$Camera2D.reset_smoothing()
+	$Camera2D.global_position = Vector2(233, 233)
+	$AnimationPlayer.play("RESET")
+func show_damage():
+	$blood.emitting = true

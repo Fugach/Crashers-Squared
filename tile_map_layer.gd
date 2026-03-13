@@ -20,16 +20,16 @@ func _ready() -> void:
 	# generating first room
 	room_anchor = Vector2(3, 2)
 	room_size = Vector2(15, 8)
-	#gen_direction = ["left", "right"].pick_random()
-	gen_direction = "left"
+	gen_direction = ["left", "right"].pick_random()
+	#gen_direction = "right"
 	if gen_direction == "right":
 		room_doors = "right"
 	else: 
 		room_doors = "left"
 	doors_height = randi_range(-2, 0)
-	generate_room(room_anchor, room_size, room_doors, doors_height)
+	generate_room(room_anchor, room_size, room_doors, doors_height, false)
 	
-	gen_dungeon(1)#randi_range(3, 15))
+	gen_dungeon(randi_range(3, 15))
 	#$AudioStreamPlayer2D.play()
 
 func gen_dungeon(rooms_count):
@@ -59,7 +59,6 @@ func gen_dungeon(rooms_count):
 					#break
 			#else:
 				#break
-		print(hall_tilt)
 		print("delta: ", hall_tilt + doors_height + old_room_doors_height, " len: ", hall_length)
 		if gen_direction == "right":
 			room_anchor += Vector2(hall_length + 3, hall_tilt)
@@ -67,8 +66,8 @@ func gen_dungeon(rooms_count):
 			room_anchor += Vector2(hall_length * -1, hall_tilt)
 		
 		if gen_direction == "right":
-			hall_pos1 = old_room_anchor + old_room_size + Vector2(0, old_room_doors_height)
-			hall_pos2 = room_anchor + Vector2(0, doors_height + room_size.y)
+			hall_pos1 = old_room_anchor + old_room_size + Vector2(2, old_room_doors_height - 1)
+			hall_pos2 = room_anchor + Vector2(0, doors_height + room_size.y - 1)
 		elif gen_direction == "left":
 			hall_pos1 = room_anchor + room_size + Vector2(2, doors_height - 1)
 			hall_pos2 = old_room_anchor + Vector2(-2, old_room_doors_height + old_room_size.y - 1)
@@ -79,16 +78,16 @@ func gen_dungeon(rooms_count):
 			generate_hall(hall_pos1, hall_pos2)
 		
 		if o != rooms_count - 1:
-			generate_room(room_anchor, room_size, "both", doors_height)
+			generate_room(room_anchor, room_size, "both", doors_height, true)
 		else:
 			if gen_direction == "right":
-				generate_room(room_anchor, room_size, "left", doors_height)
+				generate_room(room_anchor, room_size, "left", doors_height, true)
 			elif gen_direction == "left":
-				generate_room(room_anchor, room_size, "right", doors_height)
+				generate_room(room_anchor, room_size, "right", doors_height, true)
 		#set_cell(hall_pos1, 1, Vector2(0, 4))
 		#set_cell(hall_pos2, 1, Vector2(0, 5))
 
-func generate_room(pos, size, doors, height):
+func generate_room(pos, size, doors, height, enemies):
 	for x in range(size.x):
 		set_cell(pos + Vector2(x, 0), 1, Vector2(0, 3))
 		set_cells_terrain_connect(get_surrounding_cells(pos + Vector2(x, 0)), 0, 0, false)
@@ -155,11 +154,6 @@ func generate_room(pos, size, doors, height):
 					$bg.set_cell(vhod2_pos + Vector2(x, y), 0, Vector2(0, 0))
 				else:
 					$bg.set_cell(vhod2_pos + Vector2(x, y), 0, Vector2(1, 0))
-		for x in range(randi_range(1, 16)):
-			var new_enemy = enemy.instantiate()
-			print(new_enemy)
-			new_enemy.global_position = (pos + size) * 16 + Vector2(randi_range(-20, -15), 3) * 16
-			get_tree().current_scene.add_child.call_deferred(new_enemy)
 		
 		var new_door = door.instantiate()
 		new_door.global_position = (vhod2_pos + Vector2(1, 1)) * Vector2(32, 32)
@@ -182,7 +176,14 @@ func generate_room(pos, size, doors, height):
 					if i == height * -1 -1:
 						set_cell(Vector2(vhod2_pos.x + vhod2_size.x - 5 - i * 2, vhod2_pos.y - vhod2_size.y + 5 + i), 1, Vector2(4, 0))
 						set_cell(Vector2(vhod2_pos.x + vhod2_size.x - 4 - i * 2, vhod2_pos.y - vhod2_size.y + 5 + i), 1, Vector2(4, 0))
-
+	if enemies:
+		for x in range(randi_range(1, 16)):
+			var new_enemy = enemy.instantiate()
+			if gen_direction == "left":
+				new_enemy.global_position = (pos + size) * 16 + Vector2(randi_range(-5, -15), 3) * 16
+			elif gen_direction == "right":
+				new_enemy.global_position = (pos + size) * 16
+			#get_tree().current_scene.add_child.call_deferred(new_enemy)
 func generate_hall(pos1, pos2):
 	if pos1.y - pos2.y == 0:
 		for x in (abs(pos1.x - pos2.x) + 1):
@@ -197,9 +198,14 @@ func generate_hall(pos1, pos2):
 		print(num_stairs, " ", stair_len, " pos1 == ", pos1, " pos2 == ", pos2)
 		for y in range(num_stairs):
 			for x in range(stair_len):
+				for bgy in range(4):
+					$bg.set_cell(Vector2(pos1 + Vector2(x + (stair_len * y), y * -1 * sign(points_delta) - bgy)), 0, Vector2(1, 0))
 				set_cell(pos1 + Vector2(x + (stair_len * y), y * -1 * sign(points_delta)), 1, Vector2(4, 0))
+				set_cell(pos1 + Vector2(x + (stair_len * y), y * -1 * sign(points_delta) - 4), 1, Vector2(4, 0))
 				if x == stair_len -1 and y != num_stairs - 1:
 					if points_delta > 0:
 						set_cell(pos1 + Vector2(x + (stair_len * y), y * -1 * sign(points_delta) - 1), 1, Vector2(9, 1))
+						set_cell(pos1 + Vector2(x + (stair_len * y), y * -1 * sign(points_delta) - 5), 1, Vector2(9, 1))
 					elif points_delta < 0:
 						set_cell(pos1 + Vector2(x + 1 + (stair_len * y), y * -1 * sign(points_delta)), 1, Vector2(7, 2))
+						set_cell(pos1 + Vector2(x + 1 + (stair_len * y), y * -1 * sign(points_delta) - 4), 1, Vector2(7, 2))

@@ -14,7 +14,6 @@ var can_shoot : bool = false
 var direction = Vector2(0, 0)
 var hp = 100
 func _ready() -> void:
-	print(WEAPON)
 	WEAPON.show()
 
 func _physics_process(delta: float) -> void:
@@ -45,7 +44,7 @@ func _physics_process(delta: float) -> void:
 
 func _process(delta: float) -> void:
 	if global_position.distance_to(player.global_position) < 400:
-		WEAPON.global_rotation = lerp_angle(WEAPON.global_rotation, (player.global_position - global_position).angle(), 20 * delta)
+		WEAPON.global_rotation = lerp_angle(WEAPON.global_rotation, (player.global_position - global_position).angle(), delta * 10)
 	else:
 		WEAPON.global_rotation = 0
 		
@@ -61,17 +60,14 @@ func _process(delta: float) -> void:
 			WEAPON.global_rotation += randf_range(-0.0, -0.1) * sign(WEAPON.global_rotation)
 			new_shot.global_position += Vector2(30, 0).rotated(WEAPON.global_rotation)
 			get_parent().add_child(new_shot)
-			print("NAH")
 		elif "shotgun" in str(WEAPON) and ("Player" in str($shotgun/ShapeCast2D.collision_result) or randi_range(0, 1)):
 			for x in range(5):
-				print("shotgun")
 				new_shot = shot.instantiate()
 				new_shot.global_position = global_position + Vector2(10, 0).rotated(WEAPON.global_rotation)
 				new_shot.global_rotation = WEAPON.global_rotation + randf_range(-0.2, 0.2)
 				get_parent().add_child(new_shot)
 			WEAPON.global_rotation += randf_range(-0.15, -0.25) * sign(WEAPON.global_rotation)
-		elif "pistol" in str(WEAPON) and ("Player" in str($pistol/RayCast2D.get_collider()) or randi_range(0, 1)):
-			print("NAH")
+		elif "pistol" in str(WEAPON) and ("Player" in str($pistol/ShapeCast2D.collision_result) or randi_range(0, 1)):
 			new_shot.global_rotation = WEAPON.global_rotation
 			WEAPON.global_rotation += randf_range(-0.15, -0.25) # * sign(WEAPON.global_rotation + 0.5)
 			new_shot.global_position += Vector2(10, 0).rotated(WEAPON.global_rotation)

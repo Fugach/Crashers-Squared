@@ -172,6 +172,9 @@ _data = {
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_4gyqm"]
 points = PackedVector2Array(0, 3, 0, -3, 150, -30, 150, 30)
 
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_qi2p4"]
+points = PackedVector2Array(0, -2.5, 0, 2.5, 250, 10, 250, -10)
+
 [node name="enemy" type="CharacterBody2D" unique_id=1596230914]
 script = ExtResource("1_4gyqm")
 
@@ -228,12 +231,12 @@ flip_v = true
 region_enabled = true
 region_rect = Rect2(48, 0, 14, 10)
 
-[node name="RayCast2D" type="RayCast2D" parent="pistol" unique_id=2095956385]
-position = Vector2(4.5, 0)
-target_position = Vector2(100, 0)
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="pistol" unique_id=1454592893]
 libraries/ = SubResource("AnimationLibrary_epg4t")
+
+[node name="ShapeCast2D" type="ShapeCast2D" parent="pistol" unique_id=689184859]
+shape = SubResource("ConvexPolygonShape2D_qi2p4")
+target_position = Vector2(0, 0)
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=107405280]
 self_modulate = Color(1, 1, 0, 1)
