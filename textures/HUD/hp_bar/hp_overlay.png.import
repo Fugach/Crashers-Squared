@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqitohir4rtpm"
-path="res://.godot/imported/pc_at_home.png-e298063e6ba202f35ba5231142cab786.ctex"
+uid="uid://b3nvrfnmoup83"
+path="res://.godot/imported/hp_overlay.png-bb552b218e882b714758ff31c76ec380.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/pc_at_home.png"
-dest_files=["res://.godot/imported/pc_at_home.png-e298063e6ba202f35ba5231142cab786.ctex"]
+source_file="res://textures/HUD/hp_bar/hp_overlay.png"
+dest_files=["res://.godot/imported/hp_overlay.png-bb552b218e882b714758ff31c76ec380.ctex"]
 
 [params]
 

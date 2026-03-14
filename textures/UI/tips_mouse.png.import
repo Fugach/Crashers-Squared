@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d0ssfxit4xgte"
-path="res://.godot/imported/hp_bar.png-afbe1c759bfe4b56f816008a61852c8c.ctex"
+uid="uid://bbdi21tlcwtsq"
+path="res://.godot/imported/tips_mouse.png-7d23c3c6cfd5dd3573f72e2a4296ce1e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/hp_bar.png"
-dest_files=["res://.godot/imported/hp_bar.png-afbe1c759bfe4b56f816008a61852c8c.ctex"]
+source_file="res://textures/UI/tips_mouse.png"
+dest_files=["res://.godot/imported/tips_mouse.png-7d23c3c6cfd5dd3573f72e2a4296ce1e.ctex"]
 
 [params]
 
