@@ -397,26 +397,23 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rvwyb"]
-size = Vector2(14.000002, 51.1)
+size = Vector2(7, 24)
 
 [node name="Node2D" type="Node2D" unique_id=1513458591]
-position = Vector2(2, 0)
 script = ExtResource("1_1kubd")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1739917062]
 texture_filter = 1
-position = Vector2(-0.7199936, -2.7200015)
-scale = Vector2(1.3, 1.3)
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_ys824")
 animation = &"door_open"
+frame = 50
+frame_progress = 1.0
 
 [node name="Area2D" type="Area2D" parent="." unique_id=238382299]
-position = Vector2(-0.72000885, -3.7200012)
-scale = Vector2(1.25, 1.25)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=380549107]
-position = Vector2(-1.0239987, 4.526)
-scale = Vector2(0.79999983, 0.99999976)
+position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_rvwyb")
 
 [node name="open" type="AudioStreamPlayer2D" parent="." unique_id=256827894]

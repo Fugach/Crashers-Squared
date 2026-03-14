@@ -25,9 +25,9 @@ func RL_logic(delta):
 
 	current_angle = (get_global_mouse_position() - global_position).normalized().angle()
 	if -1.5 <= current_angle and current_angle <= 1.5:
-		$RotationOffset/RL_sprite.scale.y = 0.75
+		$RotationOffset/RL_sprite.scale.y = 0.375
 	else:
-		$RotationOffset/RL_sprite.scale.y = -0.75
+		$RotationOffset/RL_sprite.scale.y = -0.375
 	global_position = get_node("/root/main/Player").global_position
 
 	if Input.is_action_just_pressed("lmb") and can_shoot:

@@ -29,7 +29,7 @@ tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(0.033333335),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1, 1)]
@@ -49,7 +49,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_r2l15"]
 resource_name = "explostion_increasing"
-length = 0.4333
+length = 0.13333334
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -60,7 +60,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(-1.4901161e-08, 0.06666667, 0.13333334),
 "transitions": PackedFloat32Array(1, 0.5, 1),
 "update": 0,
-"values": [Vector2(0.5, 0.5), Vector2(1.2, 1.2), Vector2(1.5, 1.5)]
+"values": [Vector2(0.5, 0.5), Vector2(1.2, 1.2), Vector2(1.1, 1.1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -94,6 +94,8 @@ stream_3/stream = ExtResource("7_lm57y")
 [node name="Rocket" type="Sprite2D" unique_id=263301545]
 z_index = -1
 texture_filter = 1
+position = Vector2(0.15384626, 0.33333334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_5gt1y")
 region_enabled = true
 region_rect = Rect2(1, 13, 13, 3)
@@ -111,8 +113,7 @@ spread = 180.0
 gravity = Vector2(0, 4)
 initial_velocity_min = 15.0
 initial_velocity_max = 30.0
-scale_amount_min = 5.0
-scale_amount_max = 10.0
+scale_amount_max = 3.0
 scale_amount_curve = SubResource("Curve_5gt1y")
 color = Color(0.99, 0.82500005, 0, 1)
 color_ramp = SubResource("Gradient_r2l15")

@@ -14,9 +14,9 @@ func _process(delta: float) -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if ("Player" in str(body) or "RigidBody2D" in str(body) or "CharacterBody2D" in str(body)) and not $AnimatedSprite2D.is_playing():
 		if global_position.x > body.global_position.x:
-			scale.x = -1.0
+			scale.x = -2.0
 		else:
-			scale.x = 1.0
+			scale.x = 2.0
 		$AnimatedSprite2D.speed_scale = 1.0 + (body.global_position.x / global_position.x)
 		$AnimatedSprite2D.play("door_open")
 		$open.play()

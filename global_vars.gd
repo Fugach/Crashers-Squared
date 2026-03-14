@@ -18,6 +18,6 @@ func damage(amount : int):
 	else:
 		player_hp = 0
 	player.show_damage()
-	if player_hp <= 0 and not get_node("/root/main/Restart").visible:
+	if player_hp <= 0:
 		print("POW! YOU ARE DEAD!")
 		main.death()

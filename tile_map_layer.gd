@@ -121,9 +121,9 @@ func generate_room(pos, size, doors, height, enemies):
 			set_cell(vhod1_pos + Vector2(2, 2), 1, Vector2(4, 1))
 		else:
 			set_cell(vhod1_pos + Vector2(2, 2), 1, Vector2(1, 0))
-		var new_door = door.instantiate()
-		new_door.global_position = (vhod1_pos + Vector2(2, 1)) * Vector2(32, 32)
-		get_parent().add_child.call_deferred(new_door)
+		#var new_door = door.instantiate()
+		#new_door.global_position = (vhod1_pos - Vector2(2, 2)) * Vector2(32, 32)
+		#get_parent().add_child.call_deferred(new_door)
 
 		if height != 0:
 			if false:
@@ -155,9 +155,9 @@ func generate_room(pos, size, doors, height, enemies):
 				else:
 					$bg.set_cell(vhod2_pos + Vector2(x, y), 0, Vector2(1, 0))
 		
-		var new_door = door.instantiate()
-		new_door.global_position = (vhod2_pos + Vector2(1, 1)) * Vector2(32, 32)
-		get_parent().add_child.call_deferred(new_door)
+		#var new_door = door.instantiate()
+		#new_door.global_position = (vhod2_pos + Vector2(1, 1)) * Vector2(32, 32)
+		#get_parent().add_child.call_deferred(new_door)
 
 		if height != 0:
 			if false:

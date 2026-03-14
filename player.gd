@@ -1,11 +1,10 @@
 extends CharacterBody2D
 
-var SPEED : float = 325.0
+var SPEED : float = 165.0
 #const ACCELERATION : float = 1000.0
-const JUMP_VELOCITY : float = -500.0
+const JUMP_VELOCITY : float = -300.0
 var availible_jumps : int = 3
 var direction : int = 1
-const push_power : float = 15.0
 const box = preload("res://box.tscn")
 const nailbreaker = preload("res://nailbreaker.tscn")
 const RL = preload("res://rl_pickable.tscn")
@@ -87,8 +86,8 @@ func jump():
 		if is_slamming:
 			is_slamming = false
 			$AnimationPlayer.stop()
-		velocity.x = sign(get_wall_normal().x) * 300
-		velocity.y = -500
+		velocity.x = sign(get_wall_normal().x) * 200
+		velocity.y = -350
 		availible_jumps -= 1
 	if is_on_floor():
 		availible_jumps = 3
@@ -118,29 +117,29 @@ func animation_finished(anim_name: StringName) -> void:
 
 func push(pwr, _dir):
 	if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
-		velocity += pwr * Vector2(-5.5, -1)
+		velocity += pwr * Vector2(-1, -1) / 2
 	elif Input.is_action_pressed("move_right") and not Input.is_action_pressed("move_left"):
-		velocity += pwr * Vector2(5.5, -1)
+		velocity += pwr * Vector2(1, -1) / 2
 	else:
-		velocity += pwr * Vector2(0, -1)
+		velocity += pwr * _dir / 2
 	GlobalVars.damage(pwr / 100)
 
 func get_input(delta: float) -> void:
 	if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
 		direction = -1
 		if sign(velocity.x) != direction:
-			velocity.x += 15 * direction
+			velocity.x *= 0.8
 		velocity.x += (SPEED - abs(velocity.x)) * direction * delta * 5
 	if Input.is_action_pressed("move_right") and not Input.is_action_pressed("move_left"):
 		direction = 1
 		if sign(velocity.x) != direction:
-			velocity.x += 15 * direction
+			velocity.x *= 0.8
 		velocity.x += (SPEED - abs(velocity.x)) * direction * delta * 10
 	if not steps.is_playing() and is_on_floor() and abs(round(velocity.x)) > 10:
 			steps.play()
 	if Input.is_action_just_pressed("slam") and not is_on_floor() and not Input.is_action_just_pressed("jump"):
 		$AnimationPlayer.play("slam_start")
-		velocity.y = 1500
+		velocity.y = 750
 		velocity.x = 0
 		is_slamming = true
 	elif is_slamming and is_on_floor():
@@ -176,10 +175,10 @@ func respawn():
 	is_slamming = false
 	is_sliding = false
 	velocity = Vector2(0, 0)
-	global_position = Vector2(233, 233)
+	global_position = Vector2(150, 145)
+	$Camera2D.global_position = global_position
 	GlobalVars.player_hp = 100
 	$Camera2D.reset_smoothing()
-	$Camera2D.global_position = Vector2(233, 233)
 	$AnimationPlayer.play("RESET")
 func show_damage():
 	$blood.emitting = true

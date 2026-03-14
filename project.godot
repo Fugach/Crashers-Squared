@@ -24,8 +24,8 @@ GlobalVars="*res://global_vars.gd"
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=640
+window/size/viewport_height=360
 window/size/resizable=false
 window/stretch/mode="canvas_items"
 
@@ -135,5 +135,6 @@ esc={
 
 textures/canvas_textures/default_texture_filter=0
 viewport/hdr_2d=true
+anti_aliasing/quality/msaa_2d=2
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 2d/snap/snap_2d_transforms_to_pixel=true

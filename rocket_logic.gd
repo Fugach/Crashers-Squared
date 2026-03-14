@@ -5,6 +5,7 @@ extends Sprite2D
 @onready var ExplosionPos: Sprite2D = $Babax
 @onready var Collision: Area2D = $Babax/BabaxCollision
 
+var can_push : bool = true
 var speed = 100
 var direction = 1
 var is_emitting : bool = false
@@ -43,7 +44,8 @@ func _on_cpu_particles_2d_finished():
 	queue_free()
 
 func _on_collision_body_entered(body: Node2D):
-	if (body is CharacterBody2D and "hand" not in str(body)) or body is RigidBody2D:
+	if ((body is CharacterBody2D) or (body is RigidBody2D)) and can_push:
+		print(body)
 		var explosion_pos = ExplosionPos.global_position
 		var dir = (body.global_position - explosion_pos).normalized()
 		var distance = explosion_pos.distance_to(body.global_position)
@@ -51,4 +53,5 @@ func _on_collision_body_entered(body: Node2D):
 		body.push(force, dir)
 func _on_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "explostion_increasing":
-		Collision.monitoring = false
+		can_push = false
+		print(can_push)

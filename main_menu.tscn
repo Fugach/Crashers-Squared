@@ -48,8 +48,8 @@ layer = 0
 [node name="ColorRect2" type="ColorRect" parent="CanvasLayer" unique_id=1079933305]
 material = SubResource("ShaderMaterial_06t4h")
 use_parent_material = true
-offset_right = 1280.0
-offset_bottom = 720.0
+offset_right = 640.0
+offset_bottom = 360.0
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=354371820]
@@ -61,6 +61,7 @@ texture = ExtResource("2_7vrkn")
 modulate = Color(6.84, 6.84, 6.84, 1)
 offset_right = 1280.0
 offset_bottom = 720.0
+scale = Vector2(0.5, 0.5)
 focus_mode = 2
 theme_override_colors/default_color = Color(0.4609375, 0.25970104, 0.05041504, 1)
 theme_override_fonts/normal_font = ExtResource("4_nlkkf")
@@ -83,10 +84,11 @@ parameters/looping = true
 
 [node name="НАЧАТЬ" type="Button" parent="." unique_id=978894720]
 modulate = Color(6.840123, 6.840123, 6.840123, 1)
-offset_left = 567.0
-offset_top = 235.0
-offset_right = 699.0
-offset_bottom = 282.0
+offset_left = 285.0
+offset_top = 159.0
+offset_right = 417.0
+offset_bottom = 206.0
+scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(0.4627451, 0.25882354, 0.050980393, 1)
 theme_override_colors/font_focus_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
 theme_override_colors/font_pressed_color = Color(0.63671875, 0.3662476, 0.08705139, 1)
@@ -105,10 +107,11 @@ stream = ExtResource("5_glbon")
 
 [node name="НАСТРОЙКИ" type="Button" parent="." unique_id=521719144]
 modulate = Color(6.840123, 6.840123, 6.840123, 1)
-offset_left = 551.0
-offset_top = 291.0
-offset_right = 713.0
-offset_bottom = 338.0
+offset_left = 279.0
+offset_top = 215.0
+offset_right = 439.0
+offset_bottom = 262.0
+scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(0.4627451, 0.25882354, 0.050980393, 1)
 theme_override_colors/font_focus_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
 theme_override_colors/font_pressed_color = Color(0.63671875, 0.3662476, 0.08705139, 1)

@@ -15,31 +15,33 @@ var direction = Vector2(0, 0)
 var hp = 100
 func _ready() -> void:
 	WEAPON.show()
+	if player == null:
+		get_tree().quit()
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-	
-	if hp > 0 and global_position.y - player.global_position.y > 50 and is_on_floor() and global_position.distance_to(player.global_position) < 100:
-		velocity.y = JUMP_VELOCITY
+	if player != null:
+		if hp > 0 and global_position.y - player.global_position.y > 50 and is_on_floor() and global_position.distance_to(player.global_position) < 100:
+			velocity.y = JUMP_VELOCITY
 
-	direction = global_position.direction_to(player.global_position)
-	if hp > 0 and direction and (global_position.distance_to(player.global_position) < 300 and\
-	global_position.distance_to(player.global_position) > 150) and abs(velocity.x) < 300:
-		velocity.x += direction.x * SPEED * delta
-		if sign(velocity.x) != sign(global_position.direction_to(player.global_position).x):
-			velocity.x += velocity.x * -0.05
-	elif global_position.distance_to(player.global_position) < 50:
-		velocity.x -= direction.x * SPEED * delta
-	elif hp > 0:
-		velocity.x *= 0.9
-	if hp <= 0:
-		$Sprite2D.self_modulate = Color(1, 1, 1, 0)
-		$CollisionShape2D.disabled = true
-		WEAPON.hide()
-		velocity = Vector2(0, 0)
-		$CPUParticles2D.show()
-		$CPUParticles2D.emitting = true
+		direction = global_position.direction_to(player.global_position)
+		if hp > 0 and direction and (global_position.distance_to(player.global_position) < 300 and\
+		global_position.distance_to(player.global_position) > 150) and abs(velocity.x) < 300:
+			velocity.x += direction.x * SPEED * delta
+			if sign(velocity.x) != sign(global_position.direction_to(player.global_position).x):
+				velocity.x += velocity.x * -0.05
+		elif global_position.distance_to(player.global_position) < 50:
+			velocity.x -= direction.x * SPEED * delta
+		elif hp > 0:
+			velocity.x *= 0.9
+		if hp <= 0:
+			$Sprite2D.self_modulate = Color(1, 1, 1, 0)
+			$CollisionShape2D.disabled = true
+			WEAPON.hide()
+			velocity = Vector2(0, 0)
+			$CPUParticles2D.show()
+			$CPUParticles2D.emitting = true
 	move_and_slide()
 
 func _process(delta: float) -> void:
@@ -47,11 +49,11 @@ func _process(delta: float) -> void:
 		WEAPON.global_rotation = lerp_angle(WEAPON.global_rotation, (player.global_position - global_position).angle(), delta * 10)
 	else:
 		WEAPON.global_rotation = 0
-		
+	
 	if -1.5 <= WEAPON.global_rotation and WEAPON.global_rotation <= 1.5:
-		WEAPON.scale.y = -2
+		WEAPON.scale.y = -1
 	else:
-		WEAPON.scale.y = 2	
+		WEAPON.scale.y = 1
 	if can_shoot and hp > 0 and global_position.distance_to(player.global_position) < 400:
 		var new_shot = shot.instantiate()
 		new_shot.global_position = global_position
