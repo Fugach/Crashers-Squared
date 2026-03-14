@@ -13,22 +13,13 @@ const enemy = preload("res://enemy.tscn")
 
 var is_sliding : bool = false
 var is_slamming : bool = false
-var is_hands_used : bool = false
-var is_hand_grabbing : bool = false
-var hand_touch : Node2D = null
 
 @onready var steps: AudioStreamPlayer2D = $steps
 @onready var wall_slide_loop: AudioStreamPlayer2D = $wall_slide_loop
 @onready var wind: AudioStreamPlayer2D = $wind
-@onready var hand : CharacterBody2D = $/root/main/hand
-@onready var hand_collision : CollisionShape2D = $/root/main/hand/CollisionShape2D
-@onready var hand_joint : PinJoint2D = $/root/main/hand/PinJoint2D
 
 func _ready() -> void:
 	GlobalVars.player = self
-	hand.hide()
-	hand_collision.disabled = true
-	hand.add_collision_exception_with(self)
 
 func _physics_process(delta: float) -> void:
 	if is_on_wall_only() and (not is_on_floor()) and velocity.y > 0 and\
@@ -135,7 +126,6 @@ func push(pwr, _dir):
 	GlobalVars.damage(pwr / 100)
 
 func get_input(delta: float) -> void:
-	hands()
 	if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
 		direction = -1
 		if sign(velocity.x) != direction:
@@ -146,7 +136,7 @@ func get_input(delta: float) -> void:
 		if sign(velocity.x) != direction:
 			velocity.x += 15 * direction
 		velocity.x += (SPEED - abs(velocity.x)) * direction * delta * 10
-	if not steps.is_playing() and is_on_floor() and velocity.x != 0:
+	if not steps.is_playing() and is_on_floor() and abs(round(velocity.x)) > 10:
 			steps.play()
 	if Input.is_action_just_pressed("slam") and not is_on_floor() and not Input.is_action_just_pressed("jump"):
 		$AnimationPlayer.play("slam_start")
@@ -181,52 +171,6 @@ func get_input(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("respawn"):
 		respawn()
-
-func hands():
-	if Input.is_action_just_pressed("hands"):
-		is_hands_used = true
-		is_hand_grabbing = false
-		hand.show()
-		hand.global_position = global_position + Vector2(0, 5)
-	if is_hands_used and is_hand_grabbing == false:
-		hand.look_at(get_global_mouse_position())
-		hand.velocity = lerp((hand.global_position - get_global_mouse_position()) * -2, get_global_mouse_position(), get_global_mouse_position())
-	elif is_hand_grabbing:
-		hand.velocity = Vector2(0, 0)
-	if not Input.is_action_pressed("hands") and hand.is_visible() == true:
-		is_hands_used = false
-		is_hand_grabbing = false
-		hand_joint.node_b = ""
-		hand.look_at(global_position)
-		hand.velocity = lerp((hand.global_position - global_position) * -14, global_position, global_position)
-	if is_hands_used == false and hand.global_position.distance_to(global_position) < 20:
-		hand.hide()
-	
-	if is_hands_used:
-		hand_collision.disabled = false
-	else:
-		hand_collision.disabled = true
-	if is_hand_grabbing and is_hands_used and is_on_floor():
-		var boost_pwr = hand.global_position.direction_to(get_global_mouse_position()) * -1 * hand.global_position.distance_to(get_global_mouse_position())
-		if abs(boost_pwr) <= Vector2(100, 100):
-			velocity += boost_pwr
-			is_hand_grabbing = false
-	
-	
-	if ("RigidBody2D" in str(hand_touch)) and is_hands_used:
-		hand_joint.node_a = hand.get_path()
-		hand_joint.node_b = hand_touch.get_path()
-	if not is_hands_used or not Input.is_action_pressed("use"):
-		is_hand_grabbing = false
-		hand_joint.node_b = ""
-	
-	hand.move_and_slide()
-
-
-func _on_area_2d_body_entered(body: Node2D) -> void:
-	hand_touch = body
-func _on_area_2d_body_exited(body: Node2D) -> void:
-	hand_touch = null
 
 func respawn():
 	is_slamming = false

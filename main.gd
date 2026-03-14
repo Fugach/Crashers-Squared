@@ -19,9 +19,9 @@ func _process(delta: float) -> void:
 	$HUD.scale = $Player/Camera2D.scale
 	$HUD/HPBar.value = GlobalVars.player_hp
 	$HUD/HPBar/Label.text = str(GlobalVars.player_hp)
-	if last_papers_animation == "speed_up" and Input.is_action_just_pressed("lmb"):
-		$HUD/TABLE/papers_anim.play("RESET")
-		$Player.SPEED += 2000
+	if $HUD/TABLE/lmb_tip.self_modulate == Color("ffffffff") and Input.is_action_just_pressed("lmb"):
+		$HUD/TABLE/papers_anim.play_backwards("speed_up")
+		$Player.SPEED += 100
 	if last_papers_animation == "pc_at_home" and Input.is_action_just_pressed("lmb"):
 		$HUD/TABLE/other_anim.play("RESET")
 	if Input.is_action_just_pressed("rmb") and $table/tip.visible:
@@ -85,6 +85,7 @@ func _on_yes_mouse_exited() -> void:
 func _on_button_pressed() -> void:
 	if not $HUD/TABLE/papers_anim.is_playing() and not $HUD/TABLE/other_anim.is_playing():
 		$HUD/TABLE/papers_anim.play("print")
+		$HUD/TABLE/print_noise.play()
 		$HUD/TABLE/table/Button.disabled = true
 
 
@@ -92,6 +93,7 @@ func _on_button_pressed() -> void:
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	last_papers_animation = anim_name
 	if anim_name == "print":
+		$HUD/TABLE/paper_sfx.play()
 		$HUD/TABLE/papers_anim.play("speed_up")
 	
 
@@ -106,8 +108,10 @@ func _on_activation_range_body_exited(body: Node2D) -> void:
 
 func _on_micro_pc_at_home_pressed() -> void:
 	if $HUD/TABLE/pc_at_home.self_modulate == Color("ffffff00"):
+		$HUD/TABLE/paper_sfx.play()
 		$HUD/TABLE/other_anim.play("pc_at_home")
 	else:
+		$HUD/TABLE/paper_sfx.play()
 		$HUD/TABLE/other_anim.play_backwards("pc_at_home")
 
 
