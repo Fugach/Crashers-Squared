@@ -1,7 +1,8 @@
 extends TileMapLayer
-
 @onready var door = preload("res://door.tscn")
 @onready var enemy = preload("res://enemy.tscn")
+@onready var finish_zone: Area2D = $"../Finish"
+
 
 var room_anchor = Vector2(0, 0)
 var room_size = Vector2(0, 0)
@@ -18,6 +19,13 @@ var hall_pos1 = Vector2(0, 0)
 var hall_pos2 = Vector2(0, 0)
 func _ready() -> void:
 	# generating first room
+	
+	gen_dungeon(randi_range(3, 15))
+	#$AudioStreamPlayer2D.play()
+
+func gen_dungeon(rooms_count):
+	clear()
+	$bg.clear()
 	room_anchor = Vector2(3, 2)
 	room_size = Vector2(15, 8)
 	gen_direction = ["left", "right"].pick_random()
@@ -28,11 +36,6 @@ func _ready() -> void:
 		room_doors = "left"
 	doors_height = randi_range(-2, 0)
 	generate_room(room_anchor, room_size, room_doors, doors_height, false)
-	
-	gen_dungeon(randi_range(3, 15))
-	#$AudioStreamPlayer2D.play()
-
-func gen_dungeon(rooms_count):
 	for o in range(rooms_count):
 		old_room_size = room_size
 		old_room_doors_height = doors_height
@@ -81,8 +84,10 @@ func gen_dungeon(rooms_count):
 			generate_room(room_anchor, room_size, "both", doors_height, true)
 		else:
 			if gen_direction == "right":
+				finish_zone.global_position = (room_anchor - Vector2(3, 3) + room_size) * Vector2(16, 16)
 				generate_room(room_anchor, room_size, "left", doors_height, true)
 			elif gen_direction == "left":
+				finish_zone.global_position = (room_anchor + Vector2(4, room_size.y - 3)) * Vector2(16, 16)
 				generate_room(room_anchor, room_size, "right", doors_height, true)
 		#set_cell(hall_pos1, 1, Vector2(0, 4))
 		#set_cell(hall_pos2, 1, Vector2(0, 5))

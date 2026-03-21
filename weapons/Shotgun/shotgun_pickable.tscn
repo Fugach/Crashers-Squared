@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dhjphrjas8n7d"]
+
+[ext_resource type="Texture2D" uid="uid://ckpacdte3gvhm" path="res://textures/idk2.png" id="1_te55x"]
+
+[node name="ShotgunPickable" type="Node2D" unique_id=1303706505]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1035572009]
+texture = ExtResource("1_te55x")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 20, 7)

@@ -7,8 +7,8 @@ var availible_jumps : int = 3
 var direction : int = 1
 const box = preload("res://box.tscn")
 const nailbreaker = preload("res://nailbreaker.tscn")
-const RL = preload("res://rl_pickable.tscn")
 const enemy = preload("res://enemy.tscn")
+const RL = preload("uid://ckx7bvbme276a")
 
 var is_sliding : bool = false
 var is_slamming : bool = false
@@ -156,10 +156,13 @@ func get_input(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("item1"):
 		GlobalVars.current_item = GlobalVars.items.item1
+		print(GlobalVars.current_item)
 	elif Input.is_action_just_pressed("item2"):
 		GlobalVars.current_item = GlobalVars.items.item2
+		print(GlobalVars.current_item)
 	elif Input.is_action_just_pressed("item3"):
 		GlobalVars.current_item = GlobalVars.items.item3
+		print(GlobalVars.current_item)
 	
 	if Input.is_action_pressed("zoom_in"):
 		$Camera2D.zoom.x = min($Camera2D.zoom.x + 0.3 * delta, 1.0)

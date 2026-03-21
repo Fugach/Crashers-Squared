@@ -5,9 +5,7 @@
 [ext_resource type="Shader" uid="uid://difxyhauojrf4" path="res://crt.gdshader" id="2_getpj"]
 [ext_resource type="Texture2D" uid="uid://ckpacdte3gvhm" path="res://textures/idk2.png" id="2_w48qg"]
 [ext_resource type="AudioStream" uid="uid://dw3mvu3mvae08" path="res://sounds/step1.ogg" id="3_7mycd"]
-[ext_resource type="Script" uid="uid://dril8mbc5mtsp" path="res://RL.gd" id="3_lquwl"]
 [ext_resource type="AudioStream" uid="uid://bqktfabsbcg42" path="res://sounds/WindLoop.ogg" id="3_ycdy4"]
-[ext_resource type="Texture2D" uid="uid://dr0enle3tt5ku" path="res://textures/RL/RL.png" id="4_1bvp3"]
 [ext_resource type="AudioStream" uid="uid://dvnq8vpcug76f" path="res://sounds/step2.ogg" id="4_272bh"]
 [ext_resource type="FontFile" uid="uid://o5jco35hc1te" path="res://Blocky.ttf" id="5_1u8w0"]
 [ext_resource type="AudioStream" uid="uid://b7rod44b0q0dn" path="res://sounds/wall_slide_loop.mp3" id="5_5vw27"]
@@ -21,6 +19,7 @@
 [ext_resource type="AudioStream" uid="uid://cnkdtr18gm8lj" path="res://sounds/UI/choose.ogg" id="9_1u8w0"]
 [ext_resource type="Texture2D" uid="uid://dpk6qg6vxibjd" path="res://textures/tiles/test_tile.png" id="9_4c57u"]
 [ext_resource type="Texture2D" uid="uid://d0ssfxit4xgte" path="res://textures/HUD/hp_bar/hp_bar.png" id="9_cegan"]
+[ext_resource type="Texture2D" uid="uid://be1qw4qicaarf" path="res://textures/UI/table/papers/speed_up.png" id="9_h8e4i"]
 [ext_resource type="Texture2D" uid="uid://dwtl0kvue4k2t" path="res://textures/UI/table/printer_top.png" id="9_qsp4k"]
 [ext_resource type="Script" uid="uid://dvc3p8ct78t58" path="res://tile_map_layer.gd" id="10_efxa6"]
 [ext_resource type="AudioStream" uid="uid://bm560oxyglbri" path="res://sounds/done.ogg" id="11_efxa6"]
@@ -38,6 +37,7 @@
 [ext_resource type="Texture2D" uid="uid://dj576ntgm1cqk" path="res://textures/micro-table.png" id="25_0odxb"]
 [ext_resource type="AudioStream" uid="uid://cfoytnoxcfdjb" path="res://music/table1_muff.ogg" id="25_b1qrp"]
 [ext_resource type="Texture2D" uid="uid://bbdi21tlcwtsq" path="res://textures/UI/tips_mouse.png" id="26_lswn8"]
+[ext_resource type="Texture2D" uid="uid://b2tvfl8cqi60j" path="res://textures/babax.png" id="39_come4"]
 
 [sub_resource type="Animation" id="Animation_kq58d"]
 resource_name = "RESET"
@@ -642,6 +642,9 @@ texture = ExtResource("13_ycdy4")
 [sub_resource type="TileSet" id="TileSet_vivmo"]
 sources/0 = SubResource("TileSetAtlasSource_w48qg")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b1qrp"]
+size = Vector2(40, 40)
+
 [node name="main" type="Node2D" unique_id=1260506371]
 script = ExtResource("1_074og")
 
@@ -738,8 +741,7 @@ region_rect = Rect2(107, 3, 4, 4)
 [node name="speed_up" type="Sprite2D" parent="UI/HUD/TABLE" unique_id=1392836644]
 self_modulate = Color(1, 1, 1, 0)
 position = Vector2(320, 480)
-texture = ExtResource("8_xuqvo")
-region_enabled = true
+texture = ExtResource("9_h8e4i")
 region_rect = Rect2(0, 156, 128, 154)
 
 [node name="papers_anim" type="AnimationPlayer" parent="UI/HUD/TABLE" unique_id=2010335485]
@@ -923,27 +925,20 @@ position = Vector2(16.75, 24.25)
 shape = SubResource("RectangleShape2D_xuqvo")
 
 [node name="mus" type="AudioStreamPlayer2D" parent="table" unique_id=1495641469]
-position = Vector2(-162, -112)
+position = Vector2(17, 24)
 stream = ExtResource("17_ok6jj")
 autoplay = true
-max_distance = 450.0
+max_distance = 350.0
 parameters/looping = true
 
 [node name="mus_muff" type="AudioStreamPlayer2D" parent="table" unique_id=528368749]
+position = Vector2(17, 24)
 stream = ExtResource("25_b1qrp")
 volume_db = -80.0
 autoplay = true
 parameters/looping = true
 
-[node name="Label" type="Label" parent="table" unique_id=75057180]
-offset_left = -75.0
-offset_top = -12.0
-offset_right = 111.0
-offset_bottom = 11.0
-theme_override_fonts/font = ExtResource("5_1u8w0")
-text = "shift +- зумит камеру"
-
-[node name="Player" type="CharacterBody2D" parent="." unique_id=2101440871 groups=["player"]]
+[node name="Player" type="CharacterBody2D" parent="." unique_id=2101440871]
 process_mode = 1
 script = ExtResource("1_h2yge")
 
@@ -997,26 +992,6 @@ scale_amount_min = 2.0
 scale_amount_max = 2.0
 color = Color(1, 0.003921569, 0.05882353, 1)
 
-[node name="RL" type="Node2D" parent="." unique_id=1240772053]
-process_mode = 1
-script = ExtResource("3_lquwl")
-
-[node name="ShootTimer" type="Timer" parent="RL" unique_id=1832601710]
-one_shot = true
-
-[node name="RotationOffset" type="Node2D" parent="RL" unique_id=1611366106]
-
-[node name="RL_sprite" type="Sprite2D" parent="RL/RotationOffset" unique_id=2075665334]
-texture_filter = 1
-scale = Vector2(0.375, 0.375)
-texture = ExtResource("4_1bvp3")
-offset = Vector2(5, 0)
-region_enabled = true
-region_rect = Rect2(0, 0, 32, 13)
-
-[node name="shoot_pos" type="Marker2D" parent="RL/RotationOffset/RL_sprite" unique_id=143533018]
-position = Vector2(14.666667, -2.6666667)
-
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1062142319]
 texture_filter = 1
 tile_set = SubResource("TileSet_ycdy4")
@@ -1028,6 +1003,32 @@ stream = ExtResource("11_efxa6")
 [node name="bg" type="TileMapLayer" parent="TileMapLayer" unique_id=1696571617]
 z_index = -1
 tile_set = SubResource("TileSet_vivmo")
+
+[node name="Finish" type="Area2D" parent="." unique_id=314784669]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Finish" unique_id=961738373]
+shape = SubResource("RectangleShape2D_b1qrp")
+
+[node name="ColorRect" type="ColorRect" parent="Finish" unique_id=1010526553]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(1.6284043, 6.1466823, 6.1466823, 0.4745098)
+
+[node name="Sprite2D" type="Sprite2D" parent="Finish" unique_id=651691440]
+position = Vector2(-1.6940659e-21, -0.49999857)
+scale = Vector2(0.625, 0.609375)
+texture = ExtResource("39_come4")
+
+[node name="Label" type="Label" parent="Finish" unique_id=1170740891]
+offset_left = -19.999998
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 3.0
+scale = Vector2(0.67093223, 1.7255591)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "> EXIT <"
 
 [connection signal="pressed" from="UI/HUD/TABLE/table/Button" to="." method="_on_button_pressed"]
 [connection signal="animation_finished" from="UI/HUD/TABLE/papers_anim" to="." method="_on_animation_player_animation_finished"]
@@ -1043,4 +1044,4 @@ tile_set = SubResource("TileSet_vivmo")
 [connection signal="body_exited" from="table/ActivationRange" to="." method="_on_activation_range_body_exited"]
 [connection signal="animation_finished" from="Player/AnimationPlayer" to="Player" method="animation_finished"]
 [connection signal="timeout" from="Player/BoostTime" to="Player" method="_on_boost_time_timeout"]
-[connection signal="timeout" from="RL/ShootTimer" to="RL" method="_on_shoot_timer_timeout"]
+[connection signal="body_entered" from="Finish" to="." method="_on_finish_body_entered"]

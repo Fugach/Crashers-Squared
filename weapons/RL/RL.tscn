@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://brcehntt6lxn6"]
+
+[ext_resource type="Script" uid="uid://dril8mbc5mtsp" path="res://weapons/RL/RL.gd" id="1_h1u85"]
+[ext_resource type="Texture2D" uid="uid://dr0enle3tt5ku" path="res://textures/RL.png" id="2_2n7ik"]
+
+[node name="Rl" type="Node2D" unique_id=91490760]
+script = ExtResource("1_h1u85")
+
+[node name="ShootTimer" type="Timer" parent="." unique_id=1491685957]
+one_shot = true
+
+[node name="RotationOffset" type="Node2D" parent="." unique_id=1358886788]
+
+[node name="RL_sprite" type="Sprite2D" parent="RotationOffset" unique_id=598550270]
+texture_filter = 1
+scale = Vector2(0.375, 0.375)
+texture = ExtResource("2_2n7ik")
+offset = Vector2(5, 0)
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 13)
+
+[node name="shoot_pos" type="Marker2D" parent="RotationOffset/RL_sprite" unique_id=1649243314]
+position = Vector2(13.333333, -2.6666667)
+
+[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]

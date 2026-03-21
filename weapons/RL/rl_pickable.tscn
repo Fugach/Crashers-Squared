@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://ckx7bvbme276a"]
+
+[ext_resource type="Script" uid="uid://cb4cm5k26alfs" path="res://weapons/RL/rl_pickable.gd" id="1_k23kd"]
+[ext_resource type="Texture2D" uid="uid://dr0enle3tt5ku" path="res://textures/RL.png" id="3_vrrnw"]
+[ext_resource type="AudioStream" uid="uid://3yqper8j67ko" path="res://sounds/RL/RL_pick_up.ogg" id="62_gauwa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vrrnw"]
+size = Vector2(19, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k23kd"]
+size = Vector2(16.75, 7.5)
+
+[node name="rl_pickable" type="Node2D" unique_id=1029958826]
+script = ExtResource("1_k23kd")
+
+[node name="pickup" type="AudioStreamPlayer2D" parent="." unique_id=1081451804]
+stream = ExtResource("62_gauwa")
+
+[node name="RigidBody2D" type="RigidBody2D" parent="." unique_id=638409901]
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D" unique_id=124802974]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_vrrnw")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 13)
+
+[node name="Area2D" type="Area2D" parent="RigidBody2D" unique_id=237539786]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D/Area2D" unique_id=1583157327]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_vrrnw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D" unique_id=2090344219]
+shape = SubResource("RectangleShape2D_k23kd")
+
+[connection signal="finished" from="pickup" to="." method="_on_audio_stream_player_2d_finished"]
+[connection signal="body_entered" from="RigidBody2D/Area2D" to="." method="_on_area_2d_body_entered"]

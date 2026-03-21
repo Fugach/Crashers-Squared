@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var camera : Camera2D = $Player/Camera2D
 @onready var player : CharacterBody2D = $Player
+
 var last_papers_animation : String = ""
 var last_other_anim : String = ""
 var is_paused : bool = false
@@ -39,6 +40,9 @@ func _process(delta: float) -> void:
 		$table/mus.volume_db = 0.0
 	if Input.is_action_just_pressed("esc"):
 		pause()
+	if Input.is_action_just_pressed("shift"):
+		$TileMapLayer.gen_dungeon(1)
+		$Player.respawn()
 
 func death():
 	if GlobalVars.lifes != 0:
@@ -144,3 +148,17 @@ func pause():
 		$table/mus.volume_db = -80.0
 		$table/mus_muff.volume_db = 0.0
 		$UI/Pause.show()
+
+
+func _on_finish_body_entered(body: Node2D) -> void:
+	if body == player:
+		for x in range(42):
+			print("GOOD")
+		$TileMapLayer.clear()
+		$TileMapLayer/bg.clear()
+		$TileMapLayer.gen_dungeon(randi_range(4, 16))
+		player.respawn()
+
+func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("crash"):
+		get_tree().quit(0)
