@@ -19,8 +19,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	$UI/HUD.scale = $Player/Camera2D.scale
-	$UI/HUD/HPBar.value = GlobalVars.player_hp
 	$UI/HUD/HPBar/Label.text = str(GlobalVars.player_hp)
+	$UI/HUD/HPBar.value = float(GlobalVars.player_hp)
 	if $UI/HUD/TABLE/lmb_tip.self_modulate == Color("ffffffff") and Input.is_action_just_pressed("lmb"):
 		$UI/HUD/TABLE/papers_anim.play_backwards("speed_up")
 		$Player.SPEED += 100

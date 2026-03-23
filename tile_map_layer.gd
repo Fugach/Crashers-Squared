@@ -25,6 +25,10 @@ func _ready() -> void:
 
 func gen_dungeon(rooms_count):
 	clear()
+	for body in get_parent().get_children():
+		print(body)
+		if body is RigidBody2D or "enemy" in str(body):
+			body.queue_free()
 	$bg.clear()
 	room_anchor = Vector2(3, 2)
 	room_size = Vector2(15, 8)

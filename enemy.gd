@@ -1,22 +1,29 @@
 extends CharacterBody2D
 
-@onready var player = GlobalVars.player
 @onready var shotgun: Sprite2D = $shotgun
+@onready var shotgun_col: ShapeCast2D = $shotgun/ShapeCast2D
+
 @onready var rifle: Sprite2D = $rifle
+@onready var rifle_col: RayCast2D = $rifle/RayCast2D
+
 @onready var pistol: Sprite2D = $pistol
+@onready var pistol_col: ShapeCast2D = $pistol/ShapeCast2D
+
 @onready var shoot_timer : Timer = $shoot_timeout
-const shot = preload("res://shot.tscn")
+const projectile_shot = preload("res://shot.tscn")
+
 @onready var weapons = [shotgun, rifle, pistol]
 @onready var WEAPON = weapons.pick_random()
+@onready var player = GlobalVars.player
+
 const SPEED = 350.0
 const JUMP_VELOCITY = -400.0
 var can_shoot : bool = false
 var direction = Vector2(0, 0)
 var hp = 100
+
 func _ready() -> void:
 	WEAPON.show()
-	if player == null:
-		get_tree().quit()
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -54,29 +61,54 @@ func _process(delta: float) -> void:
 		WEAPON.scale.y = -1
 	else:
 		WEAPON.scale.y = 1
-	if can_shoot and hp > 0 and global_position.distance_to(player.global_position) < 400:
-		var new_shot = shot.instantiate()
-		new_shot.global_position = global_position
-		if ("rifle" in str(WEAPON)) and ("Player" in str($rifle/RayCast2D.get_collider()) or randi_range(0, 1)):
-			new_shot.global_rotation = WEAPON.global_rotation
-			WEAPON.global_rotation += randf_range(-0.0, -0.1) * sign(WEAPON.global_rotation)
-			new_shot.global_position += Vector2(30, 0).rotated(WEAPON.global_rotation)
-			get_parent().add_child(new_shot)
-		elif "shotgun" in str(WEAPON) and ("Player" in str($shotgun/ShapeCast2D.collision_result) or randi_range(0, 1)):
-			for x in range(5):
-				new_shot = shot.instantiate()
-				new_shot.global_position = global_position + Vector2(10, 0).rotated(WEAPON.global_rotation)
-				new_shot.global_rotation = WEAPON.global_rotation + randf_range(-0.2, 0.2)
-				get_parent().add_child(new_shot)
-			WEAPON.global_rotation += randf_range(-0.15, -0.25) * sign(WEAPON.global_rotation)
-		elif "pistol" in str(WEAPON) and ("Player" in str($pistol/ShapeCast2D.collision_result) or randi_range(0, 1)):
-			new_shot.global_rotation = WEAPON.global_rotation
-			WEAPON.global_rotation += randf_range(-0.15, -0.25) # * sign(WEAPON.global_rotation + 0.5)
-			new_shot.global_position += Vector2(10, 0).rotated(WEAPON.global_rotation)
-			get_parent().add_child(new_shot)
-		
+	if can_shoot and hp > 0 and GlobalVars.player_hp != 0 and global_position.distance_to(player.global_position) < 400:
+		match WEAPON:
+			rifle:
+				if ("Player" in str(rifle_col.get_collider()) or randi_range(0, 1)):
+					shoot(WEAPON)
+				print(rifle_col.get_collider())
+			shotgun:
+				if ("Player" in str(shotgun_col.collision_result)) or randi_range(0, 1):
+					shoot(WEAPON)
+				print(shotgun_col.collision_result)
+			pistol:
+				if ("Player" in str(pistol_col.collision_result)) or randi_range(0, 1):
+					shoot(WEAPON)
+				print(pistol_col.collision_result)
 		can_shoot = false
 		shoot_timer.start()
+
+func shoot(type):
+	print("POW! ", WEAPON)
+	match type:
+		pistol:
+			var new_shot = projectile_shot.instantiate()
+			new_shot.damage = 10
+			new_shot.global_position = global_position
+			new_shot.global_rotation = WEAPON.global_rotation
+			
+			WEAPON.global_rotation += randf_range(-0.15, -0.25)
+			new_shot.global_position += Vector2(10, 0).rotated(WEAPON.global_rotation)
+			get_parent().add_child(new_shot)
+		rifle:
+			var new_shot = projectile_shot.instantiate()
+			new_shot.damage = 20
+			new_shot.global_position = global_position
+			new_shot.global_rotation = WEAPON.global_rotation
+			
+			WEAPON.global_rotation += randf_range(-0.0, -0.1) * sign(WEAPON.global_rotation)
+			new_shot.global_position += Vector2(20, 0).rotated(WEAPON.global_rotation)
+			get_parent().add_child(new_shot)
+		shotgun:
+			for x in range(5):
+				var new_shot = projectile_shot.instantiate()
+				new_shot.damage = 3
+				new_shot.global_position = global_position
+				new_shot.global_rotation = WEAPON.global_rotation
+				
+				new_shot.global_position += Vector2(20, 0).rotated(WEAPON.global_rotation)
+				new_shot.global_rotation = WEAPON.global_rotation + randf_range(-0.2, 0.2)
+				get_parent().add_child(new_shot)
 
 func push(pwr, dir):
 	velocity += pwr * dir
@@ -84,4 +116,5 @@ func push(pwr, dir):
 func _on_shoot_timeout_timeout() -> void:
 	can_shoot = true
 func _on_cpu_particles_2d_finished() -> void:
+	GlobalVars.killed += 1
 	queue_free()

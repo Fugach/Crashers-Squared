@@ -70,6 +70,8 @@ func _process(_delta: float) -> void:
 		var new_enemy = enemy.instantiate()
 		new_enemy.global_position = get_global_mouse_position()
 		get_parent().add_child(new_enemy)
+		new_enemy.name = "enemy" + str(GlobalVars.killed)
+
 
 func jump():
 	if Input.is_action_just_pressed("jump") and is_on_floor():

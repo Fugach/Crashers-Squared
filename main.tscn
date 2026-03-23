@@ -10,6 +10,7 @@
 [ext_resource type="FontFile" uid="uid://o5jco35hc1te" path="res://Blocky.ttf" id="5_1u8w0"]
 [ext_resource type="AudioStream" uid="uid://b7rod44b0q0dn" path="res://sounds/wall_slide_loop.mp3" id="5_5vw27"]
 [ext_resource type="Texture2D" uid="uid://c4upfn1eecrgn" path="res://textures/UI/table/table.png" id="6_a6jrf"]
+[ext_resource type="Texture2D" uid="uid://od73v1s7mqk0" path="res://textures/HUD/hp_bar/hp_bar_white.png" id="6_come4"]
 [ext_resource type="Texture2D" uid="uid://4u0nd6rl015b" path="res://textures/2d_lights_and_shadows_neutral_point_light.webp" id="7_dg77c"]
 [ext_resource type="Texture2D" uid="uid://dhnhnqnk2f7ox" path="res://textures/console_background.png" id="7_ryguw"]
 [ext_resource type="Texture2D" uid="uid://de4xq5wbfud5r" path="res://textures/HUD/hp_bar/hp_bg.png" id="7_yaehf"]
@@ -687,6 +688,15 @@ text = "0"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="HPBar_smooth" type="TextureProgressBar" parent="UI/HUD/HPBar" unique_id=1160767728]
+layout_mode = 0
+offset_right = 111.0
+offset_bottom = 19.0
+texture_progress = ExtResource("6_come4")
+texture_progress_offset = Vector2(7, 4)
+tint_over = Color(0.9234164, 0.9234164, 0.9234164, 1)
+metadata/_edit_use_anchors_ = true
+
 [node name="TABLE" type="Node2D" parent="UI/HUD" unique_id=798900466]
 visible = false
 
@@ -997,7 +1007,7 @@ texture_filter = 1
 tile_set = SubResource("TileSet_ycdy4")
 script = ExtResource("10_efxa6")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="TileMapLayer" unique_id=1864025043]
+[node name="tada" type="AudioStreamPlayer2D" parent="TileMapLayer" unique_id=1864025043]
 stream = ExtResource("11_efxa6")
 
 [node name="bg" type="TileMapLayer" parent="TileMapLayer" unique_id=1696571617]
@@ -1030,6 +1040,7 @@ scale = Vector2(0.67093223, 1.7255591)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "> EXIT <"
 
+[connection signal="value_changed" from="UI/HUD/HPBar" to="." method="_on_hp_bar_value_changed"]
 [connection signal="pressed" from="UI/HUD/TABLE/table/Button" to="." method="_on_button_pressed"]
 [connection signal="animation_finished" from="UI/HUD/TABLE/papers_anim" to="." method="_on_animation_player_animation_finished"]
 [connection signal="pressed" from="UI/HUD/TABLE/micro_pc_at_home" to="." method="_on_micro_pc_at_home_pressed"]

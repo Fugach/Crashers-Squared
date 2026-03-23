@@ -170,10 +170,10 @@ _data = {
 }
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_4gyqm"]
-points = PackedVector2Array(0, 3, 0, -3, 150, -30, 150, 30)
+points = PackedVector2Array(10, 2, 10, -2, 150, -30, 150, 30)
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_qi2p4"]
-points = PackedVector2Array(0, -2.5, 0, 2.5, 250, 10, 250, -10)
+points = PackedVector2Array(17, -2.5, 17, 2.5, 250, 10, 250, -10)
 
 [node name="enemy" type="CharacterBody2D" unique_id=1596230914]
 script = ExtResource("1_4gyqm")
@@ -196,7 +196,7 @@ region_enabled = true
 region_rect = Rect2(20, 0, 24, 9)
 
 [node name="RayCast2D" type="RayCast2D" parent="rifle" unique_id=2052207289]
-position = Vector2(4.5, 0)
+position = Vector2(20.56, 0)
 target_position = Vector2(250, 0)
 hit_from_inside = true
 
@@ -237,6 +237,7 @@ target_position = Vector2(0, 0)
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=107405280]
 self_modulate = Color(1, 1, 0, 1)
+position = Vector2(21, 3)
 emitting = false
 amount = 13
 one_shot = true

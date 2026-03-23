@@ -11,7 +11,7 @@ var items = {
 }
 var player_velocity = Vector2(0, 0)
 var player_pos = Vector2(0, 0)
-
+var killed : int = 0
 func damage(amount : int):
 	if player_hp - amount >= 0:
 		player_hp -= amount
