@@ -8,7 +8,8 @@ var direction : int = 1
 const box = preload("res://box.tscn")
 const nailbreaker = preload("res://nailbreaker.tscn")
 const enemy = preload("res://enemy.tscn")
-const RL = preload("uid://ckx7bvbme276a")
+const RL = preload("res://weapons/RL/rl_pickable.tscn")
+const shotgun = preload("res://weapons/Shotgun/shotgun_pickable.tscn")
 
 var is_sliding : bool = false
 var is_slamming : bool = false
@@ -71,6 +72,11 @@ func _process(_delta: float) -> void:
 		new_enemy.global_position = get_global_mouse_position()
 		get_parent().add_child(new_enemy)
 		new_enemy.name = "enemy" + str(GlobalVars.killed)
+	elif Input.is_action_just_pressed("spawn_SHOTGUN"):
+		print("SHOTGUN")
+		var new_shotgun = shotgun.instantiate()
+		new_shotgun.global_position = get_global_mouse_position()
+		get_parent().add_child(new_shotgun)
 
 
 func jump():
@@ -158,13 +164,25 @@ func get_input(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("item1"):
 		GlobalVars.current_item = GlobalVars.items.item1
-		print(GlobalVars.current_item)
+		GlobalVars.current_slot = "item1"
+		if GlobalVars.current_item == "nothing":
+			$Camera2D.position_smoothing_enabled = true
+		else:
+			$Camera2D.position_smoothing_enabled = false
 	elif Input.is_action_just_pressed("item2"):
 		GlobalVars.current_item = GlobalVars.items.item2
-		print(GlobalVars.current_item)
+		GlobalVars.current_slot = "item2"
+		if GlobalVars.current_item == "nothing":
+			$Camera2D.position_smoothing_enabled = true
+		else:
+			$Camera2D.position_smoothing_enabled = false
 	elif Input.is_action_just_pressed("item3"):
 		GlobalVars.current_item = GlobalVars.items.item3
-		print(GlobalVars.current_item)
+		GlobalVars.current_slot = "item3"
+		if GlobalVars.current_item == "nothing":
+			$Camera2D.position_smoothing_enabled = true
+		else:
+			$Camera2D.position_smoothing_enabled = false
 	
 	if Input.is_action_pressed("zoom_in"):
 		$Camera2D.zoom.x = min($Camera2D.zoom.x + 0.3 * delta, 1.0)

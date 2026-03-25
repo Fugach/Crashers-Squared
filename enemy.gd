@@ -43,6 +43,7 @@ func _physics_process(delta: float) -> void:
 		elif hp > 0:
 			velocity.x *= 0.9
 		if hp <= 0:
+			GlobalVars.killed += 1
 			$Sprite2D.self_modulate = Color(1, 1, 1, 0)
 			$CollisionShape2D.disabled = true
 			WEAPON.hide()
@@ -116,5 +117,4 @@ func push(pwr, dir):
 func _on_shoot_timeout_timeout() -> void:
 	can_shoot = true
 func _on_cpu_particles_2d_finished() -> void:
-	GlobalVars.killed += 1
 	queue_free()

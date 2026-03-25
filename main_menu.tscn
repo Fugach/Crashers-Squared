@@ -64,6 +64,7 @@ offset_bottom = 720.0
 scale = Vector2(0.5, 0.5)
 focus_mode = 2
 theme_override_colors/default_color = Color(0.4609375, 0.25970104, 0.05041504, 1)
+theme_override_colors/selection_color = Color(0.18275288, 0.088113904, 0, 0.56078434)
 theme_override_fonts/normal_font = ExtResource("4_nlkkf")
 text = "О, ты пользуешься Windows? Это… не самый удачный выбор. Ну, знаешь, наверное, это подойдёт тем, кому не особо важно контролировать свою систему. А macOS? Бро, ты по сути заплатил за UNIX с налепленным сверху симпатичным интерфейсом. Но ладно, уверен, тебе точно нужны были эти закруглённые углы и анимации.
 
@@ -82,12 +83,12 @@ stream = ExtResource("4_jix8l")
 autoplay = true
 parameters/looping = true
 
-[node name="НАЧАТЬ" type="Button" parent="." unique_id=978894720]
+[node name="start" type="Button" parent="." unique_id=978894720]
 modulate = Color(6.840123, 6.840123, 6.840123, 1)
-offset_left = 285.0
-offset_top = 159.0
-offset_right = 417.0
-offset_bottom = 206.0
+offset_left = 287.0
+offset_top = 155.0
+offset_right = 419.0
+offset_bottom = 202.0
 scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(0.4627451, 0.25882354, 0.050980393, 1)
 theme_override_colors/font_focus_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
@@ -100,17 +101,16 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_qe12f")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_glbon")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_8qtwp")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jix8l")
-text = "НАЧАТЬ"
 
 [node name="choose" type="AudioStreamPlayer2D" parent="." unique_id=645220742]
 stream = ExtResource("5_glbon")
 
-[node name="НАСТРОЙКИ" type="Button" parent="." unique_id=521719144]
+[node name="settings" type="Button" parent="." unique_id=521719144]
 modulate = Color(6.840123, 6.840123, 6.840123, 1)
 offset_left = 279.0
-offset_top = 215.0
+offset_top = 189.0
 offset_right = 439.0
-offset_bottom = 262.0
+offset_bottom = 236.0
 scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(0.4627451, 0.25882354, 0.050980393, 1)
 theme_override_colors/font_focus_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
@@ -123,11 +123,10 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_qe12f")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_glbon")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_8qtwp")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jix8l")
-text = "НАСТРОЙКИ"
 
-[connection signal="mouse_entered" from="НАЧАТЬ" to="." method="_on_НАЧАТЬ_button_mouse_entered"]
-[connection signal="mouse_exited" from="НАЧАТЬ" to="." method="_on_НАЧАТЬ_button_mouse_exited"]
-[connection signal="pressed" from="НАЧАТЬ" to="." method="_on_НАЧАТЬ_button_pressed"]
-[connection signal="mouse_entered" from="НАСТРОЙКИ" to="." method="_on_настройки_mouse_entered"]
-[connection signal="mouse_exited" from="НАСТРОЙКИ" to="." method="_on_настройки_mouse_exited"]
-[connection signal="pressed" from="НАСТРОЙКИ" to="." method="_on_настройки_pressed"]
+[connection signal="mouse_entered" from="start" to="." method="_on_start_button_mouse_entered"]
+[connection signal="mouse_exited" from="start" to="." method="_on_start_button_mouse_exited"]
+[connection signal="pressed" from="start" to="." method="_on_start_button_pressed"]
+[connection signal="mouse_entered" from="settings" to="." method="_on_settings_mouse_entered"]
+[connection signal="mouse_exited" from="settings" to="." method="_on_settings_mouse_exited"]
+[connection signal="pressed" from="settings" to="." method="_on_settings_pressed"]

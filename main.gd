@@ -3,6 +3,7 @@ extends Node2D
 @onready var camera : Camera2D = $Player/Camera2D
 @onready var player : CharacterBody2D = $Player
 
+var master_bus = AudioServer.get_bus_index("Master")
 var last_papers_animation : String = ""
 var last_other_anim : String = ""
 var is_paused : bool = false
@@ -17,6 +18,16 @@ func _ready() -> void:
 	$UI/Restart.hide()
 	$SubViewport.use_hdr_2d = true
 
+func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("crash"):
+		get_tree().quit(0)
+	#if Input.is_action_just_pressed("vol_up"):
+		#AudioServer.set_bus_volume_linear(master_bus, AudioServer.get_bus_volume_linear(master_bus) + 10)
+		#print(AudioServer.get_bus_volume_linear(master_bus))
+	#elif Input.is_action_just_pressed("vol_down"):
+		#AudioServer.set_bus_volume_linear(master_bus, AudioServer.get_bus_volume_linear(master_bus) - 10)
+		#AudioServer.get_bus_volume_linear(master_bus)
+		#linear_to_db()
 func _process(delta: float) -> void:
 	$UI/HUD.scale = $Player/Camera2D.scale
 	$UI/HUD/HPBar/Label.text = str(GlobalVars.player_hp)
@@ -158,7 +169,3 @@ func _on_finish_body_entered(body: Node2D) -> void:
 		$TileMapLayer/bg.clear()
 		$TileMapLayer.gen_dungeon(randi_range(4, 16))
 		player.respawn()
-
-func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("crash"):
-		get_tree().quit(0)

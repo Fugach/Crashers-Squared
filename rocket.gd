@@ -45,7 +45,6 @@ func _on_cpu_particles_2d_finished():
 
 func _on_collision_body_entered(body: Node2D):
 	if ((body is CharacterBody2D) or (body is RigidBody2D)) and can_push:
-		print(body)
 		var explosion_pos = ExplosionPos.global_position
 		var dir = (body.global_position - explosion_pos).normalized()
 		var distance = explosion_pos.distance_to(body.global_position)

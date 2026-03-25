@@ -4,6 +4,7 @@ extends Node
 @onready var player_hp : int = 100
 @onready var lifes : int = 3
 var current_item = "nothing"
+var current_slot = ""
 var items = {
 	"item1": "nothing",
 	"item2": "nothing",

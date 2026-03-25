@@ -5,6 +5,7 @@ const ROCKET = preload("res://rocket.tscn")
 @onready var RotationOffset: Node2D = $RotationOffset
 @onready var ShootPos: Marker2D = $RotationOffset/RL_sprite/shoot_pos
 
+var my_slot : String = ""
 var time_between_shot: float = 0.5
 var can_shoot: bool = true
 var current_angle: float = 0.0
@@ -14,7 +15,7 @@ func _ready() -> void:
 	$ShootTimer.wait_time = time_between_shot
 
 func _process(delta: float) -> void:
-	if GlobalVars.current_item == "RL":
+	if GlobalVars.current_slot == my_slot:
 		visible = true
 		RL_logic(delta)
 	else:
@@ -34,7 +35,6 @@ func RL_logic(delta):
 	if Input.is_action_just_pressed("lmb") and can_shoot:
 		can_shoot = false
 		$ShootTimer.start()
-		print("START")
 		var new_rocket = ROCKET.instantiate()
 		new_rocket.global_position = ShootPos.global_position
 		new_rocket.global_rotation = ShootPos.global_rotation
@@ -42,4 +42,3 @@ func RL_logic(delta):
 
 func _on_shoot_timer_timeout() -> void:
 	can_shoot = true
-	print("END")
