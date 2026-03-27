@@ -10,10 +10,42 @@ func _ready() -> void:
 	text.text = ""
 	#text.default_color = Color(1.0, 0.635, 0.227, 1.0)
 	await wait(0.5)
-	text.text += "UNNAMED_OS_I_REALLY_DONT_KNOW(🄯)20XX UNNAMED COMPANY, Inc."
+	text.text += "(🄯)20XX UNNAMED COMPANY, Inc."
 	await wait(0.1)
 	text.text += "\n" + "\n" + "CPU: " + str(OS.get_processor_name())
+	text.text += "\n" + "GPU: " + str(RenderingServer.get_video_adapter_name()) + "\n"
 	await wait(0.5)
+	repeat("---", 45)
+	# SHOW VULKAN LOGO ASCII ART
+	if str(ProjectSettings.get_setting("rendering/renderer/rendering_method")) == "forward_plus":
+		text.text += "\n" +\
+		"                   .+++++++++++++++++++++++.                                              " + "\n" +\
+		"         .+++++++++++++++++++++++++++++++.                                         " + "\n" +\
+		"      ++++++++++-                                                .++++++                                      " + "\n" +\
+		"      ++++++++         +++                 +++.                    ====            -++                               " + "\n" +\
+		"         .++++++            .+++             .+++                               --  +++    +                               " + "\n" +\
+		"             +++++             +++.          +++   ++-          ++.        -++      +           +++          +++++++-      +++   +++++  " + "\n" +\
+		"                  +++               +++       ++++  ++-          ++.        -++      -+       +++          +++         .++.     ++++        +++ " + "\n" +\
+		"                        -+.            ++++   +++      ++-          ++.        -++      -+ + +++                      .+++++.    +++           +++ " + "\n" +\
+		"                                           ++++++         ++-         .++.         -++      -+ +   +++-        +++          ++.     +++           +++ " + "\n" +\
+		"                                           .+++++           +++      +++.         -++      -+ +      ++++    ++-         +++.    +++            +++ " + "\n" +\
+		"                                             ++++               +++++ ++.         -++      - ++         -+++  -+++++  +++    +++            +++ " + "\n"
+	repeat("---", 45)
+	await wait(0.2)
+	text.text += "\n" + "SYSTEM: " + str(OS.get_distribution_name()) + str(OS.get_version())
+	await wait(0.1)
+	text.text += "\n" + "PROCESS ID: " + str(OS.get_process_id())
+	await wait(0.1)
+	text.text += "\n" + "importing random, ez-crasher, genpiper-2, noob-noiser, uaudio, mus-bad-lib, and 13 other" + "\n"
+	await wait(0.1)
+	for x in range(10):
+		text.text += ">"
+		await wait(0.01)
+	text.text += "\ndone\n"
+	await wait(0.3)
+	for x in range(10):
+		text.text += "finishing up" + "\n"
+		await wait(0.01)
 	main_menu()
 
 func repeat(input, amount):
@@ -65,6 +97,10 @@ func load_config():
 	$settings_things/mus_volume.value = GlobalConfig.get_value("audio", "music_volume")
 	$settings_things/snd_volume.value = GlobalConfig.get_value("audio", "sound_volume")
 	$settings_things/atm_volume.value = GlobalConfig.get_value("audio", "atmosphere_volume")
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db($settings_things/global_volume.value) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("music"), linear_to_db($settings_things/mus_volume.value) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("sound"), linear_to_db($settings_things/snd_volume.value) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("atmosphere"), linear_to_db($settings_things/atm_volume.value) - 30)
 
 func _on_start_button_pressed() -> void:
 	GlobalVars.lifes = 3
