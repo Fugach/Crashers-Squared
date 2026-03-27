@@ -143,6 +143,7 @@ shape = SubResource("CircleShape2D_r2l15")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Babax" unique_id=831942429]
 stream = SubResource("AudioStreamRandomizer_xk1bh")
+bus = &"sound"
 
 [connection signal="finished" from="CPUParticles2D" to="." method="_on_cpu_particles_2d_finished"]
 [connection signal="timeout" from="DistanceTimeout" to="." method="_on_distance_timeout"]

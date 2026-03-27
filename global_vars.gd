@@ -1,4 +1,5 @@
 extends Node
+
 @onready var main : Node2D = null
 @onready var player : CharacterBody2D = null
 @onready var player_hp : int = 100

@@ -939,6 +939,7 @@ position = Vector2(17, 24)
 stream = ExtResource("17_ok6jj")
 autoplay = true
 max_distance = 350.0
+bus = &"music"
 parameters/looping = true
 
 [node name="mus_muff" type="AudioStreamPlayer2D" parent="table" unique_id=528368749]
@@ -946,6 +947,7 @@ position = Vector2(17, 24)
 stream = ExtResource("25_b1qrp")
 volume_db = -80.0
 autoplay = true
+bus = &"music"
 parameters/looping = true
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=2101440871]
@@ -963,13 +965,16 @@ region_rect = Rect2(16, 16, 8, 8)
 [node name="wall_slide_loop" type="AudioStreamPlayer2D" parent="Player" unique_id=7632907]
 stream = ExtResource("5_5vw27")
 autoplay = true
+bus = &"sound"
 
 [node name="wind" type="AudioStreamPlayer2D" parent="Player" unique_id=870212774]
 stream = ExtResource("3_ycdy4")
 autoplay = true
+bus = &"sound"
 
 [node name="steps" type="AudioStreamPlayer2D" parent="Player" unique_id=1928414028]
 stream = SubResource("AudioStreamRandomizer_5vw27")
+bus = &"sound"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Player" unique_id=1903460861]
 libraries/ = SubResource("AnimationLibrary_q6r6c")

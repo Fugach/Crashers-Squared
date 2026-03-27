@@ -30,6 +30,7 @@ shape = SubResource("RectangleShape2D_k23kd")
 
 [node name="pickup" type="AudioStreamPlayer2D" parent="." unique_id=1886604973]
 stream = ExtResource("62_gauwa")
+bus = &"sound"
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="finished" from="pickup" to="." method="_on_pickup_finished"]
