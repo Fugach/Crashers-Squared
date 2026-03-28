@@ -1,8 +1,36 @@
 extends Node2D
 
 @onready var text: RichTextLabel = $RichTextLabel
+@onready var CRT: ColorRect = $CanvasLayer/CRT
+@onready var CRT_mat: ShaderMaterial = CRT.material as ShaderMaterial
 
 func _ready() -> void:
+	
+	if str(RenderingServer.get_current_rendering_method()) == "gl_compatibility":
+		CRT_mat.shader = preload("res://shaders/crt_OpenGL.gdshader")
+		CRT_mat.set_shader_parameter("brightness", 0.8)
+		CRT_mat.set_shader_parameter("contrast", 1.095)
+		CRT_mat.set_shader_parameter("saturation", 1.0)
+		CRT_mat.set_shader_parameter("gamma", 1.6)
+		CRT_mat.set_shader_parameter("curvature", 0.079)
+		CRT_mat.set_shader_parameter("vignette", 0.4)
+		CRT_mat.set_shader_parameter("scanline_strength", 0.634)
+		CRT_mat.set_shader_parameter("chroma_offset_px", 3.0)
+		CRT_mat.set_shader_parameter("jitter_px", 0.4)
+		CRT_mat.set_shader_parameter("wobble_px", 0.0)
+		CRT_mat.set_shader_parameter("tape_noise", 0.0)
+		CRT_mat.set_shader_parameter("tape_lines", 0.0)
+		CRT_mat.set_shader_parameter("roll_speed", 0.3)
+		CRT_mat.set_shader_parameter("roll_strength", 0.22)
+		CRT_mat.set_shader_parameter("glow_strength", 1.5)
+		CRT_mat.set_shader_parameter("glow_threshold", 0.05)
+	elif str(RenderingServer.get_current_rendering_method()) == "forward_plus":
+		CRT_mat.shader =  preload("res://shaders/crt_Vulkan.gdshader")
+		CRT_mat.set_shader_parameter("resolution", Vector2(1280, 720))
+		CRT_mat.set_shader_parameter("warp_amount", 0.257)
+		CRT_mat.set_shader_parameter("noise_amount", 0.02)
+		CRT_mat.set_shader_parameter("vignette_amount", 1.0)
+	
 	load_config()
 	$settings_things.hide()
 	$start.hide()
@@ -17,7 +45,7 @@ func _ready() -> void:
 	await wait(0.5)
 	repeat("---", 45)
 	# SHOW VULKAN LOGO ASCII ART
-	if str(ProjectSettings.get_setting("rendering/renderer/rendering_method")) == "forward_plus":
+	if str(RenderingServer.get_current_rendering_method()) == "forward_plus":
 		text.text += "\n" +\
 		"                   .+++++++++++++++++++++++.                                              " + "\n" +\
 		"         .+++++++++++++++++++++++++++++++.                                         " + "\n" +\
@@ -30,8 +58,25 @@ func _ready() -> void:
 		"                                           ++++++         ++-         .++.         -++      -+ +   +++-        +++          ++.     +++           +++ " + "\n" +\
 		"                                           .+++++           +++      +++.         -++      -+ +      ++++    ++-         +++.    +++            +++ " + "\n" +\
 		"                                             ++++               +++++ ++.         -++      - ++         -+++  -+++++  +++    +++            +++ " + "\n"
+	elif str(RenderingServer.get_current_rendering_method()) == "gl_compatibility":
+		text.text += "\n" +\
+		"                                                    @@@@@@@@@@@@@@@@@@@" + "\n" +\
+		"                               @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + "\n" +\
+		"                      @@@++++@@@@                                                                               @@" + "\n" +\
+		"             @@+++++++@                                                                                                     @" + "\n" +\
+		"          @+++++++@@@@@@                                                                                                @@@@@@           @@" + "\n" +\
+		"       @+++++++@                   @                                                                                       @@@               @@@   @@" + "\n" +\
+		"    @+++++++@                         @     @@@@@        @@@@        @   @@@@       @@@                                @@" + "\n" +\
+		"    @+++++++@                         @     @              @  @            @     @@           @@   @@              @@@@@    @@" + "\n" +\
+		"    @+++++++@                         @     @              @  @@@@@@   @@           @@   @@@                     @@    @@" + "\n" +\
+		"    @@+++++++@                   @        @ @@@@    @                    @@           @@       @@@           @@   @    @@" + "\n" +\
+		"           @+++++++@@@@@@         @                       @@@@      @@           @@              @@@@@       @    @@@@@@@@" + "\n" +\
+		"              @@@+++++++               	     @" + "\n" +\
+		"                        @@@+++@@@@@                      @@@" + "\n" +\
+		"                                  @@@@@@@@@@@@@@@@@@++++@@@@@@@@@" + "\n" +\
+		"                                                    @@@@@@@@@@@@@@@@@@@@@" + "\n"
 	repeat("---", 45)
-	await wait(0.2)
+	await wait(0.3)
 	text.text += "\n" + "SYSTEM: " + str(OS.get_distribution_name()) + str(OS.get_version())
 	await wait(0.1)
 	text.text += "\n" + "PROCESS ID: " + str(OS.get_process_id())

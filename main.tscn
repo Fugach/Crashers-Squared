@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://yow5y37d3njq" path="res://main.gd" id="1_074og"]
 [ext_resource type="Script" uid="uid://do5lfpq2dysdi" path="res://player.gd" id="1_h2yge"]
-[ext_resource type="Shader" uid="uid://difxyhauojrf4" path="res://crt.gdshader" id="2_getpj"]
+[ext_resource type="Shader" uid="uid://difxyhauojrf4" path="res://shaders/crt_Vulkan.gdshader" id="2_getpj"]
 [ext_resource type="Texture2D" uid="uid://ckpacdte3gvhm" path="res://textures/idk2.png" id="2_w48qg"]
 [ext_resource type="AudioStream" uid="uid://dw3mvu3mvae08" path="res://sounds/step1.ogg" id="3_7mycd"]
 [ext_resource type="AudioStream" uid="uid://bqktfabsbcg42" path="res://sounds/WindLoop.ogg" id="3_ycdy4"]
@@ -34,7 +34,7 @@
 [ext_resource type="AudioStream" uid="uid://c73rscynw2ms" path="res://sounds/UI/table/paper3.ogg" id="16_facbu"]
 [ext_resource type="AudioStream" uid="uid://tfn46umjq7bd" path="res://sounds/UI/table/paper4.ogg" id="17_b1qrp"]
 [ext_resource type="AudioStream" uid="uid://b2bqsykegryfi" path="res://music/table1.ogg" id="17_ok6jj"]
-[ext_resource type="Shader" uid="uid://cp3y3o467dns" path="res://blur.gdshader" id="22_facbu"]
+[ext_resource type="Shader" uid="uid://cp3y3o467dns" path="res://shaders/blur.gdshader" id="22_facbu"]
 [ext_resource type="Texture2D" uid="uid://dj576ntgm1cqk" path="res://textures/micro-table.png" id="25_0odxb"]
 [ext_resource type="AudioStream" uid="uid://cfoytnoxcfdjb" path="res://music/table1_muff.ogg" id="25_b1qrp"]
 [ext_resource type="Texture2D" uid="uid://bbdi21tlcwtsq" path="res://textures/UI/tips_mouse.png" id="26_lswn8"]

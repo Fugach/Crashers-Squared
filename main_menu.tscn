@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://1x5v2og6yriv"]
 
-[ext_resource type="Shader" uid="uid://difxyhauojrf4" path="res://crt.gdshader" id="1_7vrkn"]
 [ext_resource type="Script" uid="uid://dkpuqxf15icc6" path="res://main_menu.gd" id="1_fu7sn"]
+[ext_resource type="Shader" uid="uid://dwmr157brsa3w" path="res://shaders/crt_OpenGL.gdshader" id="2_0o4t1"]
 [ext_resource type="Texture2D" uid="uid://dhnhnqnk2f7ox" path="res://textures/console_background.png" id="2_7vrkn"]
 [ext_resource type="AudioStream" uid="uid://biw2ws4aiws52" path="res://sounds/UI/crt_noise.ogg" id="4_jix8l"]
 [ext_resource type="FontFile" uid="uid://bt6dalva50viv" path="res://cyrillic.tres" id="4_nlkkf"]
@@ -13,21 +13,29 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_06t4h"]
 resource_local_to_scene = true
-shader = ExtResource("1_7vrkn")
-shader_parameter/resolution = Vector2(1280, 720)
-shader_parameter/scan_line_amount = 1.0
-shader_parameter/warp_amount = 0.2570000122075
-shader_parameter/noise_amount = 0.02000000095
-shader_parameter/interference_amount = 0.3
-shader_parameter/grille_amount = 0.0
-shader_parameter/grille_size = 0.0
-shader_parameter/vignette_amount = 1.0000000475
-shader_parameter/vignette_intensity = 0.4
-shader_parameter/aberation_amount = 0.5
-shader_parameter/roll_line_amount = 0.3
-shader_parameter/roll_speed = 1.0
-shader_parameter/scan_line_strength = -8.0
-shader_parameter/pixel_strength = -0.9999998575000002
+shader = ExtResource("2_0o4t1")
+shader_parameter/brightness = 0.800000038
+shader_parameter/contrast = 1.0950000520125
+shader_parameter/saturation = 1.0000000475
+shader_parameter/gamma = 1.60000006948023
+shader_parameter/curvature = 0.0790000037525
+shader_parameter/corner_soften = 0.06
+shader_parameter/vignette = 0.400000019
+shader_parameter/scanline_strength = 0.634000030115
+shader_parameter/scanline_density = 1.15
+shader_parameter/interlace_strength = 0.2
+shader_parameter/mask_strength = 0.22
+shader_parameter/mask_scale = 1.0
+shader_parameter/chroma_offset_px = 3.0000001425
+shader_parameter/luma_smear_px = 2.2
+shader_parameter/jitter_px = 0.400000019
+shader_parameter/wobble_px = 0.0
+shader_parameter/tape_noise = 0.0
+shader_parameter/tape_lines = 0.0
+shader_parameter/roll_speed = 0.30000001425
+shader_parameter/roll_strength = 0.22000001045
+shader_parameter/glow_strength = 1.50000007125
+shader_parameter/glow_threshold = 0.050000002375
 
 [sub_resource type="Environment" id="Environment_fu7sn"]
 background_mode = 3
@@ -55,7 +63,7 @@ script = ExtResource("1_fu7sn")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=873748318]
 layer = 0
 
-[node name="ColorRect2" type="ColorRect" parent="CanvasLayer" unique_id=1079933305]
+[node name="CRT" type="ColorRect" parent="CanvasLayer" unique_id=1079933305]
 material = SubResource("ShaderMaterial_06t4h")
 use_parent_material = true
 offset_right = 640.0
@@ -76,17 +84,22 @@ focus_mode = 2
 theme_override_colors/default_color = Color(0.4609375, 0.25970104, 0.05041504, 1)
 theme_override_colors/selection_color = Color(0.18275288, 0.088113904, 0, 0.56078434)
 theme_override_fonts/normal_font = ExtResource("4_nlkkf")
-text = "                   .+++++++++++++++++++++++.                                              
-         .+++++++++++++++++++++++++++++++.                                         
-      ++++++++++-                                                .++++++                                      
-      ++++++++         +++                 +++.                    ====            -++                               
-         .++++++            .+++             .+++                               --  +++    +                               
-             +++++             +++.          +++   ++-          ++.        -++      +           +++          +++++++-      +++   +++++  
-                  +++               +++       ++++  ++-          ++.        -++      -+       +++          +++         .++.     ++++        +++ 
-                        -+.            ++++   +++      ++-          ++.        -++      -+ + +++                      .+++++.    +++           +++ 
-                                           ++++++         ++-         .++.         -++      -+ +   +++-        +++          ++.     +++           +++ 
-                                           .+++++           +++      +++.         -++      -+ +      ++++    ++-         +++.    +++            +++ 
-                                             ++++               +++++ ++.         -++      - ++         -+++  -+++++  +++    +++            +++ "
+text = "                                                    @@@@@@@@@@@@@@@@@@@
+                               @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                      @@@++++@@@@                                                                               @@
+             @@+++++++@                                                                                                     @
+          @+++++++@@@@@@                                                                                                @@@@@@           @@
+       @+++++++@                   @                                                                                       @@@               @@@   @@
+    @+++++++@                         @     @@@@@        @@@@        @   @@@@       @@@                                @@
+    @+++++++@                         @     @              @  @            @     @@           @@   @@              @@@@@    @@
+    @+++++++@                         @     @              @  @@@@@@   @@           @@   @@@                     @@    @@
+    @@+++++++@                   @        @ @@@@    @                    @@           @@       @@@           @@   @    @@
+           @+++++++@@@@@@         @                       @@@@      @@           @@              @@@@@       @    @@@@@@@@
+              @@@+++++++               	     @
+                        @@@+++@@@@@                      @@@
+                                  @@@@@@@@@@@@@@@@@@++++@@@@@@@@@
+                                                    @@@@@@@@@@@@@@@@@@@@@"
+scroll_following = true
 selection_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1865442841]
