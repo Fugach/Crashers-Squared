@@ -2,6 +2,8 @@ extends Node2D
 
 @onready var camera : Camera2D = $Player/Camera2D
 @onready var player : CharacterBody2D = $Player
+@onready var CRT : ColorRect = $UI/Restart/CRT
+@onready var CRT_mat: ShaderMaterial = CRT.material as ShaderMaterial
 
 var master_bus = AudioServer.get_bus_index("Master")
 var last_papers_animation : String = ""
@@ -56,6 +58,30 @@ func _process(delta: float) -> void:
 		$Player.respawn()
 
 func death():
+	if str(RenderingServer.get_current_rendering_method()) == "gl_compatibility":
+		CRT_mat.shader = preload("res://shaders/crt_OpenGL.gdshader")
+		CRT_mat.set_shader_parameter("brightness", 0.8)
+		CRT_mat.set_shader_parameter("contrast", 1.095)
+		CRT_mat.set_shader_parameter("saturation", 1.0)
+		CRT_mat.set_shader_parameter("gamma", 1.6)
+		CRT_mat.set_shader_parameter("curvature", 0.079)
+		CRT_mat.set_shader_parameter("vignette", 0.4)
+		CRT_mat.set_shader_parameter("scanline_strength", 0.634)
+		CRT_mat.set_shader_parameter("chroma_offset_px", 3.0)
+		CRT_mat.set_shader_parameter("jitter_px", 0.4)
+		CRT_mat.set_shader_parameter("wobble_px", 0.0)
+		CRT_mat.set_shader_parameter("tape_noise", 0.0)
+		CRT_mat.set_shader_parameter("tape_lines", 0.0)
+		CRT_mat.set_shader_parameter("roll_speed", 0.3)
+		CRT_mat.set_shader_parameter("roll_strength", 0.22)
+		CRT_mat.set_shader_parameter("glow_strength", 1.5)
+		CRT_mat.set_shader_parameter("glow_threshold", 0.05)
+	elif str(RenderingServer.get_current_rendering_method()) == "forward_plus":
+		CRT_mat.shader =  preload("res://shaders/crt_Vulkan.gdshader")
+		CRT_mat.set_shader_parameter("resolution", Vector2(1280, 720))
+		CRT_mat.set_shader_parameter("warp_amount", 0.257)
+		CRT_mat.set_shader_parameter("noise_amount", 0.02)
+		CRT_mat.set_shader_parameter("vignette_amount", 1.0)
 	if GlobalVars.lifes != 0:
 		if GlobalVars.lifes > 1:
 			$"UI/Restart/ColorRect/tries".text = "У тебя есть ещё " + str(GlobalVars.lifes) + " шанса на победу"
@@ -67,7 +93,7 @@ func death():
 		$"UI/Restart/ColorRect/no".text = "ВЫХОД"
 		$"UI/Restart/ColorRect/yes".hide()
 	$UI/Restart/ColorRect.modulate.a = 0
-	$UI/Restart/CRT.modulate.a = 0
+	CRT.modulate.a = 0
 	$UI/Restart.show()
 	$UI/Restart/AnimationPlayer.play("appear")
 	$UI/Restart/noise.playing = true
