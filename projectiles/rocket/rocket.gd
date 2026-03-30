@@ -5,6 +5,7 @@ extends Sprite2D
 @onready var ExplosionPos: Sprite2D = $Babax
 @onready var Collision: Area2D = $Babax/BabaxCollision
 
+var damage_amount : int = 25
 var can_push : bool = true
 var speed = 100
 var direction = 1
@@ -17,7 +18,7 @@ func _ready():
 	ExplosionPos.visible = false
 func _physics_process(delta: float):
 	if not is_emitting:
-		if RayCast.is_colliding() and str(RayCast.get_collider()).count("Player") == 0:
+		if RayCast.is_colliding():
 			destroy()
 		else:
 			global_position += Vector2(1, 0).rotated(rotation) * SPEED * delta
@@ -45,6 +46,8 @@ func _on_cpu_particles_2d_finished():
 
 func _on_collision_body_entered(body: Node2D):
 	if ((body is CharacterBody2D) or (body is RigidBody2D)) and can_push:
+		if body.has_method("damage"):
+			body.damage(damage_amount)
 		var explosion_pos = ExplosionPos.global_position
 		var dir = (body.global_position - explosion_pos).normalized()
 		var distance = explosion_pos.distance_to(body.global_position)

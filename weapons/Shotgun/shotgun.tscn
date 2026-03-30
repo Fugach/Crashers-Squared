@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bsecy8dw60b21"]
+
+[ext_resource type="Script" uid="uid://bvfh321h5rhem" path="res://weapons/shotgun/shotgun.gd" id="1_hwrt3"]
+[ext_resource type="Texture2D" uid="uid://ckpacdte3gvhm" path="res://textures/idk2.png" id="2_okyed"]
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_rxqsx"]
+points = PackedVector2Array(14, 0, 14, -2, 150, -30, 160, 0, 150, 30)
+
+[node name="Shotgun" type="Node2D" unique_id=1263487316]
+script = ExtResource("1_hwrt3")
+
+[node name="cooldown" type="Timer" parent="." unique_id=414103338]
+one_shot = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1154187654]
+texture = ExtResource("2_okyed")
+offset = Vector2(5, 0)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 20, 7)
+
+[node name="spawnpoint" type="Marker2D" parent="Sprite2D" unique_id=1903406102]
+position = Vector2(13, -1)
+
+[node name="ShapeCast2D" type="ShapeCast2D" parent="Sprite2D" unique_id=1823537483]
+shape = SubResource("ConvexPolygonShape2D_rxqsx")
+target_position = Vector2(0, 0)
+
+[connection signal="timeout" from="cooldown" to="." method="_on_cooldown_timeout"]

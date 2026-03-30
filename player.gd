@@ -7,7 +7,7 @@ var availible_jumps : int = 3
 var direction : int = 1
 const box = preload("res://box.tscn")
 const nailbreaker = preload("res://nailbreaker.tscn")
-const enemy = preload("res://enemy.tscn")
+const Enemy = preload("res://enemy.tscn")
 const RL = preload("res://weapons/RL/rl_pickable.tscn")
 const shotgun = preload("res://weapons/Shotgun/shotgun_pickable.tscn")
 
@@ -68,10 +68,10 @@ func _process(_delta: float) -> void:
 		new_RL.global_position = get_global_mouse_position()
 		get_parent().add_child(new_RL)
 	elif Input.is_action_just_pressed("spawn_ENEMY"):
-		var new_enemy = enemy.instantiate()
+		var new_enemy = Enemy.instantiate()
 		new_enemy.global_position = get_global_mouse_position()
 		get_parent().add_child(new_enemy)
-		new_enemy.name = "enemy" + str(GlobalVars.killed)
+		new_enemy.name = "Enemy" + str(GlobalVars.killed)
 	elif Input.is_action_just_pressed("spawn_SHOTGUN"):
 		print("SHOTGUN")
 		var new_shotgun = shotgun.instantiate()
@@ -166,23 +166,23 @@ func get_input(delta: float) -> void:
 		GlobalVars.current_item = GlobalVars.items.item1
 		GlobalVars.current_slot = "item1"
 		if GlobalVars.current_item == "nothing":
-			$Camera2D.position_smoothing_enabled = true
+			$Camera2D.position_smoothing_speed = 2
 		else:
-			$Camera2D.position_smoothing_enabled = false
+			$Camera2D.position_smoothing_speed = 10
 	elif Input.is_action_just_pressed("item2"):
 		GlobalVars.current_item = GlobalVars.items.item2
 		GlobalVars.current_slot = "item2"
 		if GlobalVars.current_item == "nothing":
-			$Camera2D.position_smoothing_enabled = true
+			$Camera2D.position_smoothing_speed = 2
 		else:
-			$Camera2D.position_smoothing_enabled = false
+			$Camera2D.position_smoothing_speed = 10
 	elif Input.is_action_just_pressed("item3"):
 		GlobalVars.current_item = GlobalVars.items.item3
 		GlobalVars.current_slot = "item3"
 		if GlobalVars.current_item == "nothing":
-			$Camera2D.position_smoothing_enabled = true
+			$Camera2D.position_smoothing_speed = 2
 		else:
-			$Camera2D.position_smoothing_enabled = false
+			$Camera2D.position_smoothing_speed = 10
 	
 	if Input.is_action_pressed("zoom_in"):
 		$Camera2D.zoom.x = min($Camera2D.zoom.x + 0.3 * delta, 1.0)

@@ -11,6 +11,7 @@ var last_other_anim : String = ""
 var is_paused : bool = false
 
 func _ready() -> void:
+	load_config()
 	GlobalVars.player_hp = 100
 	GlobalVars.main = self
 	$Player.respawn()
@@ -19,6 +20,12 @@ func _ready() -> void:
 	$UI/HUD/TABLE.hide()
 	$UI/Restart.hide()
 	$SubViewport.use_hdr_2d = true
+
+func load_config():
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(GlobalConfig.get_value("audio", "global_volume")) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("music"), linear_to_db(GlobalConfig.get_value("audio", "music_volume")) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("sound"), linear_to_db(GlobalConfig.get_value("audio", "sound_volume")) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("atmosphere"), linear_to_db(GlobalConfig.get_value("audio", "atmosphere_volume")) - 30)
 
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("crash"):

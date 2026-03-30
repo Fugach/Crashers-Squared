@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://csr8w1qcnqlbd"]
+
+[ext_resource type="Script" uid="uid://c4lx4k1v2surv" path="res://projectiles/bullet/bullet.gd" id="1_awion"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hwob3"]
+radius = 0.0
+
+[node name="Node2D" type="Node2D" unique_id=1568785125]
+script = ExtResource("1_awion")
+
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=631787966]
+target_position = Vector2(10, 0)
+hit_from_inside = true
+
+[node name="Line2D" type="Line2D" parent="." unique_id=1527437106]
+z_index = -1
+points = PackedVector2Array(0, 0, 10, 0)
+width = 0.5
+default_color = Color(1, 0.6666667, 0, 1)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=590256942]
+position = Vector2(10, 0)
+emitting = false
+one_shot = true
+explosiveness = 1.0
+direction = Vector2(-1, 0)
+spread = 30.0
+initial_velocity_min = 50.0
+initial_velocity_max = 150.0
+
+[node name="Area2D" type="Area2D" parent="CPUParticles2D" unique_id=13938152]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CPUParticles2D/Area2D" unique_id=641225108]
+shape = SubResource("CircleShape2D_hwob3")
+
+[connection signal="finished" from="CPUParticles2D" to="." method="_on_cpu_particles_2d_finished"]

@@ -134,18 +134,15 @@ func settings():
 	repeat(" ", 10)
 	text.text += "Громкость эффектов\n"
 
-func _process(delta: float) -> void:
-	pass
-
 func load_config():
 	$settings_things/global_volume.value = GlobalConfig.get_value("audio", "global_volume")
 	$settings_things/mus_volume.value = GlobalConfig.get_value("audio", "music_volume")
 	$settings_things/snd_volume.value = GlobalConfig.get_value("audio", "sound_volume")
 	$settings_things/atm_volume.value = GlobalConfig.get_value("audio", "atmosphere_volume")
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db($settings_things/global_volume.value) - 30)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("music"), linear_to_db($settings_things/mus_volume.value) - 30)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("sound"), linear_to_db($settings_things/snd_volume.value) - 30)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("atmosphere"), linear_to_db($settings_things/atm_volume.value) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(GlobalConfig.get_value("audio", "global_volume")) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("music"), linear_to_db(GlobalConfig.get_value("audio", "music_volume")) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("sound"), linear_to_db(GlobalConfig.get_value("audio", "sound_volume")) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("atmosphere"), linear_to_db(GlobalConfig.get_value("audio", "atmosphere_volume")) - 30)
 
 func _on_start_button_pressed() -> void:
 	GlobalVars.lifes = 3

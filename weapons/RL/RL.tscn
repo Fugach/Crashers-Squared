@@ -1,25 +1,32 @@
 [gd_scene format=3 uid="uid://brcehntt6lxn6"]
 
-[ext_resource type="Script" uid="uid://dril8mbc5mtsp" path="res://weapons/RL/RL.gd" id="1_h1u85"]
-[ext_resource type="Texture2D" uid="uid://dr0enle3tt5ku" path="res://textures/RL.png" id="2_2n7ik"]
+[ext_resource type="Script" uid="uid://dril8mbc5mtsp" path="res://weapons/rl/rl.gd" id="1_bl5bl"]
+[ext_resource type="Texture2D" uid="uid://dr0enle3tt5ku" path="res://textures/RL.png" id="2_yhm7n"]
 
-[node name="Rl" type="Node2D" unique_id=91490760]
-script = ExtResource("1_h1u85")
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_jd356"]
+points = PackedVector2Array(150, -20, 150, 20, 7, 0, 7, -2)
 
-[node name="ShootTimer" type="Timer" parent="." unique_id=1491685957]
+[node name="RL" type="Node2D" unique_id=234800380]
+script = ExtResource("1_bl5bl")
+
+[node name="cooldown" type="Timer" parent="." unique_id=1693399810]
+wait_time = 0.5
 one_shot = true
 
-[node name="RotationOffset" type="Node2D" parent="." unique_id=1358886788]
-
-[node name="RL_sprite" type="Sprite2D" parent="RotationOffset" unique_id=598550270]
+[node name="RL_sprite" type="Sprite2D" parent="." unique_id=1986036035]
 texture_filter = 1
 scale = Vector2(0.375, 0.375)
-texture = ExtResource("2_2n7ik")
+texture = ExtResource("2_yhm7n")
 offset = Vector2(5, 0)
 region_enabled = true
 region_rect = Rect2(0, 0, 32, 13)
 
-[node name="shoot_pos" type="Marker2D" parent="RotationOffset/RL_sprite" unique_id=1649243314]
+[node name="shoot_pos" type="Marker2D" parent="RL_sprite" unique_id=427160559]
 position = Vector2(13.333333, -2.6666667)
 
-[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
+[node name="ShapeCast2D" type="ShapeCast2D" parent="RL_sprite" unique_id=390757669]
+scale = Vector2(2.6666667, 2.6666667)
+shape = SubResource("ConvexPolygonShape2D_jd356")
+target_position = Vector2(0, 0)
+
+[connection signal="timeout" from="cooldown" to="." method="_on_cooldown_timeout"]
