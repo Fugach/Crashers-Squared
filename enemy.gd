@@ -22,7 +22,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	if player != null and hp > 0:
-		if WEAPON.is_player_nearby and WEAPON.can_shoot:
+		if WEAPON.is_player_nearby and WEAPON.can_shoot and GlobalVars.player_hp > 0:
 			WEAPON.shoot()
 		if global_position.y - player.global_position.y > 50 and is_on_floor() and global_position.distance_to(player.global_position) < 100:
 			velocity.y = JUMP_VELOCITY

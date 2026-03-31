@@ -4,6 +4,21 @@ extends Node2D
 @onready var player : CharacterBody2D = $Player
 @onready var CRT : ColorRect = $UI/Restart/CRT
 @onready var CRT_mat: ShaderMaterial = CRT.material as ShaderMaterial
+@onready var RestartUI : CanvasLayer = $UI/Restart
+@onready var PauseUI : CanvasLayer = $UI/Pause
+@onready var HUD : CanvasLayer = $UI/HUD
+@onready var HPBar : TextureProgressBar = $UI/HUD/HPBar
+@onready var HPLabel : Label = $UI/HUD/HPBar/HPLabel
+
+@onready var HUDTable : Node2D = $UI/HUD/TABLE
+@onready var TablePaperAnim : AnimationPlayer = $UI/HUD/TABLE/papers_anim
+@onready var TableOtherAnim : AnimationPlayer = $UI/HUD/TABLE/other_anim
+
+@onready var Vol_progress : TextureProgressBar = $UI/HUD/QuickVolume/progress
+@onready var Vol_percent : ProgressBar = $UI/HUD/QuickVolume/percent
+@onready var Vol_db : Label = $UI/HUD/QuickVolume/db
+@onready var Vol_timer : Timer = $UI/HUD/QuickVolume/display_timer
+@onready var Vol_anim : AnimationPlayer = $UI/HUD/QuickVolume/anim
 
 var master_bus = AudioServer.get_bus_index("Master")
 var last_papers_animation : String = ""
@@ -12,57 +27,72 @@ var is_paused : bool = false
 
 func _ready() -> void:
 	load_config()
-	GlobalVars.player_hp = 100
 	GlobalVars.main = self
-	$Player.respawn()
-	$UI/HUD/TABLE/papers_anim.play("RESET")
-	$UI/HUD/TABLE/other_anim.play("RESET")
-	$UI/HUD/TABLE.hide()
-	$UI/Restart.hide()
+	GlobalVars.player.respawn()
+	TablePaperAnim.play("RESET")
+	TableOtherAnim.play("RESET")
+	HUDTable.hide()
+	RestartUI.hide()
 	$SubViewport.use_hdr_2d = true
+	$UI/HUD/QuickVolume/AnimatedSprite2D.play("default")
+	Vol_percent.value = round((AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) + 25) / 50 * 100)
+	if AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) > 0:
+		Vol_db.text = "|    +" + str(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))) + " дб"
+	elif AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) < 0:
+		Vol_db.text = "|    -" + str(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))) + " дб"
+	else:
+		Vol_db.text = "0 db"
+	Vol_progress.value = Vol_percent.value
+	
 
 func load_config():
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(GlobalConfig.get_value("audio", "global_volume")) - 30)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("music"), linear_to_db(GlobalConfig.get_value("audio", "music_volume")) - 30)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("sound"), linear_to_db(GlobalConfig.get_value("audio", "sound_volume")) - 30)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("atmosphere"), linear_to_db(GlobalConfig.get_value("audio", "atmosphere_volume")) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), GlobalConfig.get_value("audio", "Master_volume_db"))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), GlobalConfig.get_value("audio", "Music_volume_db"))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Sound"), GlobalConfig.get_value("audio", "Sound_volume_db"))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Atmosphere"), GlobalConfig.get_value("audio", "Atmosphere_volume_db"))
 
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("crash"):
 		get_tree().quit(0)
-	#if Input.is_action_just_pressed("vol_up"):
-		#AudioServer.set_bus_volume_linear(master_bus, AudioServer.get_bus_volume_linear(master_bus) + 10)
-		#print(AudioServer.get_bus_volume_linear(master_bus))
-	#elif Input.is_action_just_pressed("vol_down"):
-		#AudioServer.set_bus_volume_linear(master_bus, AudioServer.get_bus_volume_linear(master_bus) - 10)
-		#AudioServer.get_bus_volume_linear(master_bus)
-		#linear_to_db()
+	if Input.is_action_just_pressed("vol_up"):
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), min(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) + 1, 25))
+		
+		if $UI/HUD/QuickVolume.modulate == Color("ffffff00"):
+			Vol_anim.play("show")
+		update_volume()
+	elif Input.is_action_just_pressed("vol_down"):
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), max(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) - 1, -25))
+		
+		if $UI/HUD/QuickVolume.modulate == Color("ffffff00"):
+			Vol_anim.play("show")
+		update_volume()
+
 func _process(delta: float) -> void:
-	$UI/HUD.scale = $Player/Camera2D.scale
-	$UI/HUD/HPBar/Label.text = str(GlobalVars.player_hp)
-	$UI/HUD/HPBar.value = float(GlobalVars.player_hp)
+	HUD.scale = $Player/Camera2D.scale
+	HPLabel.text = str(GlobalVars.player_hp)
+	HPBar.value = float(GlobalVars.player_hp)
 	if $UI/HUD/TABLE/lmb_tip.self_modulate == Color("ffffffff") and Input.is_action_just_pressed("lmb"):
-		$UI/HUD/TABLE/papers_anim.play_backwards("speed_up")
-		$Player.SPEED += 100
+		TablePaperAnim.play_backwards("speed_up")
+		GlobalVars.player.SPEED += 100
 	if last_papers_animation == "pc_at_home" and Input.is_action_just_pressed("lmb"):
-		$UI/HUD/TABLE/other_anim.play("RESET")
+		TableOtherAnim.play("RESET")
 	if Input.is_action_just_pressed("rmb") and $table/tip.visible:
-		$UI/HUD/TABLE.show()
+		HUDTable.show()
 		if not is_paused:
 			$table/mus.volume_db = 5.0
-	if Input.is_action_just_pressed("lmb") and $UI/HUD/TABLE/papers_anim.current_animation == "print" and\
+	if Input.is_action_just_pressed("lmb") and TablePaperAnim.current_animation == "print" and\
 	not $UI/HUD/TABLE/micro_pc_at_home.is_hovered():
-		$UI/HUD/TABLE/papers_anim.play("speed_up")
+		TablePaperAnim.play("speed_up")
 	if ($table/tip.visible == false)\
-	and $UI/HUD/TABLE.visible:
-		$UI/HUD/TABLE/other_anim.play("RESET")
-		$UI/HUD/TABLE.hide()
+	and HUDTable.visible:
+		TableOtherAnim.play("RESET")
+		HUDTable.hide()
 		$table/mus.volume_db = 0.0
 	if Input.is_action_just_pressed("esc"):
 		pause()
 	if Input.is_action_just_pressed("shift"):
 		$TileMapLayer.gen_dungeon(1)
-		$Player.respawn()
+		GlobalVars.player.respawn()
 
 func death():
 	if str(RenderingServer.get_current_rendering_method()) == "gl_compatibility":
@@ -106,7 +136,6 @@ func death():
 	$UI/Restart/noise.playing = true
 
 func _on_no_pressed() -> void:
-	await get_tree().create_timer(0.3).timeout 
 	get_tree().change_scene_to_file("res://main_menu.tscn")
 func _on_no_mouse_entered() -> void:
 	$UI/Restart/choose.play()
@@ -123,12 +152,12 @@ func _on_no_mouse_exited() -> void:
 
 func _on_yes_pressed() -> void:
 	player.respawn()
-	$UI/HUD/TABLE/papers_anim.play("RESET")
-	$UI/HUD/TABLE.hide()
+	TablePaperAnim.play("RESET")
+	HUDTable.hide()
 	GlobalVars.lifes -= 1
 	$UI/Restart/ColorRect.modulate.a = 0
-	$UI/Restart/CRT.modulate.a = 0
-	$UI/Restart.hide()
+	CRT.modulate.a = 0
+	RestartUI.hide()
 	$UI/Restart/AnimationPlayer.stop()
 	$UI/Restart/noise.playing = false
 func _on_yes_mouse_entered() -> void:
@@ -137,24 +166,19 @@ func _on_yes_mouse_entered() -> void:
 func _on_yes_mouse_exited() -> void:
 	$"UI/Restart/ColorRect/yes".text = "ДА"
 
-
 func _on_button_pressed() -> void:
-	if not $UI/HUD/TABLE/papers_anim.is_playing() and not $UI/HUD/TABLE/other_anim.is_playing():
-		$UI/HUD/TABLE/papers_anim.play("print")
+	if not TablePaperAnim.is_playing() and not TableOtherAnim.is_playing():
+		TablePaperAnim.play("print")
 		$UI/HUD/TABLE/print_noise.play()
 		$UI/HUD/TABLE/table/Button.disabled = true
-
-
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	last_papers_animation = anim_name
 	if anim_name == "print":
 		$UI/HUD/TABLE/paper_sfx.play()
 		if $UI/HUD/TABLE/pc_at_home.self_modulate.a == 1.0:
-			$UI/HUD/TABLE/other_anim.play_backwards("pc_at_home")
-		$UI/HUD/TABLE/papers_anim.play("speed_up")
-	
-
+			TableOtherAnim.play_backwards("pc_at_home")
+		TablePaperAnim.play("speed_up")
 
 func _on_activation_range_body_entered(body: Node2D) -> void:
 	if "Player" in str(body):
@@ -167,38 +191,55 @@ func _on_activation_range_body_exited(body: Node2D) -> void:
 func _on_micro_pc_at_home_pressed() -> void:
 	if $UI/HUD/TABLE/pc_at_home.self_modulate == Color("ffffff00"):
 		$UI/HUD/TABLE/paper_sfx.play()
-		$UI/HUD/TABLE/other_anim.play("pc_at_home")
+		TableOtherAnim.play("pc_at_home")
 	else:
 		$UI/HUD/TABLE/paper_sfx.play()
-		$UI/HUD/TABLE/other_anim.play_backwards("pc_at_home")
+		TableOtherAnim.play_backwards("pc_at_home")
 
 
 func _on_other_anim_animation_finished(anim_name: StringName) -> void:
 	last_other_anim = anim_name
 func _notification(what: int):
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
-		$UI/Pause.show()
+		PauseUI.show()
 	elif what == NOTIFICATION_APPLICATION_FOCUS_IN:
-		$UI/Pause.hide()
+		PauseUI.hide()
 
 func pause():
 	if is_paused:
 		is_paused = false
 		$table/mus.volume_db = 0
 		$table/mus_muff.volume_db = -80.0
-		$UI/Pause.hide()
+		PauseUI.hide()
 	elif not is_paused:
 		is_paused = true
 		$table/mus.volume_db = -80.0
 		$table/mus_muff.volume_db = 0.0
-		$UI/Pause.show()
+		PauseUI.show()
 
 
 func _on_finish_body_entered(body: Node2D) -> void:
 	if body == player:
-		for x in range(42):
-			print("GOOD")
 		$TileMapLayer.clear()
 		$TileMapLayer/bg.clear()
 		$TileMapLayer.gen_dungeon(randi_range(4, 16))
 		player.respawn()
+
+func update_volume():
+		Vol_timer.start()
+		Vol_percent.value = round((AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) + 25) / 50 * 100)
+		if AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) > 0:
+			Vol_db.text = "|    +" + str(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))) + " дб"
+		elif AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) < 0:
+			Vol_db.text = "|    " + str(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))) + " дб"
+		else:
+			Vol_db.text = "|         0.0 дб"
+		Vol_progress.value = Vol_percent.value
+		
+		GlobalConfig.save_audio(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")),\
+		AudioServer.get_bus_volume_db(AudioServer.get_bus_index("music")),\
+		AudioServer.get_bus_volume_db(AudioServer.get_bus_index("sound")),\
+		AudioServer.get_bus_volume_db(AudioServer.get_bus_index("atmosphere")))
+
+func _on_display_timer_timeout() -> void:
+	Vol_anim.play("hide")

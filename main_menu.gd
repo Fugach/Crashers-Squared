@@ -4,6 +4,12 @@ extends Node2D
 @onready var CRT: ColorRect = $CanvasLayer/CRT
 @onready var CRT_mat: ShaderMaterial = CRT.material as ShaderMaterial
 
+@onready var mus_volume: HSlider = $settings_things/mus_volume
+@onready var snd_volume: HSlider = $settings_things/snd_volume
+@onready var atm_volume: HSlider = $settings_things/atm_volume
+
+
+
 func _ready() -> void:
 	
 	if str(RenderingServer.get_current_rendering_method()) == "gl_compatibility":
@@ -135,14 +141,14 @@ func settings():
 	text.text += "Громкость эффектов\n"
 
 func load_config():
-	$settings_things/global_volume.value = GlobalConfig.get_value("audio", "global_volume")
-	$settings_things/mus_volume.value = GlobalConfig.get_value("audio", "music_volume")
-	$settings_things/snd_volume.value = GlobalConfig.get_value("audio", "sound_volume")
-	$settings_things/atm_volume.value = GlobalConfig.get_value("audio", "atmosphere_volume")
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(GlobalConfig.get_value("audio", "global_volume")) - 30)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("music"), linear_to_db(GlobalConfig.get_value("audio", "music_volume")) - 30)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("sound"), linear_to_db(GlobalConfig.get_value("audio", "sound_volume")) - 30)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("atmosphere"), linear_to_db(GlobalConfig.get_value("audio", "atmosphere_volume")) - 30)
+	$settings_things/global_volume.value = GlobalConfig.get_value("audio", "global_volume_db")
+	$settings_things/mus_volume.value = GlobalConfig.get_value("audio", "music_volume_db")
+	$settings_things/snd_volume.value = GlobalConfig.get_value("audio", "sound_volume_db")
+	$settings_things/atm_volume.value = GlobalConfig.get_value("audio", "atmosphere_volume_db")
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(GlobalConfig.get_value("audio", "global_volume_db")) - 25)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("music"), linear_to_db(GlobalConfig.get_value("audio", "music_volume_db")) - 25)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("sound"), linear_to_db(GlobalConfig.get_value("audio", "sound_volume_db")) - 25)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("atmosphere"), linear_to_db(GlobalConfig.get_value("audio", "atmosphere_volume_db")) - 25)
 
 func _on_start_button_pressed() -> void:
 	GlobalVars.lifes = 3
@@ -166,8 +172,10 @@ func _on_settings_mouse_exited() -> void:
 	$settings.text = ""
 
 func _on_settings_back_pressed() -> void:
-	GlobalConfig.save_audio($settings_things/global_volume.value, $settings_things/mus_volume.value,\
-	$settings_things/snd_volume.value, $settings_things/atm_volume.value)
+	GlobalConfig.save_audio(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")),\
+	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Music")),\
+	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Sound")),\
+	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Atmosphere")))
 	main_menu()
 func _on_settings_back_mouse_entered() -> void:
 	$settings_things/back.text = ">>                        <<"
@@ -175,10 +183,10 @@ func _on_settings_back_mouse_exited() -> void:
 	$settings_things/back.text = ""
 
 func _on_global_volume_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(value) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(value) - 25)
 func _on_mus_volume_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("music"), linear_to_db(value) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(value) - 25)
 func _on_snd_volume_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("sound"), linear_to_db(value) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Sound"), linear_to_db(value) - 25)
 func _on_atm_volume_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("atmosphere"), linear_to_db(value) - 30)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Atmosphere"), linear_to_db(value) - 25)

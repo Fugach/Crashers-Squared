@@ -17,14 +17,15 @@ var stairs_length : int = 0
 var gen_direction = ""
 var hall_pos1 = Vector2(0, 0)
 var hall_pos2 = Vector2(0, 0)
+
 func _ready() -> void:
-	# generating first room
 	
 	gen_dungeon(randi_range(3, 15))
 	#$AudioStreamPlayer2D.play()
 
 func gen_dungeon(rooms_count):
 	clear()
+	$"../UI/HUD/TABLE/table/Button".disabled = false
 	for body in get_parent().get_children():
 		print(body)
 		if body is RigidBody2D or "enemy" in str(body):
@@ -98,14 +99,14 @@ func gen_dungeon(rooms_count):
 
 func generate_room(pos, size, doors, height, enemies):
 	for x in range(size.x):
-		set_cell(pos + Vector2(x, 0), 1, Vector2(0, 3))
+		set_cell(pos + Vector2(x, 0), 0, Vector2(0, 3))
 		set_cells_terrain_connect(get_surrounding_cells(pos + Vector2(x, 0)), 0, 0, false)
-		set_cell(pos + Vector2(x, size.y), 1, Vector2(0, 3))
+		set_cell(pos + Vector2(x, size.y), 0, Vector2(0, 3))
 		set_cells_terrain_connect(get_surrounding_cells(pos + Vector2(x, size.y)), 0, 0, false)
 	for y in range(size.y):
-		set_cell(pos + Vector2(0, y), 1, Vector2(0, 3))
+		set_cell(pos + Vector2(0, y), 0, Vector2(0, 3))
 		set_cells_terrain_connect(get_surrounding_cells(pos + Vector2(0, y)), 0, 0, false)
-		set_cell(pos + Vector2(size.x, y), 1, Vector2(0, 3))
+		set_cell(pos + Vector2(size.x, y), 0, Vector2(0, 3))
 		set_cells_terrain_connect(get_surrounding_cells(pos + Vector2(size.x, y)), 0, 0, false)
 	set_cells_terrain_connect(get_surrounding_cells(pos + Vector2(size.x, 0)), 0, 0, false)
 	set_cells_terrain_connect(get_surrounding_cells(pos + size), 0, 0, false)
