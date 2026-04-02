@@ -14,11 +14,11 @@ func _ready():
 	else:
 		config.load(CONFIG_FILE_PATH)
 
-func save_audio(global_volume, music_volume, sound_volume, atmosphere_volume):
-	config.set_value("audio", "Master_volume_db", global_volume)
-	config.set_value("audio", "Music_volume_db", music_volume)
-	config.set_value("audio", "Sound_volume_db", sound_volume)
-	config.set_value("audio", "Atmosphere_volume_db", atmosphere_volume)
+func save_audio(Master_volume_db, Music_volume_db, Sound_volume_db, Atmosphere_volume_db):
+	config.set_value("audio", "Master_volume_db", Master_volume_db)
+	config.set_value("audio", "Music_volume_db", Music_volume_db)
+	config.set_value("audio", "Sound_volume_db", Sound_volume_db)
+	config.set_value("audio", "Atmosphere_volume_db", Atmosphere_volume_db)
 	config.save(CONFIG_FILE_PATH)
 func get_value(section, key):
 	return config.get_value(section, key)

@@ -39,11 +39,10 @@
 [ext_resource type="Texture2D" uid="uid://cfr0uyc8g23nq" path="res://textures/UI/QuickVolume/progress.png" id="22_d2t1y"]
 [ext_resource type="Shader" uid="uid://cp3y3o467dns" path="res://shaders/blur.gdshader" id="22_facbu"]
 [ext_resource type="Texture2D" uid="uid://dj576ntgm1cqk" path="res://textures/micro-table.png" id="25_0odxb"]
+[ext_resource type="AudioStream" uid="uid://cfoytnoxcfdjb" path="res://music/table1_muff.ogg" id="25_b1qrp"]
 [ext_resource type="Texture2D" uid="uid://bbdi21tlcwtsq" path="res://textures/UI/tips_mouse.png" id="26_lswn8"]
 [ext_resource type="Texture2D" uid="uid://djjmrmoaufyg2" path="res://textures/tiles/tile_main.png" id="35_h8e4i"]
 [ext_resource type="Texture2D" uid="uid://b2tvfl8cqi60j" path="res://textures/babax.png" id="39_come4"]
-[ext_resource type="Texture2D" uid="uid://b73eakvkvyx8r" path="res://textures/particles/slide/4.png" id="42_blkrb"]
-[ext_resource type="Texture2D" uid="uid://b3ivou6ton8fs" path="res://textures/particles/slide/6.png" id="44_6iyjs"]
 
 [sub_resource type="Animation" id="Animation_kq58d"]
 resource_name = "RESET"
@@ -579,21 +578,6 @@ _data = {
 &"slam_stop": SubResource("Animation_0hol4")
 }
 
-[sub_resource type="AnimatedTexture" id="AnimatedTexture_4w656"]
-frames = 2
-frame_0/texture = ExtResource("42_blkrb")
-frame_0/duration = 0.5
-frame_1/texture = ExtResource("44_6iyjs")
-frame_1/duration = 0.5
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e71vb"]
-lifetime_randomness = 0.25
-particle_flag_disable_z = true
-initial_velocity_max = 15.0
-gravity = Vector3(0, -10, 0)
-linear_accel_min = -2.2351742e-06
-linear_accel_max = 14.999997
-
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4lmeg"]
 texture = ExtResource("35_h8e4i")
 0:0/0 = 0
@@ -631,10 +615,18 @@ texture = ExtResource("35_h8e4i")
 0:1/0/terrain_set = 0
 0:1/0/terrain = 0
 0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:1/0 = 0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:1/0 = 0
+3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+4:1/0 = 0
+4:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 5:1/0 = 0
 5:1/0/terrain_set = 0
 5:1/0/terrain = 0
-5:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 5.0677776, 5.186186, 5.2098656, 4.9493713, 8, -8, 8)
+5:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 5:1/0/terrains_peering_bit/right_side = 0
 5:1/0/terrains_peering_bit/left_side = 0
 5:1/0/terrains_peering_bit/top_left_corner = 0
@@ -643,7 +635,7 @@ texture = ExtResource("35_h8e4i")
 6:1/0 = 0
 6:1/0/terrain_set = 0
 6:1/0/terrain = 0
-6:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -4.9493732, 8, -4.9967346, 5.020416, -8, 5.067778)
+6:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 6:1/0/terrains_peering_bit/right_side = 0
 6:1/0/terrains_peering_bit/bottom_right_corner = 0
 6:1/0/terrains_peering_bit/bottom_side = 0
@@ -664,7 +656,7 @@ texture = ExtResource("35_h8e4i")
 5:2/0 = 0
 5:2/0/terrain_set = 0
 5:2/0/terrain = 0
-5:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 4.9967346, -8, 5.044098, -5.1625032, 8, -4.925691, 8, 8, -8, 8)
+5:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 5:2/0/terrains_peering_bit/right_side = 0
 5:2/0/terrains_peering_bit/bottom_right_corner = 0
 5:2/0/terrains_peering_bit/bottom_side = 0
@@ -673,7 +665,7 @@ texture = ExtResource("35_h8e4i")
 6:2/0 = 0
 6:2/0/terrain_set = 0
 6:2/0/terrain = 0
-6:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -4.973053, -5.0914593, -5.020416, -4.9967346, -8, 8, -8, 8, 8, -8, 8)
+6:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 6:2/0/terrains_peering_bit/bottom_side = 0
 6:2/0/terrains_peering_bit/bottom_left_corner = 0
 6:2/0/terrains_peering_bit/left_side = 0
@@ -731,38 +723,6 @@ texture = ExtResource("35_h8e4i")
 1:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, -8, -8, -8, -4.9571867, 8, -4.824561)
 2:6/0 = 0
 2:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, 4.866514, -8, 5.034324, -8, 8, 8, 8)
-7:1/0 = 0
-7:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-8:1/0 = 0
-8:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-8:2/0 = 0
-8:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-7:2/0 = 0
-7:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-8:3/0 = 0
-8:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-7:3/0 = 0
-7:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-7:4/0 = 0
-7:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-8:4/0 = 0
-8:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-9:1/0 = 0
-9:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-9:2/0 = 0
-9:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-10:2/0 = 0
-10:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-11:2/0 = 0
-11:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-12:2/0 = 0
-12:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-12:1/0 = 0
-12:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-11:1/0 = 0
-11:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-10:1/0 = 0
-10:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_ycdy4"]
 physics_layer_0/collision_layer = 1
@@ -780,7 +740,7 @@ texture = ExtResource("13_ycdy4")
 sources/0 = SubResource("TileSetAtlasSource_w48qg")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b1qrp"]
-size = Vector2(25, 23)
+size = Vector2(40, 40)
 
 [node name="main" type="Node2D" unique_id=1260506371]
 script = ExtResource("1_074og")
@@ -850,17 +810,6 @@ mouse_filter = 1
 text = "TEST TEST TEST
 TEST TEST TEST
 TEST TEST TEST"
-
-[node name="stop_mus" type="Button" parent="UI/HUD/TABLE/table/Button" unique_id=1746733587]
-process_mode = 1
-layout_mode = 0
-offset_left = 123.0
-offset_top = 62.0
-offset_right = 134.0
-offset_bottom = 77.0
-mouse_filter = 1
-theme_override_font_sizes/font_size = 5
-text = "1"
 
 [node name="printed" type="Sprite2D" parent="UI/HUD/TABLE" unique_id=1255878504]
 position = Vector2(200, 150)
@@ -1104,7 +1053,7 @@ offset_bottom = 360.0
 color = Color(0, 0, 0, 0.8862745)
 
 [node name="table" type="Sprite2D" parent="." unique_id=1000341196]
-position = Vector2(162, 128)
+position = Vector2(162, 112)
 texture = ExtResource("25_0odxb")
 
 [node name="tip" type="Sprite2D" parent="table" unique_id=1917619668]
@@ -1123,7 +1072,15 @@ shape = SubResource("RectangleShape2D_xuqvo")
 [node name="mus" type="AudioStreamPlayer2D" parent="table" unique_id=1495641469]
 position = Vector2(17, 24)
 stream = ExtResource("17_ok6jj")
+autoplay = true
 max_distance = 350.0
+parameters/looping = true
+
+[node name="mus_muff" type="AudioStreamPlayer2D" parent="table" unique_id=528368749]
+position = Vector2(17, 24)
+stream = ExtResource("25_b1qrp")
+volume_db = -80.0
+autoplay = true
 parameters/looping = true
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=2101440871]
@@ -1148,7 +1105,6 @@ autoplay = true
 
 [node name="steps" type="AudioStreamPlayer2D" parent="Player" unique_id=1928414028]
 stream = SubResource("AudioStreamRandomizer_5vw27")
-volume_db = -10.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Player" unique_id=1903460861]
 libraries/ = SubResource("AnimationLibrary_q6r6c")
@@ -1158,6 +1114,7 @@ wait_time = 0.1
 one_shot = true
 
 [node name="PointLight2D" type="PointLight2D" parent="Player" unique_id=945701196]
+position = Vector2(0, -1)
 shadow_enabled = true
 texture = ExtResource("7_dg77c")
 
@@ -1170,14 +1127,15 @@ zoom = Vector2(0.65, 0.65)
 position_smoothing_enabled = true
 position_smoothing_speed = 2.0
 
-[node name="slide" type="GPUParticles2D" parent="Player" unique_id=839550143]
+[node name="blood" type="CPUParticles2D" parent="Player" unique_id=1304715581]
 emitting = false
-amount = 5
-texture = SubResource("AnimatedTexture_4w656")
-randomness = 0.45
-collision_base_size = 8.4
-draw_order = 0
-process_material = SubResource("ParticleProcessMaterial_e71vb")
+one_shot = true
+explosiveness = 1.0
+initial_velocity_min = 90.91
+initial_velocity_max = 99.18
+scale_amount_min = 2.0
+scale_amount_max = 2.0
+color = Color(1, 0.003921569, 0.05882353, 1)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1062142319]
 texture_filter = 1
@@ -1194,33 +1152,31 @@ tile_set = SubResource("TileSet_vivmo")
 [node name="Finish" type="Area2D" parent="." unique_id=314784669]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Finish" unique_id=961738373]
-position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_b1qrp")
 
 [node name="ColorRect" type="ColorRect" parent="Finish" unique_id=1010526553]
-offset_left = -12.0
-offset_top = -11.0
-offset_right = 12.0
-offset_bottom = 11.0
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
 color = Color(1.6284043, 6.1466823, 6.1466823, 0.4745098)
 
 [node name="Sprite2D" type="Sprite2D" parent="Finish" unique_id=651691440]
-position = Vector2(0, 4.7683716e-07)
-scale = Vector2(0.375, 0.36562502)
+position = Vector2(-1.6940659e-21, -0.49999857)
+scale = Vector2(0.625, 0.609375)
 texture = ExtResource("39_come4")
 
 [node name="Label" type="Label" parent="Finish" unique_id=1170740891]
-offset_left = -9.999998
-offset_top = -12.0
-offset_right = 50.0
-offset_bottom = 10.333334
-scale = Vector2(0.34650722, 1.1043597)
+offset_left = -19.999998
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 3.0
+scale = Vector2(0.67093223, 1.7255591)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "> EXIT <"
 
 [connection signal="value_changed" from="UI/HUD/HPBar" to="." method="_on_hp_bar_value_changed"]
 [connection signal="pressed" from="UI/HUD/TABLE/table/Button" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="UI/HUD/TABLE/table/Button/stop_mus" to="." method="_on_stop_mus_pressed"]
 [connection signal="animation_finished" from="UI/HUD/TABLE/papers_anim" to="." method="_on_animation_player_animation_finished"]
 [connection signal="pressed" from="UI/HUD/TABLE/micro_pc_at_home" to="." method="_on_micro_pc_at_home_pressed"]
 [connection signal="animation_finished" from="UI/HUD/TABLE/other_anim" to="." method="_on_other_anim_animation_finished"]

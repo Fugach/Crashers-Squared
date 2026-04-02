@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dr0enle3tt5ku" path="res://textures/RL.png" id="2_yhm7n"]
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_jd356"]
-points = PackedVector2Array(150, -20, 150, 20, 7, 0, 7, -2)
+points = PackedVector2Array(18, -4, 18, 0, 250, 5, 250, -9)
 
 [node name="RL" type="Node2D" unique_id=234800380]
 script = ExtResource("1_bl5bl")
@@ -24,9 +24,11 @@ region_rect = Rect2(0, 0, 32, 13)
 [node name="shoot_pos" type="Marker2D" parent="RL_sprite" unique_id=427160559]
 position = Vector2(13.333333, -2.6666667)
 
-[node name="ShapeCast2D" type="ShapeCast2D" parent="RL_sprite" unique_id=390757669]
-scale = Vector2(2.6666667, 2.6666667)
+[node name="Area2D" type="Area2D" parent="RL_sprite" unique_id=816954710]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RL_sprite/Area2D" unique_id=1374269291]
 shape = SubResource("ConvexPolygonShape2D_jd356")
-target_position = Vector2(0, 0)
 
 [connection signal="timeout" from="cooldown" to="." method="_on_cooldown_timeout"]
+[connection signal="body_entered" from="RL_sprite/Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="RL_sprite/Area2D" to="." method="_on_area_2d_body_exited"]

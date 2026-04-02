@@ -13,6 +13,7 @@ var can_shoot: bool = true
 var current_angle: float = 0.0
 var weapon_owner : String = ""
 var is_friendly : bool = false
+var is_player_colliding : bool = false
 
 func _process(delta: float) -> void:
 	match weapon_owner:
@@ -23,7 +24,7 @@ func _process(delta: float) -> void:
 			else:
 				visible = false
 		"Enemy":
-			if Shapecast.is_colliding() and Shapecast.get_collider(1) == GlobalVars.player and can_shoot:
+			if is_player_colliding and can_shoot:
 				is_player_nearby = true
 			else:
 				is_player_nearby = false
@@ -44,13 +45,14 @@ func RL_logic(delta):
 	else:
 		Sprite.scale.y = -0.375
 
-	if Input.is_action_just_pressed("lmb") and can_shoot:
-		shoot()
+	if Input.is_action_just_pressed("lmb") and can_shoot and weapon_owner == "Player":
+		shoot(25)
 
-func shoot():
+func shoot(damage_amount):
 	var new_rocket = ROCKET.instantiate()
 	new_rocket.global_position = ShootPos.global_position
 	new_rocket.global_rotation = ShootPos.global_rotation
+	new_rocket.damage_amount = damage_amount
 	get_node("/root/main").add_child(new_rocket)
 	
 	can_shoot = false
@@ -58,3 +60,13 @@ func shoot():
 
 func _on_cooldown_timeout() -> void:
 	can_shoot = true
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body == GlobalVars.player:
+		is_player_colliding = true
+
+
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	if body == GlobalVars.player:
+		is_player_colliding = false

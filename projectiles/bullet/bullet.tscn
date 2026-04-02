@@ -2,35 +2,56 @@
 
 [ext_resource type="Script" uid="uid://c4lx4k1v2surv" path="res://projectiles/bullet/bullet.gd" id="1_awion"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_hwob3"]
-radius = 0.0
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g1w5t"]
+particle_flag_disable_z = true
+direction = Vector3(-1, 0, 0)
+spread = 15.0
+initial_velocity_min = 70.479996
+initial_velocity_max = 170.48
+gravity = Vector3(0, 198, 0)
+collision_mode = 1
+collision_friction = 1.0
+collision_bounce = 0.0
 
-[node name="Node2D" type="Node2D" unique_id=1568785125]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hwob3"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 298, 0)
+collision_mode = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hwob3"]
+size = Vector2(20, 1)
+
+[node name="Bullet" type="Node2D" unique_id=1568785125]
 script = ExtResource("1_awion")
-
-[node name="RayCast2D" type="RayCast2D" parent="." unique_id=631787966]
-target_position = Vector2(10, 0)
-hit_from_inside = true
 
 [node name="Line2D" type="Line2D" parent="." unique_id=1527437106]
 z_index = -1
-points = PackedVector2Array(0, 0, 10, 0)
+position = Vector2(-0.10576922, 0)
+scale = Vector2(0.78846157, 1)
+points = PackedVector2Array(0, 0, 25, 0)
 width = 0.5
 default_color = Color(1, 0.6666667, 0, 1)
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=590256942]
-position = Vector2(10, 0)
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=103819807]
 emitting = false
+amount = 1
+sub_emitter = NodePath("GPUParticles2D")
 one_shot = true
+preprocess = 0.05
 explosiveness = 1.0
-direction = Vector2(-1, 0)
-spread = 30.0
-initial_velocity_min = 50.0
-initial_velocity_max = 150.0
+trail_sections = 2
+trail_section_subdivisions = 1
+process_material = SubResource("ParticleProcessMaterial_g1w5t")
 
-[node name="Area2D" type="Area2D" parent="CPUParticles2D" unique_id=13938152]
+[node name="GPUParticles2D" type="GPUParticles2D" parent="GPUParticles2D" unique_id=1472677483]
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_hwob3")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CPUParticles2D/Area2D" unique_id=641225108]
-shape = SubResource("CircleShape2D_hwob3")
+[node name="Area2D" type="Area2D" parent="." unique_id=1188911845]
 
-[connection signal="finished" from="CPUParticles2D" to="." method="_on_cpu_particles_2d_finished"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=573145247]
+position = Vector2(10, -0.5)
+shape = SubResource("RectangleShape2D_hwob3")
+
+[connection signal="finished" from="GPUParticles2D" to="." method="_on_gpu_particles_2d_finished"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

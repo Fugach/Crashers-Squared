@@ -82,7 +82,7 @@ func _ready() -> void:
 		"                                  @@@@@@@@@@@@@@@@@@++++@@@@@@@@@" + "\n" +\
 		"                                                    @@@@@@@@@@@@@@@@@@@@@" + "\n"
 	repeat("---", 45)
-	await wait(0.3)
+	await wait(0.5)
 	text.text += "\n" + "SYSTEM: " + str(OS.get_distribution_name()) + str(OS.get_version())
 	await wait(0.1)
 	text.text += "\n" + "PROCESS ID: " + str(OS.get_process_id())
@@ -91,7 +91,7 @@ func _ready() -> void:
 	await wait(0.1)
 	for x in range(10):
 		text.text += ">"
-		await wait(0.005)
+		await wait(0.01)
 	text.text += "\ndone\n"
 	await wait(0.3)
 	for x in range(10):
@@ -141,14 +141,14 @@ func settings():
 	text.text += "Громкость эффектов\n"
 
 func load_config():
-	$settings_things/global_volume.value = GlobalConfig.get_value("audio", "global_volume_db")
-	$settings_things/mus_volume.value = GlobalConfig.get_value("audio", "music_volume_db")
-	$settings_things/snd_volume.value = GlobalConfig.get_value("audio", "sound_volume_db")
-	$settings_things/atm_volume.value = GlobalConfig.get_value("audio", "atmosphere_volume_db")
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(GlobalConfig.get_value("audio", "global_volume_db")) - 25)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("music"), linear_to_db(GlobalConfig.get_value("audio", "music_volume_db")) - 25)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("sound"), linear_to_db(GlobalConfig.get_value("audio", "sound_volume_db")) - 25)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("atmosphere"), linear_to_db(GlobalConfig.get_value("audio", "atmosphere_volume_db")) - 25)
+	$settings_things/global_volume.value = round((GlobalConfig.get_value("audio", "Master_volume_db") + 25) / 50 * 100)
+	$settings_things/mus_volume.value = round((GlobalConfig.get_value("audio", "Music_volume_db") + 25) / 50 * 100)
+	$settings_things/snd_volume.value = round((GlobalConfig.get_value("audio", "Sound_volume_db") + 25) / 50 * 100)
+	$settings_things/atm_volume.value = round((GlobalConfig.get_value("audio", "Atmosphere_volume_db") + 25) / 50 * 100)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), GlobalConfig.get_value("audio", "Master_volume_db"))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), GlobalConfig.get_value("audio", "Music_volume_db"))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Sound"), GlobalConfig.get_value("audio", "Sound_volume_db"))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Atmosphere"), GlobalConfig.get_value("audio", "Atmosphere_volume_db"))
 
 func _on_start_button_pressed() -> void:
 	GlobalVars.lifes = 3
@@ -160,10 +160,10 @@ func _on_start_button_mouse_exited() -> void:
 	$start.text = ""
 
 func _on_settings_pressed() -> void:
-	$settings_things/global_volume.value = GlobalConfig.get_value("audio", "global_volume")
-	$settings_things/mus_volume.value = GlobalConfig.get_value("audio", "music_volume")
-	$settings_things/snd_volume.value = GlobalConfig.get_value("audio", "sound_volume")
-	$settings_things/atm_volume.value = GlobalConfig.get_value("audio", "atmosphere_volume")
+	$settings_things/global_volume.value = round((GlobalConfig.get_value("audio", "Master_volume_db") + 25) / 50 * 100)
+	$settings_things/mus_volume.value = round((GlobalConfig.get_value("audio", "Music_volume_db") + 25) / 50 * 100)
+	$settings_things/snd_volume.value = round((GlobalConfig.get_value("audio", "Sound_volume_db") + 25) / 50 * 100)
+	$settings_things/atm_volume.value = round((GlobalConfig.get_value("audio", "Atmosphere_volume_db") + 25) / 50 * 100)
 	settings()
 func _on_settings_mouse_entered() -> void:
 	$choose.play()
@@ -183,10 +183,10 @@ func _on_settings_back_mouse_exited() -> void:
 	$settings_things/back.text = ""
 
 func _on_global_volume_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(value) - 25)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), round(50 * (value / 100) - 25))
 func _on_mus_volume_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(value) - 25)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), round(50 * (value / 100) - 25))
 func _on_snd_volume_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Sound"), linear_to_db(value) - 25)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Sound"), round(50 * (value / 100) - 25))
 func _on_atm_volume_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Atmosphere"), linear_to_db(value) - 25)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Atmosphere"), round(50 * (value / 100) - 25))

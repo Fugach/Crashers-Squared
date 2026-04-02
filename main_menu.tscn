@@ -104,7 +104,6 @@ environment = SubResource("Environment_fu7sn")
 [node name="noise" type="AudioStreamPlayer" parent="." unique_id=916473469]
 stream = ExtResource("4_jix8l")
 autoplay = true
-bus = &"atmosphere"
 parameters/looping = true
 
 [node name="start" type="Button" parent="." unique_id=978894720]
@@ -128,7 +127,6 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_jix8l")
 
 [node name="choose" type="AudioStreamPlayer2D" parent="." unique_id=645220742]
 stream = ExtResource("5_glbon")
-bus = &"sound"
 
 [node name="settings" type="Button" parent="." unique_id=521719144]
 modulate = Color(6.840123, 6.840123, 6.840123, 1)

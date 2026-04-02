@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ckpacdte3gvhm" path="res://textures/idk2.png" id="2_okyed"]
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_rxqsx"]
-points = PackedVector2Array(14, 0, 14, -2, 150, -30, 160, 0, 150, 30)
+points = PackedVector2Array(13, -2, 13, 0, 150, 15, 160, 0, 150, -15)
 
 [node name="Shotgun" type="Node2D" unique_id=1263487316]
 script = ExtResource("1_hwrt3")
@@ -22,8 +22,11 @@ region_rect = Rect2(0, 0, 20, 7)
 [node name="spawnpoint" type="Marker2D" parent="Sprite2D" unique_id=1903406102]
 position = Vector2(13, -1)
 
-[node name="ShapeCast2D" type="ShapeCast2D" parent="Sprite2D" unique_id=1823537483]
+[node name="Area2D" type="Area2D" parent="Sprite2D" unique_id=830060615]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Area2D" unique_id=30916041]
 shape = SubResource("ConvexPolygonShape2D_rxqsx")
-target_position = Vector2(0, 0)
 
 [connection signal="timeout" from="cooldown" to="." method="_on_cooldown_timeout"]
+[connection signal="body_entered" from="Sprite2D/Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Sprite2D/Area2D" to="." method="_on_area_2d_body_exited"]

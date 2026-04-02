@@ -54,17 +54,21 @@ func load_config():
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("crash"):
 		get_tree().quit(0)
-	if Input.is_action_just_pressed("vol_up"):
+	if Input.is_action_pressed("vol_up") and not Input.is_action_pressed("shift"):
 		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), min(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) + 1, 25))
 		
 		if $UI/HUD/QuickVolume.modulate == Color("ffffff00"):
 			Vol_anim.play("show")
+		elif Vol_anim.current_animation == "hide":
+			Vol_anim.play_backwards("hide")
 		update_volume()
-	elif Input.is_action_just_pressed("vol_down"):
+	elif Input.is_action_pressed("vol_down") and not Input.is_action_pressed("shift"):
 		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), max(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) - 1, -25))
 		
 		if $UI/HUD/QuickVolume.modulate == Color("ffffff00"):
 			Vol_anim.play("show")
+		elif Vol_anim.current_animation == "hide":
+			Vol_anim.play_backwards("hide")
 		update_volume()
 
 func _process(delta: float) -> void:
@@ -91,7 +95,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("esc"):
 		pause()
 	if Input.is_action_just_pressed("shift"):
-		$TileMapLayer.gen_dungeon(1)
+		$TileMapLayer.gen_dungeon(2)
 		GlobalVars.player.respawn()
 
 func death():
@@ -243,3 +247,8 @@ func update_volume():
 
 func _on_display_timer_timeout() -> void:
 	Vol_anim.play("hide")
+
+
+func _on_stop_mus_pressed() -> void:
+	$table/mus.autoplay = true
+	$table/mus.play()

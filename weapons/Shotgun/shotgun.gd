@@ -12,6 +12,7 @@ var is_friendly : bool = false
 var weapon_owner : String = ""
 var current_angle = null
 var is_player_nearby : bool = false
+var is_player_colliding : bool = false
 
 func _process(delta: float) -> void:
 	match weapon_owner:
@@ -22,7 +23,7 @@ func _process(delta: float) -> void:
 			else:
 				visible = false
 		"Enemy":
-			if Shapecast.is_colliding() and Shapecast.get_collider(1) == GlobalVars.player and can_shoot:
+			if is_player_colliding and can_shoot:
 				is_player_nearby = true
 			else:
 				is_player_nearby = false
@@ -44,12 +45,12 @@ func logic(delta):
 		Sprite.scale.y = -1
 	
 	if Input.is_action_just_pressed("lmb") and can_shoot and weapon_owner == "Player":
-		shoot()
+		shoot(7)
 
-func shoot():
+func shoot(damage_amount):
 	for x in range(5):
 		var new_bullet = BULLET.instantiate()
-		new_bullet.damage_amount = 3
+		new_bullet.damage_amount = damage_amount
 		new_bullet.is_friendly = is_friendly
 		new_bullet.global_position = Spawnpoint.global_position
 		new_bullet.global_rotation = Sprite.global_rotation + randf_range(-0.1, 0.1)
@@ -59,3 +60,11 @@ func shoot():
 
 func _on_cooldown_timeout() -> void:
 	can_shoot = true
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body == GlobalVars.player:
+		is_player_colliding = true
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	if body == GlobalVars.player:
+		is_player_colliding = false

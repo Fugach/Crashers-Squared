@@ -5,11 +5,13 @@ var SPEED : float = 165.0
 const JUMP_VELOCITY : float = -300.0
 var availible_jumps : int = 3
 var direction : int = 1
+
 const box = preload("res://box.tscn")
 const nailbreaker = preload("res://nailbreaker.tscn")
 const Enemy = preload("res://enemy.tscn")
 const RL = preload("res://weapons/RL/rl_pickable.tscn")
 const shotgun = preload("res://weapons/Shotgun/shotgun_pickable.tscn")
+
 
 var is_sliding : bool = false
 var is_slamming : bool = false
@@ -25,15 +27,25 @@ func _physics_process(delta: float) -> void:
 	if is_on_wall_only() and (not is_on_floor()) and velocity.y > 0 and\
 	(Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")):
 		is_sliding = true
+		
+		if randi_range(1, 8) == 6:
+			$slide.global_position = global_position + Vector2(5 * direction, 5)
+			$slide.scale.x = direction * -1
+			$slide.amount = 5 + int(velocity.y / 100)
+			$slide.emitting = true
+		
 		velocity.y += get_gravity().y * delta * 0.1 # скользим по стенам
 	elif not is_on_floor():
 		is_sliding = false
+		$slide.emitting = false
 		velocity.y += get_gravity().y * delta # базовое падение
 	else:
 		is_sliding = false
+		$slide.emitting = false
 	
 	if is_sliding and GlobalVars.player_hp > 0:
 		wall_slide_loop.volume_db = 0.0
+		wall_slide_loop.pitch_scale = 1.0 + velocity.y / 100
 	else:
 		wall_slide_loop.volume_db = -80.0
 	
@@ -130,7 +142,9 @@ func push(pwr, _dir):
 		velocity += pwr * Vector2(1, -1) / 2
 	else:
 		velocity += pwr * _dir / 2
-	GlobalVars.damage(pwr / 100)
+
+func damage(amount):
+	GlobalVars.player_hp -= amount
 
 func get_input(delta: float) -> void:
 	if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
@@ -156,6 +170,9 @@ func get_input(delta: float) -> void:
 	elif is_slamming and is_sliding:
 		$AnimationPlayer.stop()
 		is_slamming = false
+	if $AnimationPlayer.current_animation == "slam_stop" and Input.is_action_just_pressed("jump"):
+		velocity.y += JUMP_VELOCITY * 0.3
+	
 	if int(Input.is_action_pressed("move_left")) == int(Input.is_action_pressed("move_right")):
 		if is_on_floor():
 			velocity.x *= 0.8
@@ -204,4 +221,5 @@ func respawn():
 	$Camera2D.reset_smoothing()
 	$AnimationPlayer.play("RESET")
 func show_damage():
-	$blood.emitting = true
+	#$blood.emitting = true
+	pass
