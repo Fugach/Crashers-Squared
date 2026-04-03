@@ -66,8 +66,6 @@ func _physics_process(delta: float) -> void:
 			collider.apply_central_impulse(previous_velocity * normal * -0.15)
 
 func _process(_delta: float) -> void:
-	if not GlobalVars.player_hp > 0:
-		main.death()
 	jump()
 	if Input.is_action_just_pressed("spawn_BOX"):
 		var new_box = box.instantiate()
