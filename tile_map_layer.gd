@@ -31,8 +31,7 @@ func gen_dungeon(rooms_amount):
 	clear()
 	$"../UI/HUD/TABLE/table/Button".disabled = false
 	for body in get_parent().get_children():
-		print(body)
-		if body is RigidBody2D or "enemy" in str(body):
+		if body is RigidBody2D or "Enemy" in str(body) or "Rocket" in str(body) or "Bullet" in str(body):
 			body.queue_free()
 	$bg.clear()
 	room_anchor = Vector2(3, 2)
@@ -243,14 +242,14 @@ func generate_room(pos, size, doors, height, enemies):
 	set_cell(pos + Vector2(size.x + 2, -1), 0, Vector2(8, 2))
 	set_cell(pos + Vector2(size.x + 2, -2), 0, Vector2(8, 4))
 	
-	if enemies:
-		for x in range(randi_range(1, 5)):
-			var new_enemy = ENEMY.instantiate()
-			new_enemy.global_position = pos + Vector2(room_size.x / 2, -5)
-			new_enemy.name = "Enemy" + str(total_enemies)
-			total_enemies += 1
-			print(new_enemy)
-			get_parent().add_child.call_deferred(new_enemy)
+	#if enemies:
+		#for x in range(randi_range(1, 5)):
+			#var new_enemy = ENEMY.instantiate()
+			#new_enemy.global_position = pos + Vector2(room_size.x / 2, -5)
+			#new_enemy.name = "Enemy" + str(total_enemies)
+			#total_enemies += 1
+			#print(new_enemy)
+			#get_parent().add_child.call_deferred(new_enemy)
 	
 func generate_hall(pos1, pos2):
 	#if pos1.y - pos2.y == 0:

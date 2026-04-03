@@ -5,17 +5,19 @@ extends Sprite2D
 @onready var ExplosionPos: Sprite2D = $Babax
 @onready var Collision: Area2D = $Babax/BabaxCollision
 
-var damage_amount : int = 0
+var damage_amount : int = -5
 var can_push : bool = true
 var speed = 100
 var direction = 1
 var is_emitting : bool = false
 const SPEED: float = 500.0
+var is_friendly : bool = false
+var targets = []
 
 func _ready():
 	Collision.monitoring = false
 	Particles.emitting = false
-	ExplosionPos.visible = false
+	ExplosionPos.hide()
 func _physics_process(delta: float):
 	if not is_emitting:
 		if RayCast.is_colliding():
@@ -25,6 +27,7 @@ func _physics_process(delta: float):
 
 func destroy():
 	self_modulate.a = 0
+	$fire.self_modulate.a = 0
 	Particles.global_position = RayCast.get_collision_point() + RayCast.get_collision_normal() * 5.0
 	ExplosionPos.global_position = RayCast.get_collision_point() + RayCast.get_collision_normal() * 5.0
 	Particles.amount = randi_range(5, 20)
@@ -33,7 +36,7 @@ func destroy():
 	Collision.monitoring = true
 	Particles.emitting = true
 	is_emitting = true
-	ExplosionPos.visible = true
+	ExplosionPos.show()
 	$Babax/AnimationPlayer.play("explostion_increasing")
 	$Babax/AudioStreamPlayer2D.pitch_scale = randfn(1.0, 0.2)
 	$Babax/AudioStreamPlayer2D.play()
@@ -46,13 +49,16 @@ func _on_cpu_particles_2d_finished():
 
 func _on_collision_body_entered(body: Node2D):
 	if ((body is CharacterBody2D) or (body is RigidBody2D)) and can_push:
-		if body.has_method("damage"):
-			body.damage(damage_amount)
+		if body.has_method("damage") and body not in targets:
+			targets.append(body)
+			if not is_friendly and body != GlobalVars.player:
+				body.damage(damage_amount)
+			else:
+				body.damage(8)
 		var explosion_pos = ExplosionPos.global_position
 		var dir = (body.global_position - explosion_pos).normalized()
 		var distance = explosion_pos.distance_to(body.global_position)
 		var force = 800.0 / max(distance * 0.08, 1.0)
 		body.push(force, dir)
 func _on_animation_finished(anim_name: StringName) -> void:
-	if anim_name == "explostion_increasing":
-		can_push = false
+	can_push = false

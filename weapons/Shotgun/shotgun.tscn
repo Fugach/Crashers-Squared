@@ -20,7 +20,7 @@ region_enabled = true
 region_rect = Rect2(0, 0, 20, 7)
 
 [node name="spawnpoint" type="Marker2D" parent="Sprite2D" unique_id=1903406102]
-position = Vector2(13, -1)
+position = Vector2(15, -1)
 
 [node name="Area2D" type="Area2D" parent="Sprite2D" unique_id=830060615]
 

@@ -23,7 +23,6 @@ extends Node2D
 var master_bus = AudioServer.get_bus_index("Master")
 var last_papers_animation : String = ""
 var last_other_anim : String = ""
-var is_paused : bool = false
 
 func _ready() -> void:
 	load_config()
@@ -82,8 +81,6 @@ func _process(delta: float) -> void:
 		TableOtherAnim.play("RESET")
 	if Input.is_action_just_pressed("rmb") and $table/tip.visible:
 		HUDTable.show()
-		if not is_paused:
-			$table/mus.volume_db = 5.0
 	if Input.is_action_just_pressed("lmb") and TablePaperAnim.current_animation == "print" and\
 	not $UI/HUD/TABLE/micro_pc_at_home.is_hovered():
 		TablePaperAnim.play("speed_up")
@@ -92,13 +89,18 @@ func _process(delta: float) -> void:
 		TableOtherAnim.play("RESET")
 		HUDTable.hide()
 		$table/mus.volume_db = 0.0
-	if Input.is_action_just_pressed("esc"):
-		pause()
 	if Input.is_action_just_pressed("shift"):
 		$TileMapLayer.gen_dungeon(2)
 		GlobalVars.player.respawn()
+	if Input.is_action_just_pressed("esc"):
+		get_tree().paused = true
+		$UI/Pause/AnimationPlayer.play("appear")
+		$UI/Pause.show()
 
 func death():
+	GlobalVars.player_hp = 0
+	$UI/HUD/HPBar/HPLabel.text = str(GlobalVars.player_hp)
+	$UI/HUD/HPBar.value =  GlobalVars.player_hp
 	if str(RenderingServer.get_current_rendering_method()) == "gl_compatibility":
 		CRT_mat.shader = preload("res://shaders/crt_OpenGL.gdshader")
 		CRT_mat.set_shader_parameter("brightness", 0.8)
@@ -133,13 +135,13 @@ func death():
 		$"UI/Restart/ColorRect/again".text = "Конец"
 		$"UI/Restart/ColorRect/no".text = "ВЫХОД"
 		$"UI/Restart/ColorRect/yes".hide()
-	$UI/Restart/ColorRect.modulate.a = 0
-	CRT.modulate.a = 0
+	get_tree().paused = true
 	$UI/Restart.show()
 	$UI/Restart/AnimationPlayer.play("appear")
 	$UI/Restart/noise.playing = true
 
 func _on_no_pressed() -> void:
+	get_tree().paused = false
 	get_tree().change_scene_to_file("res://main_menu.tscn")
 func _on_no_mouse_entered() -> void:
 	$UI/Restart/choose.play()
@@ -155,6 +157,7 @@ func _on_no_mouse_exited() -> void:
 
 
 func _on_yes_pressed() -> void:
+	get_tree().paused = false
 	player.respawn()
 	TablePaperAnim.play("RESET")
 	HUDTable.hide()
@@ -204,22 +207,11 @@ func _on_micro_pc_at_home_pressed() -> void:
 func _on_other_anim_animation_finished(anim_name: StringName) -> void:
 	last_other_anim = anim_name
 func _notification(what: int):
-	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
-		PauseUI.show()
-	elif what == NOTIFICATION_APPLICATION_FOCUS_IN:
-		PauseUI.hide()
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT and GlobalVars.player_hp > 0:
+		get_tree().paused = true
+		$UI/Pause/AnimationPlayer.play("appear")
+		$UI/Pause.show()
 
-func pause():
-	if is_paused:
-		is_paused = false
-		$table/mus.volume_db = 0
-		$table/mus_muff.volume_db = -80.0
-		PauseUI.hide()
-	elif not is_paused:
-		is_paused = true
-		$table/mus.volume_db = -80.0
-		$table/mus_muff.volume_db = 0.0
-		PauseUI.show()
 
 
 func _on_finish_body_entered(body: Node2D) -> void:
@@ -252,3 +244,13 @@ func _on_display_timer_timeout() -> void:
 func _on_stop_mus_pressed() -> void:
 	$table/mus.autoplay = true
 	$table/mus.play()
+
+
+func _on_exit_pressed() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://main_menu.tscn")
+
+
+func _on_continue_pressed() -> void:
+	$UI/Pause.hide()
+	get_tree().paused = false

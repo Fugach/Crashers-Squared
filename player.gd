@@ -16,6 +16,7 @@ const shotgun = preload("res://weapons/Shotgun/shotgun_pickable.tscn")
 var is_sliding : bool = false
 var is_slamming : bool = false
 
+@onready var main: Node2D = $".."
 @onready var steps: AudioStreamPlayer2D = $steps
 @onready var wall_slide_loop: AudioStreamPlayer2D = $wall_slide_loop
 @onready var wind: AudioStreamPlayer2D = $wind
@@ -27,6 +28,7 @@ func _physics_process(delta: float) -> void:
 	if is_on_wall_only() and (not is_on_floor()) and velocity.y > 0 and\
 	(Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")):
 		is_sliding = true
+		$SlideCoyote.start()
 		
 		if randi_range(1, 8) == 6:
 			$slide.global_position = global_position + Vector2(5 * direction, 5)
@@ -36,11 +38,9 @@ func _physics_process(delta: float) -> void:
 		
 		velocity.y += get_gravity().y * delta * 0.1 # скользим по стенам
 	elif not is_on_floor():
-		is_sliding = false
 		$slide.emitting = false
 		velocity.y += get_gravity().y * delta # базовое падение
 	else:
-		is_sliding = false
 		$slide.emitting = false
 	
 	if is_sliding and GlobalVars.player_hp > 0:
@@ -66,6 +66,8 @@ func _physics_process(delta: float) -> void:
 			collider.apply_central_impulse(previous_velocity * normal * -0.15)
 
 func _process(_delta: float) -> void:
+	if not GlobalVars.player_hp > 0:
+		main.death()
 	jump()
 	if Input.is_action_just_pressed("spawn_BOX"):
 		var new_box = box.instantiate()
@@ -85,7 +87,6 @@ func _process(_delta: float) -> void:
 		get_parent().add_child(new_enemy)
 		new_enemy.name = "Enemy" + str(GlobalVars.killed)
 	elif Input.is_action_just_pressed("spawn_SHOTGUN"):
-		print("SHOTGUN")
 		var new_shotgun = shotgun.instantiate()
 		new_shotgun.global_position = get_global_mouse_position()
 		get_parent().add_child(new_shotgun)
@@ -96,13 +97,13 @@ func jump():
 		velocity.y += JUMP_VELOCITY
 		if $AnimationPlayer.current_animation == "slam_stop":
 			$AnimationPlayer.play("RESET")
-	elif $Timer.time_left > 0 and Input.is_action_just_pressed("jump"):
+	elif $Coyote.time_left > 0 and Input.is_action_just_pressed("jump"):
 		velocity.y += JUMP_VELOCITY
 		if $AnimationPlayer.current_animation == "slam_stop":
 			$AnimationPlayer.play("RESET")
 	if Input.is_action_just_released("jump") and not is_on_floor() and velocity.y < 0:
 		velocity.y *= 0.6
-	elif Input.is_action_just_pressed("jump") and is_on_wall_only() and availible_jumps > 0:
+	elif Input.is_action_just_pressed("jump") and is_sliding and availible_jumps > 0:
 		if is_slamming:
 			is_slamming = false
 			$AnimationPlayer.stop()
@@ -111,7 +112,7 @@ func jump():
 		availible_jumps -= 1
 	if is_on_floor():
 		availible_jumps = 3
-		$Timer.start()
+		$Coyote.start()
 
 func fall():
 	if position.y > 10000:
@@ -212,6 +213,9 @@ func get_input(delta: float) -> void:
 		respawn()
 
 func respawn():
+	for body in get_parent().get_children():
+		if "Bullet" in str(body) or "Rocket" in str(body) or "Enemy" in str(body):
+			body.queue_free()
 	is_slamming = false
 	is_sliding = false
 	velocity = Vector2(0, 0)
@@ -223,3 +227,7 @@ func respawn():
 func show_damage():
 	#$blood.emitting = true
 	pass
+
+
+func _on_slide_coyote_timeout() -> void:
+	is_sliding = false

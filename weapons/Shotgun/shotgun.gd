@@ -13,6 +13,7 @@ var weapon_owner : String = ""
 var current_angle = null
 var is_player_nearby : bool = false
 var is_player_colliding : bool = false
+var total_bullets : int = 0
 
 func _process(delta: float) -> void:
 	match weapon_owner:
@@ -45,15 +46,17 @@ func logic(delta):
 		Sprite.scale.y = -1
 	
 	if Input.is_action_just_pressed("lmb") and can_shoot and weapon_owner == "Player":
-		shoot(7)
+		shoot(7, true)
 
-func shoot(damage_amount):
+func shoot(damage_amount, is_friendly):
 	for x in range(5):
 		var new_bullet = BULLET.instantiate()
 		new_bullet.damage_amount = damage_amount
 		new_bullet.is_friendly = is_friendly
 		new_bullet.global_position = Spawnpoint.global_position
 		new_bullet.global_rotation = Sprite.global_rotation + randf_range(-0.1, 0.1)
+		new_bullet.name = "Bullet" + str(total_bullets)
+		total_bullets += 1
 		get_node("/root/main").add_child(new_bullet)
 	can_shoot = false
 	Cooldown.start()

@@ -29,7 +29,7 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 	if player != null and hp > 0:
 		if WEAPON.is_player_nearby and WEAPON.can_shoot and GlobalVars.player_hp > 0:
-			WEAPON.shoot(damage_amount)
+			WEAPON.shoot(damage_amount, false)
 		if global_position.y - player.global_position.y > 50 and is_on_floor() and global_position.distance_to(player.global_position) < 100:
 			velocity.y = JUMP_VELOCITY
 
@@ -64,7 +64,7 @@ func push(pwr, dir):
 func damage(damage_amount):
 	$GPUParticles2D.emitting = true
 	hp -= damage_amount
-	if global_position.distance_to(GlobalVars.player.global_position) < 100:
+	if global_position.distance_to(GlobalVars.player.global_position) < 100 and GlobalVars.player_hp > 0:
 		if GlobalVars.player_hp + int(damage_amount * 0.33) <= 100:
 			GlobalVars.player_hp += int(damage_amount * 0.33)
 		else:

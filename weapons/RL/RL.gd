@@ -14,7 +14,7 @@ var current_angle: float = 0.0
 var weapon_owner : String = ""
 var is_friendly : bool = false
 var is_player_colliding : bool = false
-
+var total_rockets : int = 0
 func _process(delta: float) -> void:
 	match weapon_owner:
 		"Player":
@@ -41,18 +41,21 @@ func RL_logic(delta):
 		current_angle = (GlobalVars.player.global_position - global_position).normalized().angle()
 	
 	if -1.5 <= current_angle and current_angle <= 1.5:
-		Sprite.scale.y = 0.375
+		Sprite.scale.y = 1
 	else:
-		Sprite.scale.y = -0.375
+		Sprite.scale.y = -1
 
 	if Input.is_action_just_pressed("lmb") and can_shoot and weapon_owner == "Player":
-		shoot(25)
+		shoot(25, true)
 
-func shoot(damage_amount):
+func shoot(damage_amount, is_friendly):
 	var new_rocket = ROCKET.instantiate()
 	new_rocket.global_position = ShootPos.global_position
 	new_rocket.global_rotation = ShootPos.global_rotation
 	new_rocket.damage_amount = damage_amount
+	new_rocket.is_friendly = is_friendly
+	new_rocket.name = "Rocket" + str(total_rockets)
+	total_rockets += 1
 	get_node("/root/main").add_child(new_rocket)
 	
 	can_shoot = false

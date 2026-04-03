@@ -1,6 +1,14 @@
 [gd_resource type="AudioBusLayout" format=3 uid="uid://d3p6onew80nrs"]
 
+[sub_resource type="AudioEffectFilter" id="AudioEffectFilter_j3pel"]
+resource_name = "Filter"
+cutoff_hz = 500.0
+resonance = 0.1
+gain = 0.5
+
 [resource]
+bus/0/effect/0/effect = SubResource("AudioEffectFilter_j3pel")
+bus/0/effect/0/enabled = false
 bus/1/name = &"Sound"
 bus/1/solo = false
 bus/1/mute = false
