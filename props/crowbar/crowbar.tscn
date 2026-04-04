@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ci6cehplsogff"]
 
-[ext_resource type="Script" uid="uid://b4ur1a46jbvhb" path="res://nailbreaker.gd" id="1_cagx0"]
+[ext_resource type="Script" uid="uid://b4ur1a46jbvhb" path="res://props/crowbar/crowbar.gd" id="1_cagx0"]
 [ext_resource type="Texture2D" uid="uid://dgf538tfe2oq" path="res://textures/idk_just_use_that.png" id="2_soero"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_soero"]

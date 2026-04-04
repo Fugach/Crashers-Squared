@@ -6,8 +6,6 @@ const JUMP_VELOCITY : float = -300.0
 var availible_jumps : int = 3
 var direction : int = 1
 
-const box = preload("res://box.tscn")
-const nailbreaker = preload("res://nailbreaker.tscn")
 const Enemy = preload("res://enemy.tscn")
 const RL = preload("res://weapons/RL/rl_pickable.tscn")
 const shotgun = preload("res://weapons/Shotgun/shotgun_pickable.tscn")
@@ -67,15 +65,7 @@ func _physics_process(delta: float) -> void:
 
 func _process(_delta: float) -> void:
 	jump()
-	if Input.is_action_just_pressed("spawn_BOX"):
-		var new_box = box.instantiate()
-		new_box.global_position = get_global_mouse_position()
-		get_parent().add_child(new_box)
-	elif Input.is_action_just_pressed("spawn_NAILBREAKER"):
-		var new_nailbreaker = nailbreaker.instantiate()
-		new_nailbreaker.global_position = get_global_mouse_position()
-		get_parent().add_child(new_nailbreaker)
-	elif Input.is_action_just_pressed("spawn_RL"):
+	if Input.is_action_just_pressed("spawn_RL"):
 		var new_RL = RL.instantiate()
 		new_RL.global_position = get_global_mouse_position()
 		get_parent().add_child(new_RL)

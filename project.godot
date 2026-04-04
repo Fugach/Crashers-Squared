@@ -18,6 +18,10 @@ config/name="game"
 run/main_scene="uid://1x5v2og6yriv"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
+[audio]
+
+buses/default_bus_layout="uid://d3p6onew80nrs"
+
 [autoload]
 
 GlobalVars="*res://global_vars.gd"

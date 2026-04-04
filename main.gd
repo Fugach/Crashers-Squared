@@ -254,3 +254,11 @@ func _on_exit_pressed() -> void:
 func _on_continue_pressed() -> void:
 	$UI/Pause.hide()
 	get_tree().paused = false
+
+
+func _on_hp_bar_value_changed(value: float) -> void:
+	if not HPBar.value > 0:
+		HPBar.value = 0
+		HPLabel.text = "0"
+		GlobalVars.player_hp = 0
+		death()

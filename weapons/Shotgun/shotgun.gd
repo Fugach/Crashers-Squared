@@ -32,23 +32,27 @@ func _process(delta: float) -> void:
 
 func logic(delta):
 	if weapon_owner == "Player":
-		Sprite.rotation = lerp_angle(Sprite.rotation, (get_global_mouse_position()\
+		global_rotation = lerp_angle(global_rotation, (get_global_mouse_position()\
 		- global_position).angle(), 18 * delta)
 		current_angle = (get_global_mouse_position() - global_position).normalized().angle()
 	elif weapon_owner == "Enemy":
-		Sprite.rotation = lerp_angle(Sprite.rotation, (GlobalVars.player.global_position\
+		global_rotation = lerp_angle(global_rotation, (GlobalVars.player.global_position\
 		- global_position).angle(), 18 * delta)
 		current_angle = (GlobalVars.player.global_position - global_position).normalized().angle()
 	
 	if -1.5 <= current_angle and current_angle <= 1.5:
-		Sprite.scale.y = 1
+		Sprite.flip_v = false
 	else:
-		Sprite.scale.y = -1
+		Sprite.flip_v = true
 	
 	if Input.is_action_just_pressed("lmb") and can_shoot and weapon_owner == "Player":
 		shoot(7, true)
 
 func shoot(damage_amount, is_friendly):
+	if Sprite.flip_v == false:
+		$AnimationPlayer.play("shoot_right")
+	else:
+		$AnimationPlayer.play("shoot_left")
 	for x in range(5):
 		var new_bullet = BULLET.instantiate()
 		new_bullet.damage_amount = damage_amount

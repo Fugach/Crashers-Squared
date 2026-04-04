@@ -978,7 +978,6 @@ one_shot = true
 libraries/ = SubResource("AnimationLibrary_qnost")
 
 [node name="Restart" type="CanvasLayer" parent="UI" unique_id=1233357972]
-visible = false
 
 [node name="noise" type="AudioStreamPlayer" parent="UI/Restart" unique_id=1460418343]
 stream = ExtResource("8_d13ii")

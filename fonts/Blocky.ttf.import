@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://o5jco35hc1te"
-path="res://.godot/imported/Blocky.ttf-fc56e8cb162654d1287dd69952568292.fontdata"
+path="res://.godot/imported/Blocky.ttf-3e37015adb1805128f81e5f724ac899b.fontdata"
 
 [deps]
 
-source_file="res://Blocky.ttf"
-dest_files=["res://.godot/imported/Blocky.ttf-fc56e8cb162654d1287dd69952568292.fontdata"]
+source_file="res://fonts/Blocky.ttf"
+dest_files=["res://.godot/imported/Blocky.ttf-3e37015adb1805128f81e5f724ac899b.fontdata"]
 
 [params]
 

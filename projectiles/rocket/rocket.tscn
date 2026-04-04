@@ -153,6 +153,7 @@ lifetime = 10.0
 one_shot = true
 speed_scale = 10.0
 explosiveness = 1.0
+randomness = 0.45
 lifetime_randomness = 0.27
 spread = 180.0
 gravity = Vector2(0, 4)

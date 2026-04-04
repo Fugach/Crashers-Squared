@@ -1,36 +1,31 @@
 [gd_scene format=3 uid="uid://b6yunx8h1pcdi"]
 
+[ext_resource type="Texture2D" uid="uid://dkfye82uw8lau" path="res://textures/RL_new.png" id="2_avh8d"]
 [ext_resource type="Script" uid="uid://ci2twp37kfhsl" path="res://weapons/rl/rl_pickable.gd" id="3_hyole"]
-[ext_resource type="Texture2D" uid="uid://dr0enle3tt5ku" path="res://textures/RL.png" id="3_vrrnw"]
 [ext_resource type="AudioStream" uid="uid://3yqper8j67ko" path="res://sounds/RL/RL_pick_up.ogg" id="62_gauwa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vrrnw"]
-size = Vector2(19, 10)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_k23kd"]
-size = Vector2(16.75, 7.5)
+size = Vector2(24, 14)
 
 [node name="RigidBody2D" type="RigidBody2D" unique_id=1364025587]
 script = ExtResource("3_hyole")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1857143799]
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("3_vrrnw")
+texture = ExtResource("2_avh8d")
 region_enabled = true
-region_rect = Rect2(0, 0, 32, 13)
+region_rect = Rect2(0, 0, 21, 13)
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1913057188]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2145757955]
-position = Vector2(-0.5, 0)
+position = Vector2(1, -1)
 shape = SubResource("RectangleShape2D_vrrnw")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1247523995]
-shape = SubResource("RectangleShape2D_k23kd")
 
 [node name="pickup" type="AudioStreamPlayer2D" parent="." unique_id=1886604973]
 stream = ExtResource("62_gauwa")
-bus = &"sound"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=173748751]
+polygon = PackedVector2Array(-2, 1, -2, 3, -5, 3, -5, 1, -7, 1, -7, 2, -10, 2, -10, -6, -7, -6, -7, -5, 8, -5, 8, -6, 11, -6, 11, 2, 8, 2, 8, 1, 6, 1, 6, 3, 5, 3, 5, 5, 2, 5, 2, 1)
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="finished" from="pickup" to="." method="_on_pickup_finished"]

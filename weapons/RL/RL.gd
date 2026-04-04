@@ -32,11 +32,11 @@ func _process(delta: float) -> void:
 
 func RL_logic(delta):
 	if weapon_owner == "Player":
-		Sprite.rotation = lerp_angle(Sprite.rotation, (get_global_mouse_position()\
+		global_rotation = lerp_angle(global_rotation, (get_global_mouse_position()\
 		- global_position).angle(), 20 * delta)
 		current_angle = (get_global_mouse_position() - global_position).normalized().angle()
 	elif weapon_owner == "Enemy":
-		Sprite.rotation = lerp_angle(Sprite.rotation, (GlobalVars.player.global_position\
+		global_rotation = lerp_angle(global_rotation, (GlobalVars.player.global_position\
 		- global_position).angle(), 20 * delta)
 		current_angle = (GlobalVars.player.global_position - global_position).normalized().angle()
 	
@@ -49,6 +49,7 @@ func RL_logic(delta):
 		shoot(25, true)
 
 func shoot(damage_amount, is_friendly):
+	$AnimationPlayer.play("shoot")
 	var new_rocket = ROCKET.instantiate()
 	new_rocket.global_position = ShootPos.global_position
 	new_rocket.global_rotation = ShootPos.global_rotation
@@ -57,6 +58,13 @@ func shoot(damage_amount, is_friendly):
 	new_rocket.name = "Rocket" + str(total_rockets)
 	total_rockets += 1
 	get_node("/root/main").add_child(new_rocket)
+	$RL_sprite/Clouds_small.amount = randi_range(0, 3)
+	$RL_sprite/Cloud.initial_velocity_max += (GlobalVars.player_velocity.x + GlobalVars.player_velocity.y) * 1.25
+	$RL_sprite/Cloud.initial_velocity_min += (GlobalVars.player_velocity.x + GlobalVars.player_velocity.y) * 1.25
+	$RL_sprite/Clouds_small.initial_velocity_max += (GlobalVars.player_velocity.x + GlobalVars.player_velocity.y) * 1.25
+	$RL_sprite/Clouds_small.initial_velocity_min += (GlobalVars.player_velocity.x + GlobalVars.player_velocity.y) * 1.25
+	$RL_sprite/Cloud.emitting = true
+	$RL_sprite/Clouds_small.emitting = true
 	
 	can_shoot = false
 	Cooldown.start()
