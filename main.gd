@@ -55,15 +55,17 @@ func _input(event: InputEvent) -> void:
 		get_tree().quit(0)
 	if Input.is_action_pressed("vol_up") and not Input.is_action_pressed("shift"):
 		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), min(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) + 1, 25))
-		
+		if AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) <= -75:
+			AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), -25)
 		if $UI/HUD/QuickVolume.modulate == Color("ffffff00"):
 			Vol_anim.play("show")
 		elif Vol_anim.current_animation == "hide":
 			Vol_anim.play_backwards("hide")
 		update_volume()
 	elif Input.is_action_pressed("vol_down") and not Input.is_action_pressed("shift"):
-		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), max(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) - 1, -25))
-		
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), max(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) - 1, -26))
+		if AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) == -26:
+			AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), -80.0)
 		if $UI/HUD/QuickVolume.modulate == Color("ffffff00"):
 			Vol_anim.play("show")
 		elif Vol_anim.current_animation == "hide":
@@ -206,13 +208,6 @@ func _on_micro_pc_at_home_pressed() -> void:
 
 func _on_other_anim_animation_finished(anim_name: StringName) -> void:
 	last_other_anim = anim_name
-func _notification(what: int):
-	if what == NOTIFICATION_APPLICATION_FOCUS_OUT and GlobalVars.player_hp > 0:
-		get_tree().paused = true
-		$UI/Pause/AnimationPlayer.play("appear")
-		$UI/Pause.show()
-
-
 
 func _on_finish_body_entered(body: Node2D) -> void:
 	if body == player:
@@ -222,20 +217,29 @@ func _on_finish_body_entered(body: Node2D) -> void:
 		player.respawn()
 
 func update_volume():
-		Vol_timer.start()
-		Vol_percent.value = round((AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) + 25) / 50 * 100)
-		if AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) > 0:
-			Vol_db.text = "|    +" + str(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))) + " дб"
-		elif AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) < 0:
-			Vol_db.text = "|    " + str(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))) + " дб"
-		else:
-			Vol_db.text = "|         0.0 дб"
-		Vol_progress.value = Vol_percent.value
-		
-		GlobalConfig.save_audio(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")),\
-		AudioServer.get_bus_volume_db(AudioServer.get_bus_index("music")),\
-		AudioServer.get_bus_volume_db(AudioServer.get_bus_index("sound")),\
-		AudioServer.get_bus_volume_db(AudioServer.get_bus_index("atmosphere")))
+	$UI/HUD/QuickVolume/blip.pitch_scale = 1.0 + AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) * 0.01
+	print($UI/HUD/QuickVolume/blip.pitch_scale)
+	$UI/HUD/QuickVolume/blip.play()
+	Vol_timer.start()
+	Vol_percent.value = round((AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) + 25) / 50 * 100)
+	if AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) > 0:
+		$UI/HUD/QuickVolume/infinity.hide()
+		Vol_db.text = "|    +" + str(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))) + " дб"
+	elif AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) == -80:
+		$UI/HUD/QuickVolume/infinity.show()
+		Vol_db.text = "|     -                дб"
+	elif AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) < 0:
+		$UI/HUD/QuickVolume/infinity.hide()
+		Vol_db.text = "|    " + str(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))) + " дб"
+	elif AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) == 0:
+		$UI/HUD/QuickVolume/infinity.hide()
+		Vol_db.text = "|         0.0 дб"
+	Vol_progress.value = Vol_percent.value
+	
+	GlobalConfig.save_audio(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")),\
+	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("music")),\
+	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("sound")),\
+	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("atmosphere")))
 
 func _on_display_timer_timeout() -> void:
 	Vol_anim.play("hide")

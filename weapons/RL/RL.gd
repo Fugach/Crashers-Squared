@@ -15,10 +15,14 @@ var weapon_owner : String = ""
 var is_friendly : bool = false
 var is_player_colliding : bool = false
 var total_rockets : int = 0
+
+func _ready():
+	get_node("/root/main/UI/HUD/Slots").update()
+
 func _process(delta: float) -> void:
 	match weapon_owner:
 		"Player":
-			if GlobalVars.current_slot == my_slot:
+			if GlobalVars.current_slot_num == my_slot:
 				visible = true
 				RL_logic(delta)
 			else:
@@ -50,6 +54,8 @@ func RL_logic(delta):
 
 func shoot(damage_amount, is_friendly):
 	$AnimationPlayer.play("shoot")
+	$shoot.pitch_scale = randf_range(0.8, 1.2)
+	$shoot.play()
 	var new_rocket = ROCKET.instantiate()
 	new_rocket.global_position = ShootPos.global_position
 	new_rocket.global_rotation = ShootPos.global_rotation

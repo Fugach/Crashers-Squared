@@ -3,7 +3,6 @@ extends Node2D
 @onready var Sprite : Sprite2D = $Sprite2D
 @onready var Spawnpoint : Marker2D = $Sprite2D/spawnpoint
 @onready var Cooldown : Timer = $cooldown
-@onready var Shapecast : ShapeCast2D = $Sprite2D/ShapeCast2D
 
 const BULLET = preload("uid://csr8w1qcnqlbd")
 var my_slot : String = ""
@@ -15,10 +14,13 @@ var is_player_nearby : bool = false
 var is_player_colliding : bool = false
 var total_bullets : int = 0
 
+func _ready():
+	get_node("/root/main/UI/HUD/Slots").update()
+
 func _process(delta: float) -> void:
 	match weapon_owner:
 		"Player":
-			if GlobalVars.current_slot == my_slot:
+			if GlobalVars.current_slot_num == my_slot:
 				visible = true
 				logic(delta)
 			else:
@@ -42,13 +44,19 @@ func logic(delta):
 	
 	if -1.5 <= current_angle and current_angle <= 1.5:
 		Sprite.flip_v = false
+		Spawnpoint.position.y = -1
+		$Sprite2D/Area2D.position.y = 0
 	else:
 		Sprite.flip_v = true
+		Spawnpoint.position.y = 2
+		$Sprite2D/Area2D.position.y = 3
 	
 	if Input.is_action_just_pressed("lmb") and can_shoot and weapon_owner == "Player":
 		shoot(7, true)
 
 func shoot(damage_amount, is_friendly):
+	$shoot.pitch_scale = randf_range(0.8, 1.2)
+	$shoot.play()
 	if Sprite.flip_v == false:
 		$AnimationPlayer.play("shoot_right")
 	else:
@@ -58,7 +66,7 @@ func shoot(damage_amount, is_friendly):
 		new_bullet.damage_amount = damage_amount
 		new_bullet.is_friendly = is_friendly
 		new_bullet.global_position = Spawnpoint.global_position
-		new_bullet.global_rotation = Sprite.global_rotation + randf_range(-0.1, 0.1)
+		new_bullet.global_rotation = Sprite.global_rotation + x * 0.05 - 2 * 0.05
 		new_bullet.name = "Bullet" + str(total_bullets)
 		total_bullets += 1
 		get_node("/root/main").add_child(new_bullet)

@@ -4,12 +4,12 @@ extends Node
 @onready var player : CharacterBody2D = null
 @onready var player_hp : int = 100
 @onready var lifes : int = 3
-var current_item = "nothing"
-var current_slot = ""
-var items = {
-	"item1": "nothing",
-	"item2": "nothing",
-	"item3": "nothing"
+
+var current_slot_num = ""
+var slots = {
+	"slot1": "nothing",
+	"slot2": "nothing",
+	"slot3": "nothing"
 }
 var player_velocity = Vector2(0, 0)
 var player_pos = Vector2(0, 0)

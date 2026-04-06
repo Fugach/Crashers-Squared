@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bvfh321h5rhem" path="res://weapons/shotgun/shotgun.gd" id="1_hwrt3"]
 [ext_resource type="Texture2D" uid="uid://ckpacdte3gvhm" path="res://textures/idk2.png" id="2_okyed"]
+[ext_resource type="AudioStream" uid="uid://dgbmjh6wm6g2i" path="res://sounds/shotgun/shotgun_shoot.ogg" id="3_apfrx"]
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_rxqsx"]
 points = PackedVector2Array(13, -2, 13, 0, 150, 15, 160, 0, 150, -15)
@@ -44,7 +45,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.033333335, 0.26666668, 0.33333334),
-"transitions": PackedFloat32Array(1, 2, 1, 1),
+"transitions": PackedFloat32Array(1, 2, 2, 1),
 "update": 0,
 "values": [Vector2(0, 0), Vector2(-2, 0), Vector2(1, 0), Vector2(0, 0)]
 }
@@ -56,7 +57,7 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.033333335, 0.26666668, 0.3333),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"transitions": PackedFloat32Array(1, 1, 2, 1),
 "update": 0,
 "values": [0.0, 0.7853981633974483, -0.08726646259971647, 0.0]
 }
@@ -72,7 +73,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.033333335, 0.26666668, 0.33333334),
-"transitions": PackedFloat32Array(1, 2, 1, 1),
+"transitions": PackedFloat32Array(1, 2, 2, 1),
 "update": 0,
 "values": [Vector2(0, 0), Vector2(-2, 0), Vector2(1, 0), Vector2(0, 0)]
 }
@@ -84,7 +85,7 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.033333335, 0.26666668, 0.3333),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"transitions": PackedFloat32Array(1, 1, 2, 1),
 "update": 0,
 "values": [0.0, -0.7853981633974483, 0.08726646259971647, 0.0]
 }
@@ -119,6 +120,9 @@ shape = SubResource("ConvexPolygonShape2D_rxqsx")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=701821859]
 libraries/ = SubResource("AnimationLibrary_ggjqm")
+
+[node name="shoot" type="AudioStreamPlayer2D" parent="." unique_id=173016495]
+stream = ExtResource("3_apfrx")
 
 [connection signal="timeout" from="cooldown" to="." method="_on_cooldown_timeout"]
 [connection signal="body_entered" from="Sprite2D/Area2D" to="." method="_on_area_2d_body_entered"]

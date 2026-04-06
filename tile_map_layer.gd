@@ -22,10 +22,7 @@ var total_enemies : int = 0
 
 func _ready() -> void:
 	var rooms_amount = randi_range(3, 15)
-	print("Generating ", str(rooms_amount),  " rooms")
 	gen_dungeon(rooms_amount)
-	
-	#$AudioStreamPlayer2D.play()
 
 func gen_dungeon(rooms_amount):
 	clear()
@@ -34,6 +31,9 @@ func gen_dungeon(rooms_amount):
 		if body is RigidBody2D or "Enemy" in str(body) or "Rocket" in str(body) or "Bullet" in str(body):
 			body.queue_free()
 	$bg.clear()
+	
+	print("Generating ", str(rooms_amount),  " rooms")
+	
 	room_anchor = Vector2(3, 2)
 	room_size = Vector2(15, 8)
 	gen_direction.x = [-1, 1].pick_random()
@@ -65,14 +65,14 @@ func gen_dungeon(rooms_amount):
 				hall_pos1 = old_room_anchor + old_room_size
 				hall_pos2 = room_anchor + Vector2(0, room_size.y)
 				generate_hall(hall_pos1, hall_pos2)
-				set_cell(hall_pos1, 0, Vector2(0, 1))
-				set_cell(hall_pos2, 0, Vector2(0, 2))
+				#set_cell(hall_pos1, 0, Vector2(0, 1))
+				#set_cell(hall_pos2, 0, Vector2(0, 2))
 			elif gen_direction.x == -1:
 				hall_pos1 = room_anchor + room_size
 				hall_pos2 = old_room_anchor + Vector2(0, old_room_size.y)
 				generate_hall(hall_pos1, hall_pos2)
-				set_cell(hall_pos1, 0, Vector2(0, 1))
-				set_cell(hall_pos2, 0, Vector2(0, 2))
+				#set_cell(hall_pos1, 0, Vector2(0, 1))
+				#set_cell(hall_pos2, 0, Vector2(0, 2))
 		else:
 			if gen_direction.x == 1:
 				finish_zone.global_position = (room_anchor - Vector2(3, 3) + room_size) * Vector2(16, 16)
@@ -86,6 +86,9 @@ func gen_dungeon(rooms_amount):
 				hall_pos1 = room_anchor + room_size
 				hall_pos2 = old_room_anchor + Vector2(0, old_room_size.y)
 				generate_hall(hall_pos1, hall_pos2)
+	
+	print("Generation is finished")
+	$tada.play()
 
 func generate_room(pos, size, doors, height, enemies):
 	#for x in range(size.x):
@@ -217,6 +220,10 @@ func generate_room(pos, size, doors, height, enemies):
 		set_cell(pos + Vector2(-2, y), 0, Vector2(7, 2))
 		set_cell(pos + Vector2(size.x + 2, y), 0, Vector2(8, 2))
 	
+	for x in range(size.x):
+		for y in range(size.y):
+			$bg.set_cell(pos + Vector2(x, y), 0, Vector2(0, 0))
+	
 	set_cell(pos + Vector2(-1, -1), 0, Vector2(6, 0))
 	set_cell(pos + Vector2(-1, size.y + 1), 0, Vector2(6, 0))
 	set_cell(pos + Vector2(size.x + 1, -1), 0, Vector2(6, 0))
@@ -252,33 +259,10 @@ func generate_room(pos, size, doors, height, enemies):
 			#get_parent().add_child.call_deferred(new_enemy)
 	
 func generate_hall(pos1, pos2):
-	#if pos1.y - pos2.y == 0:
-		#for x in (abs(pos1.x - pos2.x) + 1):
-			#set_cell(pos1 + Vector2(x, 0), 1, Vector2(4, 0))
-			#set_cell(pos1 + Vector2(x, -3), 1, Vector2(4, 0))
-			#for y in range(2):
-				#$bg.set_cell(Vector2(pos1 + Vector2(x, -1 + y * -1)), 0, Vector2(1, 0))
-	#else:
-		#var points_delta = pos1.y - pos2.y
-		#var num_stairs : int = abs(points_delta) + 1
-		#var stair_len : int = round((abs(pos1.x - pos2.x) + 1) / num_stairs)
-		#print(num_stairs, " ", stair_len, " pos1 == ", pos1, " pos2 == ", pos2)
-		#for y in range(num_stairs):
-			#for x in range(stair_len):
-				#for bgy in range(4):
-					#$bg.set_cell(Vector2(pos1 + Vector2(x + (stair_len * y), y * -1 * sign(points_delta) - bgy)), 0, Vector2(1, 0))
-				#set_cell(pos1 + Vector2(x + (stair_len * y), y * -1 * sign(points_delta)), 1, Vector2(4, 0))
-				#set_cell(pos1 + Vector2(x + (stair_len * y), y * -1 * sign(points_delta) - 4), 1, Vector2(4, 0))
-				#if x == stair_len -1 and y != num_stairs - 1:
-					#if points_delta > 0:
-						#set_cell(pos1 + Vector2(x + (stair_len * y), y * -1 * sign(points_delta) - 1), 1, Vector2(9, 1))
-						#set_cell(pos1 + Vector2(x + (stair_len * y), y * -1 * sign(points_delta) - 5), 1, Vector2(9, 1))
-					#elif points_delta < 0:
-						#set_cell(pos1 + Vector2(x + 1 + (stair_len * y), y * -1 * sign(points_delta)), 1, Vector2(7, 2))
-						#set_cell(pos1 + Vector2(x + 1 + (stair_len * y), y * -1 * sign(points_delta) - 4), 1, Vector2(7, 2))
 	for x in range(3):
 		for y in range(3):
 			erase_cell(pos1 + Vector2(x, y - 3))
+			$bg.set_cell(pos1 + Vector2(x, y - 3), 0, Vector2(1, 0))
 	set_cell(pos1 + Vector2(0, -4), 0, Vector2(6, 1))
 	set_cell(pos1 + Vector2(1, -4), 0, Vector2(1, 2))
 	set_cell(pos1 + Vector2(2, -4), 0, Vector2(9, 1))
@@ -288,6 +272,7 @@ func generate_hall(pos1, pos2):
 	for x in range(3):
 		for y in range(3):
 			erase_cell(pos2 + Vector2(x - 2, y - 3))
+			$bg.set_cell(pos1 + Vector2(x + 3, y - 3), 0, Vector2(1, 0))
 	set_cell(pos2 + Vector2(0, -4), 0, Vector2(5, 1))
 	set_cell(pos2 + Vector2(-1, -4), 0, Vector2(1, 2))
 	set_cell(pos2 + Vector2(-2, -4), 0, Vector2(9, 2))

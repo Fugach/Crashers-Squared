@@ -168,24 +168,21 @@ func get_input(delta: float) -> void:
 		else:
 			velocity.x *= 0.99
 	
-	if Input.is_action_just_pressed("item1"):
-		GlobalVars.current_item = GlobalVars.items.item1
-		GlobalVars.current_slot = "item1"
-		if GlobalVars.current_item == "nothing":
+	if Input.is_action_just_pressed("slot1"):
+		GlobalVars.current_slot_num = "slot1"
+		if GlobalVars.slots[GlobalVars.current_slot_num] == "nothing":
 			$Camera2D.position_smoothing_speed = 2
 		else:
 			$Camera2D.position_smoothing_speed = 10
-	elif Input.is_action_just_pressed("item2"):
-		GlobalVars.current_item = GlobalVars.items.item2
-		GlobalVars.current_slot = "item2"
-		if GlobalVars.current_item == "nothing":
+	elif Input.is_action_just_pressed("slot2"):
+		GlobalVars.current_slot_num = "slot2"
+		if GlobalVars.slots[GlobalVars.current_slot_num] == "nothing":
 			$Camera2D.position_smoothing_speed = 2
 		else:
 			$Camera2D.position_smoothing_speed = 10
-	elif Input.is_action_just_pressed("item3"):
-		GlobalVars.current_item = GlobalVars.items.item3
-		GlobalVars.current_slot = "item3"
-		if GlobalVars.current_item == "nothing":
+	elif Input.is_action_just_pressed("slot3"):
+		GlobalVars.current_slot_num = "slot3"
+		if GlobalVars.slots[GlobalVars.current_slot_num] == "nothing":
 			$Camera2D.position_smoothing_speed = 2
 		else:
 			$Camera2D.position_smoothing_speed = 10
@@ -207,7 +204,7 @@ func respawn():
 	is_slamming = false
 	is_sliding = false
 	velocity = Vector2(0, 0)
-	global_position = Vector2(150, 145)
+	global_position = Vector2(150, 156)
 	$Camera2D.global_position = global_position
 	GlobalVars.player_hp = 100
 	$Camera2D.reset_smoothing()

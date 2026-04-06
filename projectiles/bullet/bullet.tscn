@@ -25,6 +25,7 @@ size = Vector2(20, 1)
 script = ExtResource("1_awion")
 
 [node name="Line2D" type="Line2D" parent="." unique_id=1527437106]
+modulate = Color(1.8247963, 1.8247963, 1.8247963, 1)
 z_index = -1
 position = Vector2(-0.10576922, 0)
 scale = Vector2(0.78846157, 1)

@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-uniform float pixel_size = 4.0;
+uniform float pixel_size = 16.0;
 
 void fragment() {
     // Snap lighting and shadows to pixel grid.

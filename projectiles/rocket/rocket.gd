@@ -51,14 +51,15 @@ func _on_collision_body_entered(body: Node2D):
 	if ((body is CharacterBody2D) or (body is RigidBody2D)) and can_push:
 		if body.has_method("damage") and body not in targets:
 			targets.append(body)
-			if not is_friendly and body != GlobalVars.player:
-				body.damage(damage_amount)
-			else:
+			if body == GlobalVars.player and is_friendly:
 				body.damage(8)
+			else:
+				body.damage(25)
 		var explosion_pos = ExplosionPos.global_position
 		var dir = (body.global_position - explosion_pos).normalized()
 		var distance = explosion_pos.distance_to(body.global_position)
 		var force = 800.0 / max(distance * 0.08, 1.0)
-		body.push(force, dir)
+		if body.has_method("push"):
+			body.push(force, dir)
 func _on_animation_finished(anim_name: StringName) -> void:
 	can_push = false
