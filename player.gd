@@ -9,10 +9,12 @@ var direction : int = 1
 const Enemy = preload("res://enemy.tscn")
 const RL = preload("res://weapons/RL/rl_pickable.tscn")
 const shotgun = preload("res://weapons/Shotgun/shotgun_pickable.tscn")
+@onready var SlotsHUD: Node2D = $"../UI/HUD/Slots"
 
 
 var is_sliding : bool = false
 var is_slamming : bool = false
+var throw_power : Vector2 = Vector2(-10000, -10000)
 
 @onready var main: Node2D = $".."
 @onready var steps: AudioStreamPlayer2D = $steps
@@ -50,7 +52,6 @@ func _physics_process(delta: float) -> void:
 	var previous_velocity = velocity
 	
 	if GlobalVars.player_hp > 0:
-		wind_ambient()
 		get_input(delta)
 		fall()
 		move_and_slide()
@@ -103,6 +104,12 @@ func jump():
 		$Coyote.start()
 
 func fall():
+	if not is_on_floor() and not is_on_ceiling():
+		wind.volume_db = min((abs(velocity.x) + abs(velocity.y)) * 0.025 - 35, 7.5)
+		wind.pitch_scale = (velocity.x + velocity.y) * 0.0001 + 1.0
+	else:
+		wind.volume_db = -80
+	
 	if position.y > 10000:
 		respawn()
 		#position.y = 233
@@ -112,17 +119,6 @@ func fall():
 		is_slamming = false
 		$Camera2D.reset_smoothing()
 		$AnimationPlayer.play("RESET")
-
-func wind_ambient():
-	if not is_on_floor() and not is_on_ceiling():
-		wind.volume_db = min((abs(velocity.x) + abs(velocity.y)) * 0.025 - 35, 7.5)
-		wind.pitch_scale = (velocity.x + velocity.y) * 0.0001 + 1.0
-	else:
-		wind.volume_db = -80
-
-func animation_finished(anim_name: StringName) -> void:
-	if anim_name == "slam_start" and is_on_floor():
-		$AnimationPlayer.play("slam_stop")
 
 func push(pwr, _dir):
 	if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
@@ -170,23 +166,33 @@ func get_input(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("slot1"):
 		GlobalVars.current_slot_num = "slot1"
-		if GlobalVars.slots[GlobalVars.current_slot_num] == "nothing":
-			$Camera2D.position_smoothing_speed = 2
-		else:
-			$Camera2D.position_smoothing_speed = 10
+		SlotsHUD.update()
 	elif Input.is_action_just_pressed("slot2"):
 		GlobalVars.current_slot_num = "slot2"
-		if GlobalVars.slots[GlobalVars.current_slot_num] == "nothing":
-			$Camera2D.position_smoothing_speed = 2
-		else:
-			$Camera2D.position_smoothing_speed = 10
+		SlotsHUD.update()
 	elif Input.is_action_just_pressed("slot3"):
 		GlobalVars.current_slot_num = "slot3"
-		if GlobalVars.slots[GlobalVars.current_slot_num] == "nothing":
-			$Camera2D.position_smoothing_speed = 2
-		else:
-			$Camera2D.position_smoothing_speed = 10
+		SlotsHUD.update()
 	
+	if Input.is_action_just_pressed("throw_item"):
+		var item : Node2D = GlobalVars.slots[GlobalVars.current_slot_num]
+		if item != null:
+			$throw.play()
+			match item.name.left(-6):
+				"Shotgun":
+					var new_shogun = shotgun.instantiate()
+					new_shogun.global_position = global_position + Vector2(0, -15)
+					new_shogun.apply_force(throw_power * Vector2(sign(global_position.x - get_global_mouse_position().x), 1))
+					get_parent().add_child(new_shogun)
+				"RL":
+					var new_RL = RL.instantiate()
+					new_RL.global_position = global_position + Vector2(0, -15)
+					new_RL.apply_force(throw_power * Vector2(sign(global_position.x - get_global_mouse_position().x), 1))
+					get_parent().add_child(new_RL)
+			item.queue_free()
+			GlobalVars.slots[GlobalVars.current_slot_num] = null
+			$Camera2D.position_smoothing_speed = 2
+			SlotsHUD.update()
 	if Input.is_action_pressed("zoom_in"):
 		$Camera2D.zoom.x = min($Camera2D.zoom.x + 0.3 * delta, 1.0)
 		$Camera2D.zoom.y = min($Camera2D.zoom.y + 0.3 * delta, 1.0)
@@ -213,6 +219,8 @@ func show_damage():
 	#$blood.emitting = true
 	pass
 
-
+func animation_finished(anim_name: StringName) -> void:
+	if anim_name == "slam_start" and is_on_floor():
+		$AnimationPlayer.play("slam_stop")
 func _on_slide_coyote_timeout() -> void:
 	is_sliding = false

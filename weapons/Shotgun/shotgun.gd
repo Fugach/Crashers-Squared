@@ -13,8 +13,10 @@ var current_angle = null
 var is_player_nearby : bool = false
 var is_player_colliding : bool = false
 var total_bullets : int = 0
+var my_name = "shotgun"
 
 func _ready():
+	GlobalVars.slots[str(my_slot)] = self
 	get_node("/root/main/UI/HUD/Slots").update()
 
 func _process(delta: float) -> void:

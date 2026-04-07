@@ -176,6 +176,7 @@ target_position = Vector2(9, 0)
 hit_from_inside = true
 
 [node name="Babax" type="Sprite2D" parent="." unique_id=755670359]
+visible = false
 z_index = 1
 texture = ExtResource("3_r2l15")
 

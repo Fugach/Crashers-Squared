@@ -1,13 +1,41 @@
 extends Node2D
 
-@onready var Slot1 : AnimatedSprite2D = $slot1
-@onready var Slot2 : AnimatedSprite2D = $slot2
-@onready var Slot3 : AnimatedSprite2D = $slot3
+@onready var Slot1 : AnimatedSprite2D = $Slot1
+@onready var Slot2 : AnimatedSprite2D = $Slot2
+@onready var Slot3 : AnimatedSprite2D = $Slot3
+@onready var Current: Sprite2D = $Current
+@onready var Camera: Camera2D = $"../../../Player/Camera2D"
 
 func _ready() -> void:
-	update()
-
+	#update() скорее всего не нужно, ибо уже всё предустановлено
+	pass
+func _process(delta: float) -> void:
+	match GlobalVars.current_slot_num:
+		"slot1":
+			Current.global_position = lerp(Current.global_position, Slot1.global_position, 15 * delta)
+		"slot2":
+			Current.global_position = lerp(Current.global_position, Slot2.global_position, 15 * delta)
+		"slot3":
+			Current.global_position = lerp(Current.global_position, Slot3.global_position, 15 * delta)
 func update():
-	Slot1.play(GlobalVars.slots["slot1"])
-	Slot2.play(GlobalVars.slots["slot2"])
-	Slot3.play(GlobalVars.slots["slot3"])
+	GlobalVars.current_slot_node = GlobalVars.slots[GlobalVars.current_slot_num]
+	if GlobalVars.current_slot_node == null:
+		$empty.play()
+		Camera.position_smoothing_speed = 2
+	else:
+		Camera.position_smoothing_speed = 10
+	
+	if GlobalVars.slots["slot1"] != null:
+		Slot1.play(GlobalVars.slots["slot1"].my_name)
+	else:
+		Slot1.play("empty")
+	
+	if GlobalVars.slots["slot2"] != null:
+		Slot2.play(GlobalVars.slots["slot2"].my_name)
+	else:
+		Slot2.play("empty")
+	
+	if GlobalVars.slots["slot3"] != null:
+		Slot3.play(GlobalVars.slots["slot3"].my_name)
+	else:
+		Slot3.play("empty")

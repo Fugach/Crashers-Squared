@@ -15,8 +15,10 @@ var weapon_owner : String = ""
 var is_friendly : bool = false
 var is_player_colliding : bool = false
 var total_rockets : int = 0
+var my_name = "RL"
 
 func _ready():
+	GlobalVars.slots[str(my_slot)] = self
 	get_node("/root/main/UI/HUD/Slots").update()
 
 func _process(delta: float) -> void:

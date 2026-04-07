@@ -48,7 +48,7 @@ func _on_cpu_particles_2d_finished():
 	queue_free()
 
 func _on_collision_body_entered(body: Node2D):
-	if ((body is CharacterBody2D) or (body is RigidBody2D)) and can_push:
+	if ((body is CharacterBody2D) or (body is RigidBody2D) or ("Bullet" in body.name)) and can_push:
 		if body.has_method("damage") and body not in targets:
 			targets.append(body)
 			if body == GlobalVars.player and is_friendly:

@@ -40,12 +40,15 @@
 [ext_resource type="AudioStream" uid="uid://csxql5nmexjnu" path="res://sounds/UI/blip/blipSelect-8.wav" id="23_gngh3"]
 [ext_resource type="Texture2D" uid="uid://cphoabg3r0xx2" path="res://textures/UI/QuickVolume/infinity.png" id="24_0n3wm"]
 [ext_resource type="Texture2D" uid="uid://dj576ntgm1cqk" path="res://textures/micro-table.png" id="25_0odxb"]
+[ext_resource type="AudioStream" uid="uid://bgnc62heiaiq5" path="res://sounds/UI/blip/blipSelect.wav" id="25_abqjc"]
+[ext_resource type="AudioStream" uid="uid://hcfvvronc0xu" path="res://sounds/throw.wav" id="25_blkrb"]
 [ext_resource type="Script" uid="uid://jokwl8y6beww" path="res://slots.gd" id="25_hrvbo"]
 [ext_resource type="Texture2D" uid="uid://vi7vl85k6lqa" path="res://textures/HUD/slots/main.png" id="25_wnkbs"]
 [ext_resource type="Texture2D" uid="uid://cchgved8conpv" path="res://textures/HUD/slots/pistol.png" id="26_f6a44"]
 [ext_resource type="Texture2D" uid="uid://bbdi21tlcwtsq" path="res://textures/UI/tips_mouse.png" id="26_lswn8"]
 [ext_resource type="Texture2D" uid="uid://bmgalag65n3bi" path="res://textures/HUD/slots/RL.png" id="28_uypp3"]
 [ext_resource type="Texture2D" uid="uid://3hj22n845p05" path="res://textures/HUD/slots/shotgun.png" id="29_blkrb"]
+[ext_resource type="Texture2D" uid="uid://jy5ugiej6ajn" path="res://textures/HUD/slots/current.png" id="30_uypp3"]
 [ext_resource type="Texture2D" uid="uid://djjmrmoaufyg2" path="res://textures/tiles/tile_main.png" id="35_h8e4i"]
 [ext_resource type="Texture2D" uid="uid://b2tvfl8cqi60j" path="res://textures/babax.png" id="39_come4"]
 [ext_resource type="Texture2D" uid="uid://b73eakvkvyx8r" path="res://textures/particles/slide/4.png" id="42_blkrb"]
@@ -305,6 +308,41 @@ stream_1/stream = ExtResource("15_ok6jj")
 stream_2/stream = ExtResource("16_facbu")
 stream_3/stream = ExtResource("17_b1qrp")
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_0cbny"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("28_uypp3")
+}],
+"loop": true,
+"name": &"RL",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("25_wnkbs")
+}],
+"loop": false,
+"name": &"empty",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("26_f6a44")
+}],
+"loop": true,
+"name": &"pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("29_blkrb")
+}],
+"loop": true,
+"name": &"shotgun",
+"speed": 5.0
+}]
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_0n3wm"]
 animations = [{
 "frames": [{
@@ -415,41 +453,6 @@ _data = {
 &"hide": SubResource("Animation_gngh3"),
 &"show": SubResource("Animation_0n3wm")
 }
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_0cbny"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("25_wnkbs")
-}],
-"loop": false,
-"name": &"nothing",
-"speed": 0.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("26_f6a44")
-}],
-"loop": true,
-"name": &"pistol",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("28_uypp3")
-}],
-"loop": true,
-"name": &"rl",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("29_blkrb")
-}],
-"loop": true,
-"name": &"shotgun",
-"speed": 5.0
-}]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_getpj"]
 
@@ -1073,6 +1076,31 @@ volume_db = -10.0
 [node name="paper_sfx" type="AudioStreamPlayer2D" parent="UI/HUD/TABLE" unique_id=32600976]
 stream = SubResource("AudioStreamRandomizer_come4")
 
+[node name="Slots" type="Node2D" parent="UI/HUD" unique_id=1140276173]
+script = ExtResource("25_hrvbo")
+
+[node name="Slot1" type="AnimatedSprite2D" parent="UI/HUD/Slots" unique_id=1459428169]
+position = Vector2(299, 12)
+sprite_frames = SubResource("SpriteFrames_0cbny")
+animation = &"empty"
+
+[node name="Slot2" type="AnimatedSprite2D" parent="UI/HUD/Slots" unique_id=1966987736]
+position = Vector2(320, 12)
+sprite_frames = SubResource("SpriteFrames_0cbny")
+animation = &"empty"
+
+[node name="Slot3" type="AnimatedSprite2D" parent="UI/HUD/Slots" unique_id=1891834754]
+position = Vector2(342, 12)
+sprite_frames = SubResource("SpriteFrames_0cbny")
+animation = &"empty"
+
+[node name="Current" type="Sprite2D" parent="UI/HUD/Slots" unique_id=322093133]
+position = Vector2(299, 12)
+texture = ExtResource("30_uypp3")
+
+[node name="empty" type="AudioStreamPlayer2D" parent="UI/HUD/Slots" unique_id=541250136]
+stream = ExtResource("25_abqjc")
+
 [node name="QuickVolume" type="Node2D" parent="UI/HUD" unique_id=161113036]
 modulate = Color(1, 1, 1, 0)
 position = Vector2(326, -40)
@@ -1119,24 +1147,6 @@ stream = ExtResource("23_gngh3")
 [node name="infinity" type="Sprite2D" parent="UI/HUD/QuickVolume" unique_id=1760461838]
 position = Vector2(21, 27)
 texture = ExtResource("24_0n3wm")
-
-[node name="Slots" type="Node2D" parent="UI/HUD" unique_id=1140276173]
-script = ExtResource("25_hrvbo")
-
-[node name="slot1" type="AnimatedSprite2D" parent="UI/HUD/Slots" unique_id=1459428169]
-position = Vector2(174, 13)
-sprite_frames = SubResource("SpriteFrames_0cbny")
-animation = &"nothing"
-
-[node name="slot2" type="AnimatedSprite2D" parent="UI/HUD/Slots" unique_id=1966987736]
-position = Vector2(193, 13)
-sprite_frames = SubResource("SpriteFrames_0cbny")
-animation = &"nothing"
-
-[node name="slot3" type="AnimatedSprite2D" parent="UI/HUD/Slots" unique_id=1891834754]
-position = Vector2(212, 13)
-sprite_frames = SubResource("SpriteFrames_0cbny")
-animation = &"nothing"
 
 [node name="Restart" type="CanvasLayer" parent="UI" unique_id=1233357972]
 visible = false
@@ -1370,6 +1380,9 @@ process_material = SubResource("ParticleProcessMaterial_e71vb")
 [node name="SlideCoyote" type="Timer" parent="Player" unique_id=687995773]
 wait_time = 0.05
 one_shot = true
+
+[node name="throw" type="AudioStreamPlayer2D" parent="Player" unique_id=599888512]
+stream = ExtResource("25_blkrb")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1062142319]
 texture_filter = 1

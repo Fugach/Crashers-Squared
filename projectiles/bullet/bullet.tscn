@@ -2,21 +2,24 @@
 
 [ext_resource type="Script" uid="uid://c4lx4k1v2surv" path="res://projectiles/bullet/bullet.gd" id="1_awion"]
 
+[sub_resource type="Curve" id="Curve_hwob3"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.7513227, 0), -3.9973586, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_1mdu2"]
+curve = SubResource("Curve_hwob3")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g1w5t"]
 particle_flag_disable_z = true
 direction = Vector3(-1, 0, 0)
 spread = 15.0
-initial_velocity_min = 70.479996
-initial_velocity_max = 170.48
-gravity = Vector3(0, 198, 0)
+initial_velocity_min = 61.67
+initial_velocity_max = 161.67
+gravity = Vector3(0, 250, 0)
+alpha_curve = SubResource("CurveTexture_1mdu2")
 collision_mode = 1
 collision_friction = 1.0
 collision_bounce = 0.0
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hwob3"]
-particle_flag_disable_z = true
-gravity = Vector3(0, 298, 0)
-collision_mode = 2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hwob3"]
 size = Vector2(20, 1)
@@ -36,17 +39,12 @@ default_color = Color(1, 0.6666667, 0, 1)
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=103819807]
 emitting = false
 amount = 1
-sub_emitter = NodePath("GPUParticles2D")
 one_shot = true
-preprocess = 0.05
+preprocess = 0.03
 explosiveness = 1.0
 trail_sections = 2
 trail_section_subdivisions = 1
 process_material = SubResource("ParticleProcessMaterial_g1w5t")
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="GPUParticles2D" unique_id=1472677483]
-emitting = false
-process_material = SubResource("ParticleProcessMaterial_hwob3")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1188911845]
 

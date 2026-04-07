@@ -5,11 +5,12 @@ extends Node
 @onready var player_hp : int = 100
 @onready var lifes : int = 3
 
-var current_slot_num = ""
-var slots = {
-	"slot1": "nothing",
-	"slot2": "nothing",
-	"slot3": "nothing"
+var current_slot_num = "slot1"
+var current_slot_node : Node2D = null
+var slots : Dictionary[String, Node2D] = {
+	"slot1": null,
+	"slot2": null,
+	"slot3": null
 }
 var player_velocity = Vector2(0, 0)
 var player_pos = Vector2(0, 0)
