@@ -5,7 +5,6 @@ const ROCKET = preload("uid://cfex0tmkaj6q4")
 @onready var Sprite : Node2D = $RL_sprite
 @onready var ShootPos : Marker2D = $RL_sprite/shoot_pos
 @onready var Cooldown : Timer = $cooldown
-@onready var Shapecast : ShapeCast2D = $RL_sprite/ShapeCast2D
 
 var is_player_nearby : bool = false
 var my_slot : String = ""
@@ -51,7 +50,7 @@ func RL_logic(delta):
 	else:
 		Sprite.scale.y = -1
 
-	if Input.is_action_just_pressed("lmb") and can_shoot and weapon_owner == "Player":
+	if Input.is_action_pressed("lmb") and can_shoot and weapon_owner == "Player":
 		shoot(25, true)
 
 func shoot(damage_amount, is_friendly):
@@ -66,7 +65,7 @@ func shoot(damage_amount, is_friendly):
 	new_rocket.name = "Rocket" + str(total_rockets)
 	total_rockets += 1
 	get_node("/root/main").add_child(new_rocket)
-	$RL_sprite/Clouds_small.amount = randi_range(0, 3)
+	$RL_sprite/Clouds_small.amount = randi_range(1, 3)
 	$RL_sprite/Cloud.initial_velocity_max += (GlobalVars.player_velocity.x + GlobalVars.player_velocity.y) * 1.25
 	$RL_sprite/Cloud.initial_velocity_min += (GlobalVars.player_velocity.x + GlobalVars.player_velocity.y) * 1.25
 	$RL_sprite/Clouds_small.initial_velocity_max += (GlobalVars.player_velocity.x + GlobalVars.player_velocity.y) * 1.25

@@ -9,6 +9,8 @@ var direction : int = 1
 const Enemy = preload("res://enemy.tscn")
 const RL = preload("res://weapons/RL/rl_pickable.tscn")
 const shotgun = preload("res://weapons/Shotgun/shotgun_pickable.tscn")
+const pistol = preload("uid://5j581geyyouk")
+
 @onready var SlotsHUD: Node2D = $"../UI/HUD/Slots"
 
 
@@ -79,6 +81,10 @@ func _process(_delta: float) -> void:
 		var new_shotgun = shotgun.instantiate()
 		new_shotgun.global_position = get_global_mouse_position()
 		get_parent().add_child(new_shotgun)
+	elif Input.is_action_just_pressed("spawn_PISTOL"):
+		var new_pistol = pistol.instantiate()
+		new_pistol.global_position = get_global_mouse_position()
+		get_parent().add_child(new_pistol)
 
 
 func jump():
@@ -189,6 +195,11 @@ func get_input(delta: float) -> void:
 					new_RL.global_position = global_position + Vector2(0, -15)
 					new_RL.apply_force(throw_power * Vector2(sign(global_position.x - get_global_mouse_position().x), 1))
 					get_parent().add_child(new_RL)
+				"Pistol":
+					var new_pistol = pistol.instantiate()
+					new_pistol.global_position = global_position + Vector2(0, -15)
+					new_pistol.apply_force(throw_power * Vector2(sign(global_position.x - get_global_mouse_position().x), 1))
+					get_parent().add_child(new_pistol)
 			item.queue_free()
 			GlobalVars.slots[GlobalVars.current_slot_num] = null
 			$Camera2D.position_smoothing_speed = 2

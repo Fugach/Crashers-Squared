@@ -1,8 +1,8 @@
 extends Node2D
 
 @onready var Sprite : Sprite2D = $Sprite2D
-@onready var Spawnpoint : Marker2D = $Sprite2D/spawnpoint
-@onready var Cooldown : Timer = $cooldown
+@onready var Spawnpoint : Marker2D = $Sprite2D/Spawnpoint
+@onready var Cooldown : Timer = $Cooldown
 
 const BULLET = preload("uid://csr8w1qcnqlbd")
 var my_slot : String = ""
@@ -13,7 +13,7 @@ var current_angle = null
 var is_player_nearby : bool = false
 var is_player_colliding : bool = false
 var total_bullets : int = 0
-var my_name = "shotgun"
+var my_name = "pistol"
 
 func _ready():
 	GlobalVars.slots[str(my_slot)] = self
@@ -54,7 +54,7 @@ func logic(delta):
 		$Sprite2D/Area2D.position.y = 3
 	
 	if Input.is_action_pressed("lmb") and can_shoot and weapon_owner == "Player":
-		shoot(7, true)
+		shoot(15, true)
 
 func shoot(damage_amount, is_friendly):
 	$shoot.pitch_scale = randf_range(0.8, 1.2)
@@ -63,15 +63,15 @@ func shoot(damage_amount, is_friendly):
 		$AnimationPlayer.play("shoot_right")
 	else:
 		$AnimationPlayer.play("shoot_left")
-	for x in range(5):
-		var new_bullet = BULLET.instantiate()
-		new_bullet.damage_amount = damage_amount
-		new_bullet.is_friendly = is_friendly
-		new_bullet.global_position = Spawnpoint.global_position
-		new_bullet.global_rotation = Sprite.global_rotation + x * 0.05 - 2 * 0.05
-		new_bullet.name = "Bullet" + str(total_bullets)
-		total_bullets += 1
-		get_node("/root/main").add_child(new_bullet)
+	var new_bullet = BULLET.instantiate()
+	new_bullet.damage_amount = damage_amount
+	new_bullet.is_friendly = is_friendly
+	new_bullet.global_position = Spawnpoint.global_position
+	new_bullet.global_rotation = Sprite.global_rotation
+	new_bullet.name = "Bullet" + str(total_bullets)
+	new_bullet.SPEED = 1250
+	total_bullets += 1
+	get_node("/root/main").add_child(new_bullet)
 	can_shoot = false
 	Cooldown.start()
 

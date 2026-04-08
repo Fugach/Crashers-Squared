@@ -48,7 +48,7 @@ _data = {
 script = ExtResource("1_bl5bl")
 
 [node name="cooldown" type="Timer" parent="." unique_id=1693399810]
-wait_time = 0.5
+wait_time = 1.5
 one_shot = true
 
 [node name="RL_sprite" type="Sprite2D" parent="." unique_id=1986036035]

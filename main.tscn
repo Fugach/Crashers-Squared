@@ -54,6 +54,41 @@
 [ext_resource type="Texture2D" uid="uid://b73eakvkvyx8r" path="res://textures/particles/slide/4.png" id="42_blkrb"]
 [ext_resource type="Texture2D" uid="uid://b3ivou6ton8fs" path="res://textures/particles/slide/6.png" id="44_6iyjs"]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_0cbny"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("28_uypp3")
+}],
+"loop": true,
+"name": &"RL",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("25_wnkbs")
+}],
+"loop": false,
+"name": &"empty",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("26_f6a44")
+}],
+"loop": true,
+"name": &"pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("29_blkrb")
+}],
+"loop": true,
+"name": &"shotgun",
+"speed": 5.0
+}]
+
 [sub_resource type="Animation" id="Animation_kq58d"]
 resource_name = "RESET"
 tracks/0/type = "value"
@@ -307,41 +342,6 @@ stream_0/stream = ExtResource("14_0rl1p")
 stream_1/stream = ExtResource("15_ok6jj")
 stream_2/stream = ExtResource("16_facbu")
 stream_3/stream = ExtResource("17_b1qrp")
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_0cbny"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("28_uypp3")
-}],
-"loop": true,
-"name": &"RL",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("25_wnkbs")
-}],
-"loop": false,
-"name": &"empty",
-"speed": 0.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("26_f6a44")
-}],
-"loop": true,
-"name": &"pistol",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("29_blkrb")
-}],
-"loop": true,
-"name": &"shotgun",
-"speed": 5.0
-}]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_0n3wm"]
 animations = [{
@@ -969,6 +969,32 @@ texture_progress_offset = Vector2(7, 4)
 tint_over = Color(0.9234164, 0.9234164, 0.9234164, 1)
 metadata/_edit_use_anchors_ = true
 
+[node name="Slots" type="Node2D" parent="UI/HUD" unique_id=1140276173]
+script = ExtResource("25_hrvbo")
+
+[node name="Slot1" type="AnimatedSprite2D" parent="UI/HUD/Slots" unique_id=1459428169]
+position = Vector2(299, 12)
+sprite_frames = SubResource("SpriteFrames_0cbny")
+animation = &"empty"
+
+[node name="Slot2" type="AnimatedSprite2D" parent="UI/HUD/Slots" unique_id=1966987736]
+position = Vector2(320, 12)
+sprite_frames = SubResource("SpriteFrames_0cbny")
+animation = &"empty"
+
+[node name="Slot3" type="AnimatedSprite2D" parent="UI/HUD/Slots" unique_id=1891834754]
+position = Vector2(342, 12)
+sprite_frames = SubResource("SpriteFrames_0cbny")
+animation = &"empty"
+
+[node name="Current" type="Sprite2D" parent="UI/HUD/Slots" unique_id=322093133]
+position = Vector2(299, 12)
+texture = ExtResource("30_uypp3")
+
+[node name="empty" type="AudioStreamPlayer2D" parent="UI/HUD/Slots" unique_id=541250136]
+stream = ExtResource("25_abqjc")
+volume_db = -15.0
+
 [node name="TABLE" type="Node2D" parent="UI/HUD" unique_id=798900466]
 visible = false
 
@@ -1075,31 +1101,6 @@ volume_db = -10.0
 
 [node name="paper_sfx" type="AudioStreamPlayer2D" parent="UI/HUD/TABLE" unique_id=32600976]
 stream = SubResource("AudioStreamRandomizer_come4")
-
-[node name="Slots" type="Node2D" parent="UI/HUD" unique_id=1140276173]
-script = ExtResource("25_hrvbo")
-
-[node name="Slot1" type="AnimatedSprite2D" parent="UI/HUD/Slots" unique_id=1459428169]
-position = Vector2(299, 12)
-sprite_frames = SubResource("SpriteFrames_0cbny")
-animation = &"empty"
-
-[node name="Slot2" type="AnimatedSprite2D" parent="UI/HUD/Slots" unique_id=1966987736]
-position = Vector2(320, 12)
-sprite_frames = SubResource("SpriteFrames_0cbny")
-animation = &"empty"
-
-[node name="Slot3" type="AnimatedSprite2D" parent="UI/HUD/Slots" unique_id=1891834754]
-position = Vector2(342, 12)
-sprite_frames = SubResource("SpriteFrames_0cbny")
-animation = &"empty"
-
-[node name="Current" type="Sprite2D" parent="UI/HUD/Slots" unique_id=322093133]
-position = Vector2(299, 12)
-texture = ExtResource("30_uypp3")
-
-[node name="empty" type="AudioStreamPlayer2D" parent="UI/HUD/Slots" unique_id=541250136]
-stream = ExtResource("25_abqjc")
 
 [node name="QuickVolume" type="Node2D" parent="UI/HUD" unique_id=161113036]
 modulate = Color(1, 1, 1, 0)

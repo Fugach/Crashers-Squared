@@ -2,8 +2,10 @@ extends CharacterBody2D
 
 const Shotgun = preload("uid://bsecy8dw60b21")
 const RL = preload("uid://brcehntt6lxn6")
+const Pistol = preload("uid://cdavqdqek4rr5")
 
-@onready var weapons = [Shotgun, RL]
+
+@onready var weapons = [Shotgun, RL, Pistol]
 @onready var my_weapon : PackedScene = weapons.pick_random()
 @onready var player = GlobalVars.player
 var WEAPON : Node2D = null
@@ -12,7 +14,7 @@ const JUMP_VELOCITY = -400.0
 var direction = Vector2(0, 0)
 var hp = 100
 var total_damage : int = 0
-var damage_amount : int = 0
+var base_damage	 : int = 0
 
 func _ready() -> void:
 	var get_WEAPON = my_weapon.instantiate()
@@ -21,15 +23,17 @@ func _ready() -> void:
 	add_child(get_WEAPON)
 	WEAPON = get_WEAPON.get_child(1).get_parent()
 	if my_weapon == Shotgun:
-		damage_amount = 3
+		base_damage = 3
 	elif my_weapon == RL:
-		damage_amount = 10
+		base_damage = 10
+	elif my_weapon == Pistol:
+		base_damage = 8
 func _physics_process(delta: float) -> void:
 	if not is_on_floor() and hp > 0:
 		velocity += get_gravity() * delta
 	if player != null and hp > 0:
 		if WEAPON.is_player_nearby and WEAPON.can_shoot and GlobalVars.player_hp > 0:
-			WEAPON.shoot(damage_amount, false)
+			WEAPON.shoot(base_damage, false)
 		if global_position.y - player.global_position.y > 50 and is_on_floor() and global_position.distance_to(player.global_position) < 100:
 			velocity.y = JUMP_VELOCITY
 

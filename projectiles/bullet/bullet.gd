@@ -8,6 +8,7 @@ var is_colliding : bool = false
 var damage_amount : int = 0
 var is_friendly : bool = false
 var targets = []
+var SPEED = 1000
 
 func _ready() -> void:
 	await get_tree().create_timer(60).timeout
@@ -16,7 +17,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not is_colliding:
 		#Line.set_point_position(0, Line.get_point_position(1) - Vector2(-3000 * delta, 0))
-		position += Vector2(1000 * delta, 0).rotated(global_rotation)
+		position += Vector2(SPEED * delta, 0).rotated(global_rotation)
 
 func wall_particles():
 	Line.visible = false
