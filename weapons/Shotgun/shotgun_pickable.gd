@@ -2,6 +2,7 @@ extends RigidBody2D
 
 @onready var player = GlobalVars.player
 const shotgun = preload("uid://bsecy8dw60b21")
+
 var check : bool = false
 
 func _on_area_2d_body_entered(body: Node2D) -> void:

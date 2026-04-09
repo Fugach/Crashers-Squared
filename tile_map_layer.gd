@@ -1,7 +1,7 @@
 extends TileMapLayer
 
 const ENEMY = preload("uid://x2aibfdis1lc")
-@onready var finish_zone: Area2D = $"../Finish"
+@onready var Elevator : Area2D = $"../Elevator"
 
 
 var room_anchor = Vector2(0, 0)
@@ -75,13 +75,13 @@ func gen_dungeon(rooms_amount):
 				#set_cell(hall_pos2, 0, Vector2(0, 2))
 		else:
 			if gen_direction.x == 1:
-				finish_zone.global_position = (room_anchor - Vector2(3, 3) + room_size) * Vector2(16, 16)
+				Elevator.global_position = (room_anchor - Vector2(3, 1) + room_size) * Vector2(16, 16)
 				generate_room(room_anchor, room_size, "left", doors_height, true)
 				hall_pos1 = old_room_anchor + old_room_size
 				hall_pos2 = room_anchor + Vector2(0, room_size.y)
 				generate_hall(hall_pos1, hall_pos2)
 			elif gen_direction.x == -1:
-				finish_zone.global_position = (room_anchor + Vector2(4, room_size.y - 3)) * Vector2(16, 16)
+				Elevator.global_position = (room_anchor + Vector2(4, room_size.y - 1)) * Vector2(16, 16)
 				generate_room(room_anchor, room_size, "right", doors_height, true)
 				hall_pos1 = room_anchor + room_size
 				hall_pos2 = old_room_anchor + Vector2(0, old_room_size.y)

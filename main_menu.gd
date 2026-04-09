@@ -11,31 +11,7 @@ extends Node2D
 
 
 func _ready() -> void:
-	
-	if str(RenderingServer.get_current_rendering_method()) == "gl_compatibility":
-		CRT_mat.shader = preload("res://shaders/crt_OpenGL.gdshader")
-		CRT_mat.set_shader_parameter("brightness", 0.8)
-		CRT_mat.set_shader_parameter("contrast", 1.095)
-		CRT_mat.set_shader_parameter("saturation", 1.0)
-		CRT_mat.set_shader_parameter("gamma", 1.6)
-		CRT_mat.set_shader_parameter("curvature", 0.079)
-		CRT_mat.set_shader_parameter("vignette", 0.4)
-		CRT_mat.set_shader_parameter("scanline_strength", 0.634)
-		CRT_mat.set_shader_parameter("chroma_offset_px", 3.0)
-		CRT_mat.set_shader_parameter("jitter_px", 0.4)
-		CRT_mat.set_shader_parameter("wobble_px", 0.0)
-		CRT_mat.set_shader_parameter("tape_noise", 0.0)
-		CRT_mat.set_shader_parameter("tape_lines", 0.0)
-		CRT_mat.set_shader_parameter("roll_speed", 0.3)
-		CRT_mat.set_shader_parameter("roll_strength", 0.22)
-		CRT_mat.set_shader_parameter("glow_strength", 1.5)
-		CRT_mat.set_shader_parameter("glow_threshold", 0.05)
-	elif str(RenderingServer.get_current_rendering_method()) == "forward_plus":
-		CRT_mat.shader =  preload("res://shaders/crt_Vulkan.gdshader")
-		CRT_mat.set_shader_parameter("resolution", Vector2(1280, 720))
-		CRT_mat.set_shader_parameter("warp_amount", 0.257)
-		CRT_mat.set_shader_parameter("noise_amount", 0.02)
-		CRT_mat.set_shader_parameter("vignette_amount", 1.0)
+	GlobalVars.apply_CRT(CRT_mat)
 	
 	load_config()
 	$settings_things.hide()

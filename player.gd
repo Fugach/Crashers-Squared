@@ -118,9 +118,6 @@ func fall():
 	
 	if position.y > 10000:
 		respawn()
-		#position.y = 233
-		#position.x = 233
-		#velocity = Vector2(0, 0)
 		is_sliding = false
 		is_slamming = false
 		$Camera2D.reset_smoothing()
@@ -216,16 +213,16 @@ func get_input(delta: float) -> void:
 
 func respawn():
 	for body in get_parent().get_children():
-		if "Bullet" in str(body) or "Rocket" in str(body) or "Enemy" in str(body):
-			body.queue_free()
+		if "Bullet" in body.name or "Rocket" in body.name or "Enemy" in body.name or "Bullet" in body.name:
+			body.free()
 	is_slamming = false
 	is_sliding = false
 	velocity = Vector2(0, 0)
 	global_position = Vector2(150, 156)
 	$Camera2D.global_position = global_position
-	GlobalVars.player_hp = 100
 	$Camera2D.reset_smoothing()
 	$AnimationPlayer.play("RESET")
+	GlobalVars.player_hp = 100
 func show_damage():
 	#$blood.emitting = true
 	pass

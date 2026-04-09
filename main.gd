@@ -103,77 +103,10 @@ func death():
 	GlobalVars.player_hp = 0
 	$UI/HUD/HPBar/HPLabel.text = str(GlobalVars.player_hp)
 	$UI/HUD/HPBar.value =  GlobalVars.player_hp
-	if str(RenderingServer.get_current_rendering_method()) == "gl_compatibility":
-		CRT_mat.shader = preload("res://shaders/crt_OpenGL.gdshader")
-		CRT_mat.set_shader_parameter("brightness", 0.8)
-		CRT_mat.set_shader_parameter("contrast", 1.095)
-		CRT_mat.set_shader_parameter("saturation", 1.0)
-		CRT_mat.set_shader_parameter("gamma", 1.6)
-		CRT_mat.set_shader_parameter("curvature", 0.079)
-		CRT_mat.set_shader_parameter("vignette", 0.4)
-		CRT_mat.set_shader_parameter("scanline_strength", 0.634)
-		CRT_mat.set_shader_parameter("chroma_offset_px", 3.0)
-		CRT_mat.set_shader_parameter("jitter_px", 0.4)
-		CRT_mat.set_shader_parameter("wobble_px", 0.0)
-		CRT_mat.set_shader_parameter("tape_noise", 0.0)
-		CRT_mat.set_shader_parameter("tape_lines", 0.0)
-		CRT_mat.set_shader_parameter("roll_speed", 0.3)
-		CRT_mat.set_shader_parameter("roll_strength", 0.22)
-		CRT_mat.set_shader_parameter("glow_strength", 1.5)
-		CRT_mat.set_shader_parameter("glow_threshold", 0.05)
-	elif str(RenderingServer.get_current_rendering_method()) == "forward_plus":
-		CRT_mat.shader =  preload("res://shaders/crt_Vulkan.gdshader")
-		CRT_mat.set_shader_parameter("resolution", Vector2(1280, 720))
-		CRT_mat.set_shader_parameter("warp_amount", 0.257)
-		CRT_mat.set_shader_parameter("noise_amount", 0.02)
-		CRT_mat.set_shader_parameter("vignette_amount", 1.0)
-	if GlobalVars.lifes != 0:
-		if GlobalVars.lifes > 1:
-			$"UI/Restart/ColorRect/tries".text = "У тебя есть ещё " + str(GlobalVars.lifes) + " шанса на победу"
-		else:
-			$"UI/Restart/ColorRect/tries".text = "Последний шанс. \n \n \n я верю в тебя."
-	else:
-		$"UI/Restart/ColorRect/tries".text = "мне очень жаль"
-		$"UI/Restart/ColorRect/again".text = "Конец"
-		$"UI/Restart/ColorRect/no".text = "ВЫХОД"
-		$"UI/Restart/ColorRect/yes".hide()
+	GlobalVars.apply_CRT(CRT_mat)
+	$UI/Restart.death()
 	get_tree().paused = true
-	$UI/Restart.show()
-	$UI/Restart/AnimationPlayer.play("appear")
-	$UI/Restart/noise.playing = true
 
-func _on_no_pressed() -> void:
-	get_tree().paused = false
-	get_tree().change_scene_to_file("res://main_menu.tscn")
-func _on_no_mouse_entered() -> void:
-	$UI/Restart/choose.play()
-	if GlobalVars.lifes != 0:
-		$"UI/Restart/ColorRect/no".text = ">НЕТ<"
-	else:
-		$"UI/Restart/ColorRect/no".text = ">ВЫХОД<"
-func _on_no_mouse_exited() -> void:
-	if GlobalVars.lifes != 0:
-		$"UI/Restart/ColorRect/no".text = "НЕТ"
-	else:
-		$"UI/Restart/ColorRect/no".text = "ВЫХОД"
-
-
-func _on_yes_pressed() -> void:
-	get_tree().paused = false
-	player.respawn()
-	TablePaperAnim.play("RESET")
-	HUDTable.hide()
-	GlobalVars.lifes -= 1
-	$UI/Restart/ColorRect.modulate.a = 0
-	CRT.modulate.a = 0
-	RestartUI.hide()
-	$UI/Restart/AnimationPlayer.stop()
-	$UI/Restart/noise.playing = false
-func _on_yes_mouse_entered() -> void:
-	$UI/Restart/choose.play()
-	$"UI/Restart/ColorRect/yes".text = ">ДА<"
-func _on_yes_mouse_exited() -> void:
-	$"UI/Restart/ColorRect/yes".text = "ДА"
 
 func _on_button_pressed() -> void:
 	if not TablePaperAnim.is_playing() and not TableOtherAnim.is_playing():
@@ -209,16 +142,8 @@ func _on_micro_pc_at_home_pressed() -> void:
 func _on_other_anim_animation_finished(anim_name: StringName) -> void:
 	last_other_anim = anim_name
 
-func _on_finish_body_entered(body: Node2D) -> void:
-	if body == player:
-		$TileMapLayer.clear()
-		$TileMapLayer/bg.clear()
-		$TileMapLayer.gen_dungeon(randi_range(4, 16))
-		player.respawn()
-
 func update_volume():
 	$UI/HUD/QuickVolume/blip.pitch_scale = 1.0 + AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) * 0.01
-	print($UI/HUD/QuickVolume/blip.pitch_scale)
 	$UI/HUD/QuickVolume/blip.play()
 	Vol_timer.start()
 	Vol_percent.value = round((AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) + 25) / 50 * 100)
@@ -266,3 +191,13 @@ func _on_hp_bar_value_changed(value: float) -> void:
 		HPLabel.text = "0"
 		GlobalVars.player_hp = 0
 		death()
+
+
+func _on_elevator_body_entered(body: Node2D) -> void:
+	if body == player:
+		$Elevator/tip.show()
+
+
+func _on_elevator_body_exited(body: Node2D) -> void:
+	if body == player:
+		$Elevator/tip.hide()
