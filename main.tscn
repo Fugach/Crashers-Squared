@@ -53,6 +53,7 @@
 [ext_resource type="Texture2D" uid="uid://djjmrmoaufyg2" path="res://textures/tiles/tile_main.png" id="35_h8e4i"]
 [ext_resource type="Texture2D" uid="uid://b73eakvkvyx8r" path="res://textures/particles/slide/4.png" id="42_blkrb"]
 [ext_resource type="Texture2D" uid="uid://b3ivou6ton8fs" path="res://textures/particles/slide/6.png" id="44_6iyjs"]
+[ext_resource type="Script" uid="uid://bo53c62y7a207" path="res://elevator.gd" id="44_23xmf"]
 [ext_resource type="Texture2D" uid="uid://bv2hxdygufa4q" path="res://textures/elevator/elevator_bg.png" id="53_5yh34"]
 [ext_resource type="Texture2D" uid="uid://ddxctqpkgg2lg" path="res://textures/elevator/open/open_0001.png" id="54_pjuso"]
 [ext_resource type="Texture2D" uid="uid://p8r84j0vjtn4" path="res://textures/elevator/close/close_0001.png" id="55_23xmf"]
@@ -81,6 +82,8 @@
 [ext_resource type="Texture2D" uid="uid://k2jtaifmadld" path="res://textures/elevator/open/open_0014.png" id="78_am8a1"]
 [ext_resource type="Texture2D" uid="uid://p5tivvn2dn70" path="res://textures/elevator/open/open_0015.png" id="79_8dc3g"]
 [ext_resource type="Texture2D" uid="uid://b5vlwimr5kqmd" path="res://textures/elevator/open/open_0016.png" id="80_htgcl"]
+[ext_resource type="Texture2D" uid="uid://dax4llg0v5j0c" path="res://textures/elevator/inside_bg.png" id="80_yysqy"]
+[ext_resource type="Texture2D" uid="uid://basaogysgfpym" path="res://textures/elevator/inside.png" id="81_n5t1e"]
 [ext_resource type="Texture2D" uid="uid://pltj3au1eogf" path="res://textures/elevator/open/open_0017.png" id="81_smeu8"]
 [ext_resource type="Texture2D" uid="uid://dnct7uadjktp0" path="res://textures/elevator/open/open_0018.png" id="82_f3y11"]
 [ext_resource type="Texture2D" uid="uid://sdc803yew5g3" path="res://textures/elevator/open/open_0019.png" id="83_cpm2s"]
@@ -835,6 +838,59 @@ texture = ExtResource("13_ycdy4")
 [sub_resource type="TileSet" id="TileSet_vivmo"]
 sources/0 = SubResource("TileSetAtlasSource_w48qg")
 
+[sub_resource type="Animation" id="Animation_yysqy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_n5t1e"]
+resource_name = "hide"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.39215687), Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_h6isl"]
+resource_name = "show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 0.39215687), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_53bls"]
+_data = {
+&"RESET": SubResource("Animation_yysqy"),
+&"hide": SubResource("Animation_n5t1e"),
+&"show": SubResource("Animation_h6isl")
+}
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b1qrp"]
 size = Vector2(50, 50)
 
@@ -958,6 +1014,96 @@ animations = [{
 "speed": 30.0
 }]
 
+[sub_resource type="Animation" id="Animation_53bls"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Inside:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Outside:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_lwnsi"]
+resource_name = "show_inside"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Outside:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.39215687), Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Inside:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1, 1.1, 1.2, 1.3, 1.4, 1.5),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 0.39215687), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_41lik"]
+resource_name = "show_outside"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Outside:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1, 1.1, 1.2, 1.3, 1.4, 1.5),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 0.39215687), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Inside:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.100000024, 0.20000005, 0.3, 0.39999998, 0.5),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.39215687), Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jbvwl"]
+_data = {
+&"RESET": SubResource("Animation_53bls"),
+&"show_inside": SubResource("Animation_lwnsi"),
+&"show_outside": SubResource("Animation_41lik")
+}
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0hol4"]
 size = Vector2(8, 8)
 
@@ -992,6 +1138,50 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_23xmf"]
+resource_name = "hide"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_swlj1"]
+resource_name = "show"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_0e48y"]
@@ -1041,6 +1231,8 @@ tracks/1/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_q6r6c"]
 _data = {
 &"RESET": SubResource("Animation_epypp"),
+&"hide": SubResource("Animation_23xmf"),
+&"show": SubResource("Animation_swlj1"),
 &"slam_start": SubResource("Animation_0e48y"),
 &"slam_stop": SubResource("Animation_0hol4")
 }
@@ -1455,6 +1647,7 @@ position = Vector2(200, 150)
 texture = ExtResource("25_0odxb")
 
 [node name="tip" type="Sprite2D" parent="table" unique_id=1917619668]
+visible = false
 position = Vector2(1, -21)
 texture = ExtResource("26_lswn8")
 region_enabled = true
@@ -1491,41 +1684,71 @@ volume_db = -25.0
 z_index = -1
 tile_set = SubResource("TileSet_vivmo")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TileMapLayer" unique_id=478177849]
+libraries/ = SubResource("AnimationLibrary_53bls")
+
 [node name="Elevator" type="Area2D" parent="." unique_id=314784669]
+script = ExtResource("44_23xmf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Elevator" unique_id=961738373]
 position = Vector2(-0.5, -8.5)
 shape = SubResource("RectangleShape2D_b1qrp")
 
-[node name="things" type="Sprite2D" parent="Elevator" unique_id=651691440]
-position = Vector2(0, 7)
+[node name="Inside" type="StaticBody2D" parent="Elevator" unique_id=184097870]
+
+[node name="bg" type="Sprite2D" parent="Elevator/Inside" unique_id=1387930169]
+position = Vector2(0, -39)
+texture = ExtResource("80_yysqy")
+
+[node name="inside" type="Sprite2D" parent="Elevator/Inside" unique_id=1184322243]
+position = Vector2(0, -39)
+texture = ExtResource("81_n5t1e")
+
+[node name="PointLight2D" type="PointLight2D" parent="Elevator/Inside/inside" unique_id=634348824]
+position = Vector2(0, 24)
+shadow_enabled = true
+texture = ExtResource("7_dg77c")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Elevator/Inside" unique_id=1497961156]
+visible = false
+position = Vector2(0, -39)
+polygon = PackedVector2Array(-32, 14, 32, 14, 32, 64, -32, 64, -27, 22, -27, 56, 27, 56, 27, 22, -27, 22, -32, 64)
+disabled = true
+
+[node name="Outside" type="Node2D" parent="Elevator" unique_id=1934604984]
+
+[node name="things" type="Sprite2D" parent="Elevator/Outside" unique_id=651691440]
+position = Vector2(0, -2)
 texture = ExtResource("53_5yh34")
 region_enabled = true
-region_rect = Rect2(0, 31, 48, 17)
+region_rect = Rect2(0, 12, 48, 36)
 
-[node name="Elevator" type="AnimatedSprite2D" parent="Elevator" unique_id=1230058221]
+[node name="Elevator" type="AnimatedSprite2D" parent="Elevator/Outside" unique_id=1230058221]
 position = Vector2(0, 2)
 sprite_frames = SubResource("SpriteFrames_vjgyh")
 animation = &"base"
 
-[node name="sign" type="Sprite2D" parent="Elevator" unique_id=594555147]
+[node name="sign" type="Sprite2D" parent="Elevator/Outside" unique_id=594555147]
 position = Vector2(0, -17)
 texture = ExtResource("53_5yh34")
 region_enabled = true
 region_rect = Rect2(16, 12, 16, 7)
 
-[node name="PointLight2D" type="PointLight2D" parent="Elevator/sign" unique_id=416587304]
+[node name="PointLight2D" type="PointLight2D" parent="Elevator/Outside/sign" unique_id=416587304]
 position = Vector2(0, -2)
 shadow_enabled = true
 texture = ExtResource("7_dg77c")
 texture_scale = 0.5
 
-[node name="tip" type="Sprite2D" parent="Elevator" unique_id=2045753855]
+[node name="tip" type="Sprite2D" parent="Elevator/Outside" unique_id=2045753855]
 visible = false
 position = Vector2(0, -28)
 texture = ExtResource("26_lswn8")
 region_enabled = true
 region_rect = Rect2(29, 1, 10, 14)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Elevator" unique_id=427103295]
+libraries/ = SubResource("AnimationLibrary_jbvwl")
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=2101440871]
 process_mode = 1
@@ -1621,8 +1844,9 @@ texture = SubResource("GradientTexture2D_gngh3")
 [connection signal="pressed" from="UI/Pause/ColorRect/continue" to="." method="_on_continue_pressed"]
 [connection signal="body_entered" from="table/ActivationRange" to="." method="_on_activation_range_body_entered"]
 [connection signal="body_exited" from="table/ActivationRange" to="." method="_on_activation_range_body_exited"]
-[connection signal="body_entered" from="Elevator" to="." method="_on_elevator_body_entered"]
-[connection signal="body_exited" from="Elevator" to="." method="_on_elevator_body_exited"]
+[connection signal="current_animation_changed" from="TileMapLayer/AnimationPlayer" to="TileMapLayer" method="_on_animation_player_current_animation_changed"]
+[connection signal="body_entered" from="Elevator" to="Elevator" method="_on_body_entered"]
+[connection signal="body_exited" from="Elevator" to="Elevator" method="_on_body_exited"]
 [connection signal="animation_finished" from="Player/AnimationPlayer" to="Player" method="animation_finished"]
 [connection signal="timeout" from="Player/BoostTime" to="Player" method="_on_boost_time_timeout"]
 [connection signal="timeout" from="Player/SlideCoyote" to="Player" method="_on_slide_coyote_timeout"]

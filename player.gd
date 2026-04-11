@@ -1,8 +1,9 @@
 extends CharacterBody2D
 
 var SPEED : float = 165.0
-#const ACCELERATION : float = 1000.0
-const JUMP_VELOCITY : float = -300.0
+var SPEED_buffer : float = SPEED
+var JUMP_VELOCITY : float = -300.0
+var JUMP_VELOCITY_buffer : float = JUMP_VELOCITY
 var availible_jumps : int = 3
 var direction : int = 1
 
@@ -12,8 +13,9 @@ const shotgun = preload("res://weapons/Shotgun/shotgun_pickable.tscn")
 const pistol = preload("uid://5j581geyyouk")
 
 @onready var SlotsHUD: Node2D = $"../UI/HUD/Slots"
+@onready var Elevator: Area2D = $"../Elevator"
 
-
+var is_going_to_elevator : bool = false
 var is_sliding : bool = false
 var is_slamming : bool = false
 var throw_power : Vector2 = Vector2(-10000, -10000)
@@ -135,6 +137,14 @@ func damage(amount):
 	GlobalVars.player_hp -= amount
 
 func get_input(delta: float) -> void:
+	if is_going_to_elevator:
+		if abs(global_position.x - Elevator.global_position.x) > 0.1:
+			velocity.x += 10 * (Elevator.global_position.x - global_position.x)
+		else:
+			$AnimationPlayer.play("hide")
+			$"../Elevator/Outside/Elevator".play("close")
+			is_going_to_elevator = false
+			$"../TileMapLayer/AnimationPlayer".play("hide")
 	if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
 		direction = -1
 		if sign(velocity.x) != direction:
@@ -232,3 +242,9 @@ func animation_finished(anim_name: StringName) -> void:
 		$AnimationPlayer.play("slam_stop")
 func _on_slide_coyote_timeout() -> void:
 	is_sliding = false
+func goto_elevator():
+	SPEED_buffer = SPEED
+	JUMP_VELOCITY_buffer = JUMP_VELOCITY
+	SPEED = 0
+	JUMP_VELOCITY = 0
+	is_going_to_elevator = true

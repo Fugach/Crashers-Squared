@@ -279,3 +279,7 @@ func generate_hall(pos1, pos2):
 	set_cell(pos2 + Vector2(0, 0), 0, Vector2(2, 2))
 	set_cell(pos2 + Vector2(-1, 0), 0, Vector2(2, 2))
 	set_cell(pos2 + Vector2(-2, 0), 0, Vector2(2, 2))
+
+
+func _on_animation_player_current_animation_changed(name: StringName) -> void:
+	Elevator.results()

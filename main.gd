@@ -191,13 +191,3 @@ func _on_hp_bar_value_changed(value: float) -> void:
 		HPLabel.text = "0"
 		GlobalVars.player_hp = 0
 		death()
-
-
-func _on_elevator_body_entered(body: Node2D) -> void:
-	if body == player:
-		$Elevator/tip.show()
-
-
-func _on_elevator_body_exited(body: Node2D) -> void:
-	if body == player:
-		$Elevator/tip.hide()
