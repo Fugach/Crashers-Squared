@@ -7,10 +7,13 @@ var JUMP_VELOCITY_buffer : float = JUMP_VELOCITY
 var availible_jumps : int = 3
 var direction : int = 1
 
-const Enemy = preload("res://enemy.tscn")
-const RL = preload("res://weapons/RL/rl_pickable.tscn")
-const shotgun = preload("res://weapons/Shotgun/shotgun_pickable.tscn")
+#const Enemy = preload("res://enemy.tscn")
+#const RL = preload("res://weapons/RL/rl_pickable.tscn")
+#const shotgun = preload("res://weapons/Shotgun/shotgun_pickable.tscn")
+const RL = preload("uid://b6yunx8h1pcdi")
+const shotgun = preload("uid://dhjphrjas8n7d")
 const pistol = preload("uid://5j581geyyouk")
+const Enemy = preload("uid://x2aibfdis1lc")
 
 @onready var Camera: Camera2D = $"../Camera2D"
 @onready var SlotsHUD: Node2D = $"../UI/HUD/Slots"
@@ -224,6 +227,10 @@ func get_input(delta: float) -> void:
 		respawn()
 
 func respawn():
+	if Camera == null:
+		Camera = $"../Camera2D"
+		Anims = $AnimationPlayer
+
 	for body in get_parent().get_children():
 		if "Bullet" in body.name or "Rocket" in body.name or "Enemy" in body.name or "Bullet" in body.name:
 			body.free()
