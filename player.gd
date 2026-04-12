@@ -12,8 +12,10 @@ const RL = preload("res://weapons/RL/rl_pickable.tscn")
 const shotgun = preload("res://weapons/Shotgun/shotgun_pickable.tscn")
 const pistol = preload("uid://5j581geyyouk")
 
+@onready var Camera: Camera2D = $"../Camera2D"
 @onready var SlotsHUD: Node2D = $"../UI/HUD/Slots"
 @onready var Elevator: Area2D = $"../Elevator"
+@onready var Anims: AnimationPlayer = $AnimationPlayer
 
 var is_going_to_elevator : bool = false
 var is_sliding : bool = false
@@ -92,18 +94,18 @@ func _process(_delta: float) -> void:
 func jump():
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y += JUMP_VELOCITY
-		if $AnimationPlayer.current_animation == "slam_stop":
-			$AnimationPlayer.play("RESET")
+		if Anims.current_animation == "slam_stop":
+			Anims.play("RESET")
 	elif $Coyote.time_left > 0 and Input.is_action_just_pressed("jump"):
 		velocity.y += JUMP_VELOCITY
-		if $AnimationPlayer.current_animation == "slam_stop":
-			$AnimationPlayer.play("RESET")
+		if Anims.current_animation == "slam_stop":
+			Anims.play("RESET")
 	if Input.is_action_just_released("jump") and not is_on_floor() and velocity.y < 0:
 		velocity.y *= 0.6
 	elif Input.is_action_just_pressed("jump") and is_sliding and availible_jumps > 0:
 		if is_slamming:
 			is_slamming = false
-			$AnimationPlayer.stop()
+			Anims.stop()
 		velocity.x = sign(get_wall_normal().x) * 200
 		velocity.y = -350
 		availible_jumps -= 1
@@ -122,8 +124,8 @@ func fall():
 		respawn()
 		is_sliding = false
 		is_slamming = false
-		$Camera2D.reset_smoothing()
-		$AnimationPlayer.play("RESET")
+		Camera.reset_smoothing()
+		Anims.play("RESET")
 
 func push(pwr, _dir):
 	if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
@@ -141,7 +143,7 @@ func get_input(delta: float) -> void:
 		if abs(global_position.x - Elevator.global_position.x) > 0.1:
 			velocity.x += 10 * (Elevator.global_position.x - global_position.x)
 		else:
-			$AnimationPlayer.play("hide")
+			Anims.play("hide")
 			$"../Elevator/Outside/Elevator".play("close")
 			is_going_to_elevator = false
 			$"../TileMapLayer/AnimationPlayer".play("hide")
@@ -158,17 +160,17 @@ func get_input(delta: float) -> void:
 	if not steps.is_playing() and is_on_floor() and abs(round(velocity.x)) > 10:
 			steps.play()
 	if Input.is_action_just_pressed("slam") and not is_on_floor() and not Input.is_action_just_pressed("jump"):
-		$AnimationPlayer.play("slam_start")
+		Anims.play("slam_start")
 		velocity.y = 750
 		velocity.x = 0
 		is_slamming = true
 	elif is_slamming and is_on_floor():
-		$AnimationPlayer.play("slam_stop")
+		Anims.play("slam_stop")
 		is_slamming = false
 	elif is_slamming and is_sliding:
-		$AnimationPlayer.stop()
+		Anims.stop()
 		is_slamming = false
-	if $AnimationPlayer.current_animation == "slam_stop" and Input.is_action_just_pressed("jump"):
+	if Anims.current_animation == "slam_stop" and Input.is_action_just_pressed("jump"):
 		velocity.y += JUMP_VELOCITY * 0.3
 	
 	if int(Input.is_action_pressed("move_left")) == int(Input.is_action_pressed("move_right")):
@@ -209,14 +211,14 @@ func get_input(delta: float) -> void:
 					get_parent().add_child(new_pistol)
 			item.queue_free()
 			GlobalVars.slots[GlobalVars.current_slot_num] = null
-			$Camera2D.position_smoothing_speed = 2
+			Camera.position_smoothing_speed = 2
 			SlotsHUD.update()
 	if Input.is_action_pressed("zoom_in"):
-		$Camera2D.zoom.x = min($Camera2D.zoom.x + 0.3 * delta, 1.0)
-		$Camera2D.zoom.y = min($Camera2D.zoom.y + 0.3 * delta, 1.0)
+		Camera.zoom.x = min(Camera.zoom.x + 0.3 * delta, 1.0)
+		Camera.zoom.y = min(Camera.zoom.y + 0.3 * delta, 1.0)
 	elif Input.is_action_pressed("zoom_out"):
-		$Camera2D.zoom.x = max($Camera2D.zoom.x - 0.3 * delta, 0.4)
-		$Camera2D.zoom.y = max($Camera2D.zoom.y - 0.3 * delta, 0.4)
+		Camera.zoom.x = max(Camera.zoom.x - 0.3 * delta, 0.4)
+		Camera.zoom.y = max(Camera.zoom.y - 0.3 * delta, 0.4)
 	
 	if Input.is_action_just_pressed("respawn"):
 		respawn()
@@ -228,10 +230,10 @@ func respawn():
 	is_slamming = false
 	is_sliding = false
 	velocity = Vector2(0, 0)
-	global_position = Vector2(150, 156)
-	$Camera2D.global_position = global_position
-	$Camera2D.reset_smoothing()
-	$AnimationPlayer.play("RESET")
+	global_position = GlobalVars.spawn_pos
+	Camera.global_position = global_position
+	Camera.reset_smoothing()
+	Anims.play("RESET")
 	GlobalVars.player_hp = 100
 func show_damage():
 	#$blood.emitting = true
@@ -239,7 +241,7 @@ func show_damage():
 
 func animation_finished(anim_name: StringName) -> void:
 	if anim_name == "slam_start" and is_on_floor():
-		$AnimationPlayer.play("slam_stop")
+		Anims.play("slam_stop")
 func _on_slide_coyote_timeout() -> void:
 	is_sliding = false
 func goto_elevator():

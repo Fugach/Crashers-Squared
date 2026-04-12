@@ -4,7 +4,9 @@ extends Node
 @onready var player : CharacterBody2D = null
 @onready var player_hp : int = 100
 @onready var lifes : int = 3
+@onready var spawn_pos : Vector2 = Vector2(0, 0)
 
+var camera_positions = []
 var current_slot_num = "slot1"
 var current_slot_node : Node2D = null
 var slots : Dictionary[String, Node2D] = {

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://yow5y37d3njq" path="res://main.gd" id="1_074og"]
 [ext_resource type="Script" uid="uid://do5lfpq2dysdi" path="res://player.gd" id="1_h2yge"]
 [ext_resource type="Shader" uid="uid://difxyhauojrf4" path="res://shaders/crt_Vulkan.gdshader" id="2_getpj"]
+[ext_resource type="Script" uid="uid://87kani2n8ufu" path="res://hud.gd" id="2_h6isl"]
 [ext_resource type="Texture2D" uid="uid://ckpacdte3gvhm" path="res://textures/idk2.png" id="2_w48qg"]
 [ext_resource type="AudioStream" uid="uid://dw3mvu3mvae08" path="res://sounds/step1.ogg" id="3_7mycd"]
 [ext_resource type="AudioStream" uid="uid://bqktfabsbcg42" path="res://sounds/WindLoop.ogg" id="3_ycdy4"]
@@ -90,6 +91,7 @@
 [ext_resource type="Texture2D" uid="uid://8wyfnvfkc3vf" path="res://textures/elevator/open/open_0021.png" id="84_u81y6"]
 [ext_resource type="Texture2D" uid="uid://da0qj8uimuo86" path="res://textures/elevator/open/open_0022.png" id="85_rt5wr"]
 [ext_resource type="Texture2D" uid="uid://ciyd4m01ikguh" path="res://textures/elevator/open/open_0024.png" id="86_mnw77"]
+[ext_resource type="Script" uid="uid://dxet2vmqwq67g" path="res://camera.gd" id="91_n5t1e"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_0cbny"]
 animations = [{
@@ -491,6 +493,168 @@ _data = {
 &"show": SubResource("Animation_0n3wm")
 }
 
+[sub_resource type="Animation" id="Animation_jbvwl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slots:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HPBar:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Console:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Console:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(6.840123, 6.840123, 6.840123, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_sn1fb"]
+resource_name = "hide_hud"
+length = 1.6333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slots:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4000169, 0.6, 0.8000338, 1),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.39215687), Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HPBar:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.39215687), Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Console:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.4333334),
+"transitions": PackedFloat32Array(0, 1),
+"update": 0,
+"values": [Color(6.840123, 6.840123, 6.840123, 0), Color(6.84, 6.84, 6.84, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Console:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(1.4333334, 1.4833333, 1.5333333, 1.5833334, 1.6333),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0),
+"update": 0,
+"values": [Vector2(0, -8), Vector2(0, -4), Vector2(0, 0), Vector2(0, 2), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_yvsr8"]
+resource_name = "show_hud"
+length = 1.6333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slots:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 0.39215687), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HPBar:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.19999999, 0.4, 0.6, 0.79999995, 1),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 0.39215687), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Console:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 0),
+"update": 0,
+"values": [Color(6.84, 6.84, 6.84, 1), Color(6.840123, 6.840123, 6.840123, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Console:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.1, 0.13333334, 0.20000005),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 2), Vector2(0, 0), Vector2(0, -4), Vector2(0, -8)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yvsr8"]
+_data = {
+&"RESET": SubResource("Animation_jbvwl"),
+&"hide_hud": SubResource("Animation_sn1fb"),
+&"show_hud": SubResource("Animation_yvsr8")
+}
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_getpj"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ryguw"]
@@ -571,6 +735,15 @@ size = Vector2(69.5, 26.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d2t1y"]
 size = Vector2(29.5, 2.5)
+
+[sub_resource type="Gradient" id="Gradient_d2t1y"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gngh3"]
+gradient = SubResource("Gradient_d2t1y")
+width = 164
+height = 233
+fill_from = Vector2(0.051282052, 0.48290598)
+fill_to = Vector2(1, 0.50427353)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_gngh3"]
 polygon = PackedVector2Array(-8, -3.983492, 8, -3.9834914, 8, 8, -8, 8)
@@ -1252,15 +1425,6 @@ gravity = Vector3(0, -10, 0)
 linear_accel_min = -2.2351742e-06
 linear_accel_max = 14.999997
 
-[sub_resource type="Gradient" id="Gradient_d2t1y"]
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_gngh3"]
-gradient = SubResource("Gradient_d2t1y")
-width = 162
-height = 224
-fill_from = Vector2(0.051282052, 0.48290598)
-fill_to = Vector2(1, 0.50427353)
-
 [node name="main" type="Node2D" unique_id=1260506371]
 script = ExtResource("1_074og")
 
@@ -1274,6 +1438,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="HUD" type="CanvasLayer" parent="UI" unique_id=1956633857]
+script = ExtResource("2_h6isl")
 
 [node name="HPBar" type="TextureProgressBar" parent="UI/HUD" unique_id=1735031832]
 offset_left = 2.0
@@ -1495,6 +1660,25 @@ stream = ExtResource("23_gngh3")
 position = Vector2(21, 27)
 texture = ExtResource("24_0n3wm")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/HUD" unique_id=570061909]
+libraries/ = SubResource("AnimationLibrary_yvsr8")
+
+[node name="Console" type="RichTextLabel" parent="UI/HUD" unique_id=1718393781]
+modulate = Color(6.840123, 6.840123, 6.840123, 0)
+offset_right = 1280.0
+offset_bottom = 720.0
+scale = Vector2(0.5, 0.5)
+focus_mode = 2
+theme_override_colors/default_color = Color(0.4609375, 0.25970104, 0.05041504, 1)
+theme_override_colors/selection_color = Color(0.18275288, 0.088113904, 0, 0.56078434)
+theme_override_fonts/normal_font = ExtResource("12_cegan")
+scroll_active = false
+scroll_following = true
+scroll_following_visible_characters = true
+selection_enabled = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="UI/HUD/Console" unique_id=1539854180]
+
 [node name="Restart" type="CanvasLayer" parent="UI" unique_id=1233357972]
 visible = false
 script = ExtResource("32_pjuso")
@@ -1642,34 +1826,47 @@ mouse_filter = 2
 [node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Pause" unique_id=496117258]
 libraries/ = SubResource("AnimationLibrary_1u8w0")
 
-[node name="table" type="Sprite2D" parent="." unique_id=1000341196]
+[node name="Table" type="Sprite2D" parent="." unique_id=1000341196]
 position = Vector2(200, 150)
 texture = ExtResource("25_0odxb")
 
-[node name="tip" type="Sprite2D" parent="table" unique_id=1917619668]
+[node name="tip" type="Sprite2D" parent="Table" unique_id=1917619668]
 visible = false
 position = Vector2(1, -21)
 texture = ExtResource("26_lswn8")
 region_enabled = true
 region_rect = Rect2(29, 1, 10, 14)
 
-[node name="ActivationRange" type="Area2D" parent="table" unique_id=240377912]
+[node name="ActivationRange" type="Area2D" parent="Table" unique_id=240377912]
 visible = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="table/ActivationRange" unique_id=626298044]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Table/ActivationRange" unique_id=626298044]
 shape = SubResource("RectangleShape2D_xuqvo")
 
-[node name="mus" type="AudioStreamPlayer2D" parent="table" unique_id=1495641469]
+[node name="mus" type="AudioStreamPlayer2D" parent="Table" unique_id=1495641469]
 stream = ExtResource("17_ok6jj")
 max_distance = 350.0
 parameters/looping = true
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="table" unique_id=584909590]
+[node name="CharacterBody2D" type="CharacterBody2D" parent="Table" unique_id=584909590]
 motion_mode = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="table/CharacterBody2D" unique_id=1936597478]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Table/CharacterBody2D" unique_id=1936597478]
 position = Vector2(1, -0.75)
 shape = SubResource("RectangleShape2D_d2t1y")
+
+[node name="Sprite2D" type="Sprite2D" parent="Table" unique_id=450323716]
+visible = false
+position = Vector2(-23, -101)
+texture = ExtResource("35_h8e4i")
+region_enabled = true
+region_rect = Rect2(16, 96, 16, 3)
+
+[node name="PointLight2D" type="PointLight2D" parent="Table/Sprite2D" unique_id=2073711041]
+position = Vector2(0, 78)
+rotation = -1.5707964
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_gngh3")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1062142319]
 texture_filter = 1
@@ -1710,7 +1907,6 @@ shadow_enabled = true
 texture = ExtResource("7_dg77c")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Elevator/Inside" unique_id=1497961156]
-visible = false
 position = Vector2(0, -39)
 polygon = PackedVector2Array(-32, 14, 32, 14, 32, 64, -32, 64, -27, 22, -27, 56, 27, 56, 27, 22, -27, 22, -32, 64)
 disabled = true
@@ -1791,11 +1987,6 @@ texture = ExtResource("7_dg77c")
 wait_time = 0.1
 one_shot = true
 
-[node name="Camera2D" type="Camera2D" parent="Player" unique_id=562808154]
-zoom = Vector2(0.65, 0.65)
-position_smoothing_enabled = true
-position_smoothing_speed = 2.0
-
 [node name="slide" type="GPUParticles2D" parent="Player" unique_id=839550143]
 emitting = false
 amount = 5
@@ -1815,17 +2006,11 @@ stream = ExtResource("25_blkrb")
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=48622774]
 color = Color(0.37413925, 0.37413928, 0.37413922, 1)
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=450323716]
-position = Vector2(177, 50)
-texture = ExtResource("35_h8e4i")
-region_enabled = true
-region_rect = Rect2(16, 96, 16, 3)
-
-[node name="PointLight2D" type="PointLight2D" parent="Sprite2D" unique_id=2073711041]
-position = Vector2(-1, 81)
-rotation = -1.5707964
-shadow_enabled = true
-texture = SubResource("GradientTexture2D_gngh3")
+[node name="Camera2D" type="Camera2D" parent="." unique_id=562808154]
+zoom = Vector2(0.65, 0.65)
+position_smoothing_enabled = true
+position_smoothing_speed = 2.0
+script = ExtResource("91_n5t1e")
 
 [connection signal="value_changed" from="UI/HUD/HPBar" to="." method="_on_hp_bar_value_changed"]
 [connection signal="pressed" from="UI/HUD/TABLE/table/Button" to="." method="_on_button_pressed"]
@@ -1834,6 +2019,7 @@ texture = SubResource("GradientTexture2D_gngh3")
 [connection signal="pressed" from="UI/HUD/TABLE/micro_pc_at_home" to="." method="_on_micro_pc_at_home_pressed"]
 [connection signal="animation_finished" from="UI/HUD/TABLE/other_anim" to="." method="_on_other_anim_animation_finished"]
 [connection signal="timeout" from="UI/HUD/QuickVolume/display_timer" to="." method="_on_display_timer_timeout"]
+[connection signal="animation_finished" from="UI/HUD/AnimationPlayer" to="UI/HUD" method="_on_animation_player_animation_finished"]
 [connection signal="mouse_entered" from="UI/Restart/ColorRect/No" to="UI/Restart" method="_on_no_mouse_entered"]
 [connection signal="mouse_exited" from="UI/Restart/ColorRect/No" to="UI/Restart" method="_on_no_mouse_exited"]
 [connection signal="pressed" from="UI/Restart/ColorRect/No" to="UI/Restart" method="_on_no_pressed"]
@@ -1842,11 +2028,12 @@ texture = SubResource("GradientTexture2D_gngh3")
 [connection signal="pressed" from="UI/Restart/ColorRect/Yes" to="UI/Restart" method="_on_yes_pressed"]
 [connection signal="pressed" from="UI/Pause/ColorRect/exit" to="." method="_on_exit_pressed"]
 [connection signal="pressed" from="UI/Pause/ColorRect/continue" to="." method="_on_continue_pressed"]
-[connection signal="body_entered" from="table/ActivationRange" to="." method="_on_activation_range_body_entered"]
-[connection signal="body_exited" from="table/ActivationRange" to="." method="_on_activation_range_body_exited"]
-[connection signal="current_animation_changed" from="TileMapLayer/AnimationPlayer" to="TileMapLayer" method="_on_animation_player_current_animation_changed"]
+[connection signal="body_entered" from="Table/ActivationRange" to="." method="_on_activation_range_body_entered"]
+[connection signal="body_exited" from="Table/ActivationRange" to="." method="_on_activation_range_body_exited"]
+[connection signal="animation_finished" from="TileMapLayer/AnimationPlayer" to="TileMapLayer" method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="Elevator" to="Elevator" method="_on_body_entered"]
 [connection signal="body_exited" from="Elevator" to="Elevator" method="_on_body_exited"]
+[connection signal="animation_finished" from="Elevator/AnimationPlayer" to="Elevator" method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="Player/AnimationPlayer" to="Player" method="animation_finished"]
 [connection signal="timeout" from="Player/BoostTime" to="Player" method="_on_boost_time_timeout"]
 [connection signal="timeout" from="Player/SlideCoyote" to="Player" method="_on_slide_coyote_timeout"]

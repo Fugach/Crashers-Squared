@@ -4,10 +4,9 @@ extends Node2D
 @onready var Slot2 : AnimatedSprite2D = $Slot2
 @onready var Slot3 : AnimatedSprite2D = $Slot3
 @onready var Current: Sprite2D = $Current
-@onready var Camera: Camera2D = $"../../../Player/Camera2D"
+@onready var Camera: Camera2D = $"../../../Camera2D"
 
 func _ready() -> void:
-	#update() скорее всего не нужно, ибо уже всё предустановлено
 	pass
 func _process(delta: float) -> void:
 	match GlobalVars.current_slot_num:

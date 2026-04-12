@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var camera : Camera2D = $Player/Camera2D
+@onready var camera : Camera2D = $Camera2D
 @onready var player : CharacterBody2D = $Player
 @onready var CRT : ColorRect = $UI/Restart/CRT
 @onready var CRT_mat: ShaderMaterial = CRT.material as ShaderMaterial
@@ -19,6 +19,7 @@ extends Node2D
 @onready var Vol_db : Label = $UI/HUD/QuickVolume/db
 @onready var Vol_timer : Timer = $UI/HUD/QuickVolume/display_timer
 @onready var Vol_anim : AnimationPlayer = $UI/HUD/QuickVolume/anim
+@onready var Camera: Camera2D = $Camera2D
 
 var master_bus = AudioServer.get_bus_index("Master")
 var last_papers_animation : String = ""
@@ -73,7 +74,7 @@ func _input(event: InputEvent) -> void:
 		update_volume()
 
 func _process(delta: float) -> void:
-	HUD.scale = $Player/Camera2D.scale
+	HUD.scale = Camera.scale
 	HPLabel.text = str(GlobalVars.player_hp)
 	HPBar.value = float(GlobalVars.player_hp)
 	if $UI/HUD/TABLE/lmb_tip.self_modulate == Color("ffffffff") and Input.is_action_just_pressed("lmb"):
@@ -81,18 +82,18 @@ func _process(delta: float) -> void:
 		GlobalVars.player.SPEED += 100
 	if last_papers_animation == "pc_at_home" and Input.is_action_just_pressed("lmb"):
 		TableOtherAnim.play("RESET")
-	if Input.is_action_just_pressed("rmb") and $table/tip.visible:
+	if Input.is_action_just_pressed("rmb") and $Table/tip.visible:
 		HUDTable.show()
 	if Input.is_action_just_pressed("lmb") and TablePaperAnim.current_animation == "print" and\
 	not $UI/HUD/TABLE/micro_pc_at_home.is_hovered():
 		TablePaperAnim.play("speed_up")
-	if ($table/tip.visible == false)\
+	if ($Table/tip.visible == false)\
 	and HUDTable.visible:
 		TableOtherAnim.play("RESET")
 		HUDTable.hide()
-		$table/mus.volume_db = 0.0
+		$Table/mus.volume_db = 0.0
 	if Input.is_action_just_pressed("shift"):
-		$TileMapLayer.gen_dungeon(2)
+		$TileMapLayer.gen_dungeon(1, Vector2(3, 2))
 		GlobalVars.player.respawn()
 	if Input.is_action_just_pressed("esc"):
 		get_tree().paused = true
@@ -123,11 +124,11 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		TablePaperAnim.play("speed_up")
 
 func _on_activation_range_body_entered(body: Node2D) -> void:
-	if "Player" in str(body):
-		$table/tip.show()
+	if body == GlobalVars.player:
+		$Table/tip.show()
 func _on_activation_range_body_exited(body: Node2D) -> void:
-	if "Player" in str(body):
-		$table/tip.hide()
+	if body == GlobalVars.player:
+		$Table/tip.hide()
 
 
 func _on_micro_pc_at_home_pressed() -> void:
@@ -162,9 +163,9 @@ func update_volume():
 	Vol_progress.value = Vol_percent.value
 	
 	GlobalConfig.save_audio(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")),\
-	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("music")),\
-	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("sound")),\
-	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("atmosphere")))
+	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Music")),\
+	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Sound")),\
+	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Atmosphere")))
 
 func _on_display_timer_timeout() -> void:
 	Vol_anim.play("hide")
@@ -191,3 +192,8 @@ func _on_hp_bar_value_changed(value: float) -> void:
 		HPLabel.text = "0"
 		GlobalVars.player_hp = 0
 		death()
+
+
+func _on_HUD_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "hide_hud":
+		pass

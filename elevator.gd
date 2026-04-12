@@ -6,6 +6,8 @@ extends Area2D
 @onready var Tile_map_layer_bg : TileMapLayer = $"../TileMapLayer/bg"
 @onready var Inside : StaticBody2D = $Inside
 @onready var Outside: Node2D = $Outside
+@onready var Camera: Camera2D = $"../Camera2D"
+@onready var HUD: CanvasLayer = $"../UI/HUD"
 
 func _ready() -> void:
 	$Inside.modulate.a = 0
@@ -25,7 +27,20 @@ func _process(delta: float):
 		Tip.hide()
 
 func results():
+	$Inside/CollisionPolygon2D.disabled = false
 	$AnimationPlayer.play("show_inside")
-	$CollisionShape2D.disabled = false
 	GlobalVars.player.velocity = Vector2(0, 0)
-	
+
+func outside():
+	$AnimationPlayer.play("show_outside")
+	Camera.is_following = true
+	$Inside/CollisionPolygon2D.disabled = true
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "show_inside":
+		HUD.results()
+		Camera.is_following = false
+		Camera.global_position = global_position + Vector2(0, -85)
+		GlobalVars.player.Anims.play("show")
+		GlobalVars.player.SPEED = GlobalVars.player.SPEED_buffer
+		GlobalVars.player.JUMP_VELOCITY = GlobalVars.player.JUMP_VELOCITY_buffer
