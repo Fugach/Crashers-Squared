@@ -135,7 +135,10 @@ horizontal_alignment = 1
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=787734486]
 libraries/ = SubResource("AnimationLibrary_3yqyl")
 
-[node name="Timer" type="Timer" parent="." unique_id=569699382]
+[node name="damage" type="Timer" parent="." unique_id=569699382]
 wait_time = 0.2
+
+[node name="shock" type="Timer" parent="." unique_id=483827531]
+one_shot = true
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

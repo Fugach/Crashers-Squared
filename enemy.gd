@@ -9,7 +9,7 @@ const Pistol = preload("uid://cdavqdqek4rr5")
 @onready var my_weapon : PackedScene = weapons.pick_random()
 @onready var player = GlobalVars.player
 var WEAPON : Node2D = null
-const SPEED = 350.0
+const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 var direction = Vector2(0, 0)
 var hp = 100
@@ -34,18 +34,19 @@ func _physics_process(delta: float) -> void:
 	if player != null and hp > 0:
 		if WEAPON.is_player_nearby and WEAPON.can_shoot and GlobalVars.player_hp > 0:
 			WEAPON.shoot(base_damage, false)
-		if global_position.y - player.global_position.y > 50 and is_on_floor() and global_position.distance_to(player.global_position) < 100:
+		if global_position.y - player.global_position.y > 50 and is_on_floor() and $shock.is_stopped() and global_position.distance_to(player.global_position) < 100:
 			velocity.y = JUMP_VELOCITY
 
 		direction = global_position.direction_to(player.global_position)
-		if (global_position.distance_to(player.global_position) < 300 and\
-		global_position.distance_to(player.global_position) > 150) and abs(velocity.x) < 300:
-			velocity.x += direction.x * SPEED * delta
-			if sign(velocity.x) != sign(global_position.direction_to(player.global_position).x):
-				velocity.x += velocity.x * -0.05
-		elif global_position.distance_to(player.global_position) < 50:
-			velocity.x -= direction.x * SPEED * delta
-		elif hp > 0:
+		if $shock.is_stopped():
+			if (global_position.distance_to(player.global_position) < 300 and\
+			global_position.distance_to(player.global_position) > 150) and abs(velocity.x) < 300:
+				velocity.x += direction.x * SPEED * delta
+				if sign(velocity.x) != sign(global_position.direction_to(player.global_position).x):
+					velocity.x += velocity.x * -0.05
+			elif global_position.distance_to(player.global_position) < 50:
+				velocity.x -= direction.x * SPEED * delta
+		if hp > 0:
 			velocity.x *= 0.9
 	elif hp <= 0 and str(WEAPON) != "<Freed Object>":
 		kill()
@@ -64,6 +65,7 @@ func kill():
 
 func push(pwr, dir):
 	velocity += pwr * dir
+	$shock.start()
 
 func damage(damage_amount):
 	$GPUParticles2D.emitting = true
@@ -75,7 +77,7 @@ func damage(damage_amount):
 			GlobalVars.player_hp = 100
 	total_damage += damage_amount
 	$Label.text = str(total_damage)
-	$Timer.start()
+	$damage.start()
 	if $AnimationPlayer.current_animation != "show_damage":
 		$AnimationPlayer.play("show_damage")
 

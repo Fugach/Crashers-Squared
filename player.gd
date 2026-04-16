@@ -7,13 +7,12 @@ var JUMP_VELOCITY_buffer : float = JUMP_VELOCITY
 var availible_jumps : int = 3
 var direction : int = 1
 
-#const Enemy = preload("res://enemy.tscn")
-#const RL = preload("res://weapons/RL/rl_pickable.tscn")
-#const shotgun = preload("res://weapons/Shotgun/shotgun_pickable.tscn")
 const RL = preload("uid://b6yunx8h1pcdi")
 const shotgun = preload("uid://dhjphrjas8n7d")
 const pistol = preload("uid://5j581geyyouk")
 const Enemy = preload("uid://x2aibfdis1lc")
+@onready var HAND = preload("uid://bbxbw8j8ubuiv")
+@onready var FALL_PARTICLES = preload("uid://3jklnx6aump3")
 
 @onready var Camera: Camera2D = $"../Camera2D"
 @onready var SlotsHUD: Node2D = $"../UI/HUD/Slots"
@@ -23,17 +22,34 @@ const Enemy = preload("uid://x2aibfdis1lc")
 var is_going_to_elevator : bool = false
 var is_sliding : bool = false
 var is_slamming : bool = false
-var throw_power : Vector2 = Vector2(-10000, -10000)
+var is_falling_fast : bool = false
+var falling_speed : float = 0.0
 
+var throw_power : Vector2 = Vector2(-10000, -10000)
 @onready var main: Node2D = $".."
 @onready var steps: AudioStreamPlayer2D = $steps
 @onready var wall_slide_loop: AudioStreamPlayer2D = $wall_slide_loop
 @onready var wind: AudioStreamPlayer2D = $wind
 
 func _ready() -> void:
+	var hand = HAND.instantiate()
+	add_child(hand)
 	GlobalVars.player = self
 
 func _physics_process(delta: float) -> void:
+	if velocity.y > 400:
+		falling_speed = velocity.y
+		is_falling_fast = true
+		
+	if is_falling_fast and velocity.y <= 0 and is_on_floor():
+		Camera.shake(0.1)
+		$fall.play()
+		var new_fall = FALL_PARTICLES.instantiate()
+		new_fall.min_vel = 15 * (falling_speed / 50)
+		new_fall.max_vel = new_fall.min_vel * 1.25
+		new_fall.global_position = global_position
+		get_parent().add_child(new_fall)
+		is_falling_fast = false
 	if is_on_wall_only() and (not is_on_floor()) and velocity.y > 0 and\
 	(Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")):
 		is_sliding = true
@@ -150,6 +166,9 @@ func get_input(delta: float) -> void:
 			$"../Elevator/Outside/Elevator".play("close")
 			is_going_to_elevator = false
 			$"../TileMapLayer/AnimationPlayer".play("hide")
+			for body in get_parent().get_children():
+				if "Light" in str(body):
+					body.queue_free()
 	if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
 		direction = -1
 		if sign(velocity.x) != direction:
@@ -167,9 +186,11 @@ func get_input(delta: float) -> void:
 		velocity.y = 750
 		velocity.x = 0
 		is_slamming = true
+		$slam.emitting = true
 	elif is_slamming and is_on_floor():
 		Anims.play("slam_stop")
 		is_slamming = false
+		$slam.emitting = false
 	elif is_slamming and is_sliding:
 		Anims.stop()
 		is_slamming = false
@@ -243,6 +264,7 @@ func respawn():
 	Anims.play("RESET")
 	GlobalVars.player_hp = 100
 func show_damage():
+	$damage.play()
 	#$blood.emitting = true
 	pass
 
@@ -257,3 +279,5 @@ func goto_elevator():
 	SPEED = 0
 	JUMP_VELOCITY = 0
 	is_going_to_elevator = true
+func camera_impact(amount, dir):
+	Camera.global_position += amount * dir

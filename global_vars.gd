@@ -14,9 +14,12 @@ var slots : Dictionary[String, Node2D] = {
 	"slot2": null,
 	"slot3": null
 }
+var hand_slot : Node2D = null
+
 var player_velocity = Vector2(0, 0)
 var player_pos = Vector2(0, 0)
 var killed : int = 0
+
 func damage(amount : int):
 	if player_hp - amount > 0:
 		player_hp -= amount

@@ -56,7 +56,7 @@ func gen_dungeon(rooms_amount, start_pos):
 	
 	generate_room(room_anchor, room_size, room_doors, doors_height, false)
 	Table.global_position = (room_anchor + room_size + Vector2(-5, -1)) * 16 + Vector2(-8, 6)
-	GlobalVars.spawn_pos = Vector2((room_anchor + room_size + Vector2(-5, -1)) * 16 + Vector2(-8, 12))
+	GlobalVars.spawn_pos = Vector2((room_anchor + room_size + Vector2(-7, -1)) * 16 + Vector2(-8, 12))
 	player.respawn()
 	
 	for o in range(rooms_amount):

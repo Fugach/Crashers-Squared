@@ -95,7 +95,6 @@
 [ext_resource type="Script" uid="uid://dxet2vmqwq67g" path="res://camera.gd" id="91_n5t1e"]
 [ext_resource type="AudioStream" uid="uid://dwtdt7kwqp6ub" path="res://sounds/damage.wav" id="93_lwnsi"]
 [ext_resource type="AudioStream" uid="uid://n1irdk3ygua0" path="res://sounds/fall.wav" id="94_41lik"]
-[ext_resource type="Texture2D" uid="uid://c8h7vr4you8c5" path="res://textures/particles/slam_fall.png" id="95_jbvwl"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_0cbny"]
 animations = [{
@@ -1430,25 +1429,6 @@ gravity = Vector3(0, -10, 0)
 linear_accel_min = -2.2351742e-06
 linear_accel_max = 14.999997
 
-[sub_resource type="Curve" id="Curve_jbvwl"]
-_data = [Vector2(0, 0.9325843), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_sn1fb"]
-curve = SubResource("Curve_jbvwl")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sn1fb"]
-particle_flag_disable_z = true
-emission_shape = 3
-emission_box_extents = Vector3(4, 1, 1)
-direction = Vector3(0, -1, 0)
-spread = 0.0
-gravity = Vector3(0, -100, 0)
-alpha_curve = SubResource("CurveTexture_sn1fb")
-collision_mode = 1
-collision_friction = 0.0
-collision_bounce = 0.0
-
 [node name="main" type="Node2D" unique_id=1260506371]
 script = ExtResource("1_074og")
 
@@ -1696,13 +1676,6 @@ focus_mode = 2
 theme_override_colors/default_color = Color(0.4609375, 0.25970104, 0.05041504, 1)
 theme_override_colors/selection_color = Color(0.18275288, 0.088113904, 0, 0.56078434)
 theme_override_fonts/normal_font = ExtResource("12_cegan")
-text = "                         -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                                      РРРРРРР    ЕЕЕЕЕЕЕЕ   ЗЗЗЗЗЗ       УУ       УУ        ЛЛЛЛЛЛЛ       ЬЬ                 ТТТТТТТТТТ       АААААА      ТТТТТТТТТТ   ЫЫ                   ЫЫ          
-                                       РР           Р  ЕЕ                         ЗЗ   УУ       УУ       ЛЛ        ЛЛ       ЬЬ                        ТТ            АА         АА           ТТ         ЫЫ                  ЫЫ      
-                                        РРРРРРР    ЕЕЕЕЕЕЕ      ЗЗЗЗЗ          УУУУУУ        ЛЛ        ЛЛ      ЬЬЬЬЬЬЬ           ТТ            АААААААА          ТТ         ЫЫЫЫЫЫ      ЫЫ      
-                                         РР               ЕЕ                         ЗЗ              УУ        ЛЛ        ЛЛ     ЬЬ         ЬЬ      ТТ            АА         АА         ТТ         ЫЫ         ЫЫ   ЫЫ           
-                                           РР              ЕЕЕЕЕЕЕЕ   ЗЗЗЗЗЗ       УУУУУУ      ЛЛЛ         ЛЛ    ЬЬЬЬЬЬЬ        ТТ           АА         АА        ТТ         ЫЫЫЫЫЫ      ЫЫ          
-                         ------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 scroll_active = false
 scroll_following = true
 scroll_following_visible_characters = true
@@ -2042,15 +2015,6 @@ stream = ExtResource("93_lwnsi")
 stream = ExtResource("94_41lik")
 volume_db = -5.0
 bus = &"Sound"
-
-[node name="slam" type="GPUParticles2D" parent="Player" unique_id=263405099]
-position = Vector2(0, -3)
-emitting = false
-texture = ExtResource("95_jbvwl")
-lifetime = 0.5
-explosiveness = 0.8
-randomness = 1.0
-process_material = SubResource("ParticleProcessMaterial_sn1fb")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=48622774]
 color = Color(0.37413925, 0.37413928, 0.37413922, 1)

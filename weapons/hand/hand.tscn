@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://bbxbw8j8ubuiv"]
+
+[ext_resource type="Script" uid="uid://de6hgt8vyw8vx" path="res://weapons/hand/hand.gd" id="1_ror0l"]
+[ext_resource type="Texture2D" uid="uid://capn7qmvt5gux" path="res://textures/particles/smash/smash_0001.png" id="2_wlcvl"]
+[ext_resource type="Texture2D" uid="uid://q6bfhuhm2mfn" path="res://textures/particles/smash/smash_0002.png" id="3_vkch5"]
+[ext_resource type="Texture2D" uid="uid://5o8cod6255do" path="res://textures/particles/smash/smash_0003.png" id="4_sk64d"]
+[ext_resource type="Texture2D" uid="uid://ilgf42lnox1e" path="res://textures/particles/smash/smash_0004.png" id="5_btrtj"]
+[ext_resource type="Texture2D" uid="uid://bg0s5p0mnkjms" path="res://textures/particles/smash/smash_0005.png" id="6_myvnh"]
+[ext_resource type="Texture2D" uid="uid://dlpd4764orm2u" path="res://textures/particles/smash/smash_0006.png" id="7_i8d08"]
+[ext_resource type="Texture2D" uid="uid://mvi6rglp5roq" path="res://textures/particles/smash/smash_0007.png" id="8_saujc"]
+[ext_resource type="Texture2D" uid="uid://dgxphigp6jptr" path="res://textures/particles/smash/smash_0008.png" id="9_hoac7"]
+[ext_resource type="Texture2D" uid="uid://c5mgj21yfa83i" path="res://textures/particles/smash/hand/hand_0001.png" id="10_68g3x"]
+[ext_resource type="Texture2D" uid="uid://l0rym08nllns" path="res://textures/particles/smash/hand/hand_0002.png" id="11_axgtg"]
+[ext_resource type="Texture2D" uid="uid://daxsymotqvh56" path="res://textures/particles/smash/hand/hand_0003.png" id="12_idwub"]
+[ext_resource type="Texture2D" uid="uid://bxuu6q6uikqaw" path="res://textures/particles/smash/hand/hand_0004.png" id="13_qo3os"]
+[ext_resource type="Texture2D" uid="uid://c4xq5evmmjpuw" path="res://textures/particles/smash/hand/hand_0005.png" id="14_rv4af"]
+[ext_resource type="Texture2D" uid="uid://dv6gek0e8hta1" path="res://textures/particles/smash/hand/hand_0006.png" id="15_gbxyb"]
+[ext_resource type="Texture2D" uid="uid://ckbcn37uuvv14" path="res://textures/particles/smash/hand/hand_0007.png" id="16_y38kr"]
+[ext_resource type="Texture2D" uid="uid://bir815gvd61bf" path="res://textures/particles/smash/hand/hand_0008.png" id="17_ho7na"]
+[ext_resource type="Texture2D" uid="uid://cdwqit6hb4xti" path="res://textures/particles/smash/hand/hand_0009.png" id="18_1pmif"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_m3gm7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_wlcvl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_vkch5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_sk64d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_btrtj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_myvnh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_i8d08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_saujc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_hoac7")
+}],
+"loop": false,
+"name": &"smash",
+"speed": 60.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_68g3x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_axgtg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_idwub")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_qo3os")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_rv4af")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_gbxyb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_y38kr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_ho7na")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_1pmif")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_68g3x")
+}],
+"loop": false,
+"name": &"smash_hand",
+"speed": 30.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kowy6"]
+size = Vector2(14, 8)
+
+[node name="Hand" type="Node2D" unique_id=63557002]
+script = ExtResource("1_ror0l")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2138082270]
+position = Vector2(7, 0)
+sprite_frames = SubResource("SpriteFrames_m3gm7")
+animation = &"smash_hand"
+frame = 9
+frame_progress = 1.0
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1795136917]
+position = Vector2(7, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1958045399]
+position = Vector2(-2, 0)
+shape = SubResource("RectangleShape2D_kowy6")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

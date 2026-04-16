@@ -12,16 +12,16 @@ var SPEED = 1000
 
 func _ready() -> void:
 	await get_tree().create_timer(60).timeout
-	queue_free()
+	free()
 
 func _process(delta: float) -> void:
 	if not is_colliding:
-		#Line.set_point_position(0, Line.get_point_position(1) - Vector2(-3000 * delta, 0))
 		position += Vector2(SPEED * delta, 0).rotated(global_rotation)
 
 func wall_particles():
 	Line.visible = false
 	is_colliding = true
+	#Particles.global_rotation = 0.0
 	Particles.emitting = true
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
@@ -30,6 +30,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	elif "Player" in str(body) and body not in targets and not is_friendly:
 		GlobalVars.damage(damage_amount)
 		targets.append(body)
+		Line.visible = false
 		queue_free()
 	elif "Enemy" in str(body) and body not in targets:
 		body.damage(damage_amount)
