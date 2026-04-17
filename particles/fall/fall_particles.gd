@@ -4,7 +4,6 @@ var min_vel : float = 0.0
 func _ready() -> void:
 	process_material.initial_velocity_min = min_vel
 	process_material.initial_velocity_max = max_vel
-	print(process_material.initial_velocity)
 	emitting = true
 func _on_finished() -> void:
 	queue_free()

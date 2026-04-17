@@ -47,8 +47,8 @@ func _on_yes_pressed() -> void:
 	Player = GlobalVars.player
 	get_tree().paused = false
 	Player.respawn()
-	papers_anim.play("RESET")
-	TableHUD.hide()
+	#papers_anim.play("RESET")
+	#TableHUD.hide()
 	GlobalVars.lifes -= 1
 	$ColorRect.modulate.a = 0
 	CRT.modulate.a = 0

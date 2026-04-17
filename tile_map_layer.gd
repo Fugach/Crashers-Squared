@@ -30,7 +30,7 @@ func _ready() -> void:
 func gen_dungeon(rooms_amount, start_pos):
 	GlobalVars.camera_positions = []
 	clear()
-	$"../UI/HUD/TABLE/table/Button".disabled = false
+	Table.reroll()
 	for body in get_parent().get_children():
 		if body is RigidBody2D:
 			body.queue_free()

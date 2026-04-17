@@ -42,7 +42,9 @@ func _physics_process(delta: float) -> void:
 		is_falling_fast = true
 		
 	if is_falling_fast and velocity.y <= 0 and is_on_floor():
-		Camera.shake(0.1)
+		Camera.reset_smoothing()
+		Camera.global_position.y = global_position.y + 10
+		Camera.shake(0.1, 5)
 		$fall.play()
 		var new_fall = FALL_PARTICLES.instantiate()
 		new_fall.min_vel = 15 * (falling_speed / 50)
@@ -50,6 +52,13 @@ func _physics_process(delta: float) -> void:
 		new_fall.global_position = global_position
 		get_parent().add_child(new_fall)
 		is_falling_fast = false
+		for body in get_parent().get_children():
+			if "Enemy" in str(body) and body.global_position.distance_to(global_position) < 50:
+				print(body.velocity.y)
+				body.velocity.y += -150
+				print(body.velocity.y)
+				if body.global_position.distance_to(global_position) < 10:
+					body.damage(10)
 	if is_on_wall_only() and (not is_on_floor()) and velocity.y > 0 and\
 	(Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")):
 		is_sliding = true
@@ -138,8 +147,9 @@ func fall():
 		wind.pitch_scale = (velocity.x + velocity.y) * 0.0001 + 1.0
 	else:
 		wind.volume_db = -80
-	
-	if position.y > 10000:
+	if Input.is_action_just_pressed("interact"):
+		global_position.y += 100
+	if position.y > 30000:
 		respawn()
 		is_sliding = false
 		is_slamming = false
@@ -193,6 +203,7 @@ func get_input(delta: float) -> void:
 		$slam.emitting = false
 	elif is_slamming and is_sliding:
 		Anims.stop()
+		$slam.emitting = false
 		is_slamming = false
 	if Anims.current_animation == "slam_stop" and Input.is_action_just_pressed("jump"):
 		velocity.y += JUMP_VELOCITY * 0.3
@@ -237,12 +248,6 @@ func get_input(delta: float) -> void:
 			GlobalVars.slots[GlobalVars.current_slot_num] = null
 			Camera.position_smoothing_speed = 2
 			SlotsHUD.update()
-	if Input.is_action_pressed("zoom_in"):
-		Camera.zoom.x = min(Camera.zoom.x + 0.3 * delta, 1.0)
-		Camera.zoom.y = min(Camera.zoom.y + 0.3 * delta, 1.0)
-	elif Input.is_action_pressed("zoom_out"):
-		Camera.zoom.x = max(Camera.zoom.x - 0.3 * delta, 0.4)
-		Camera.zoom.y = max(Camera.zoom.y - 0.3 * delta, 0.4)
 	
 	if Input.is_action_just_pressed("respawn"):
 		respawn()
