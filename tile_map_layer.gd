@@ -3,6 +3,7 @@ extends TileMapLayer
 const ENEMY = preload("uid://x2aibfdis1lc")
 @onready var Elevator : Area2D = $"../Elevator"
 @onready var Table: Sprite2D = $"../Table"
+@onready var Elevator_fake: Node2D = $"../elevator_fake"
 const LIGHTS = preload("uid://cp0ivvdcjm3h4")
 @onready var player: CharacterBody2D = $"../Player"
 
@@ -30,7 +31,6 @@ func _ready() -> void:
 func gen_dungeon(rooms_amount, start_pos):
 	GlobalVars.camera_positions = []
 	clear()
-	Table.reroll()
 	for body in get_parent().get_children():
 		if body is RigidBody2D:
 			body.queue_free()
@@ -39,13 +39,13 @@ func gen_dungeon(rooms_amount, start_pos):
 				if thing in str(body):
 					body.queue_free()
 	$bg.clear()
-	
-	print("Generating ", str(rooms_amount),  " rooms")
-	
+		
 	room_anchor = start_pos
 	room_size = Vector2(15, 8)
 	gen_direction.x = [-1, 1].pick_random()
-	print("Generation direction: ", gen_direction)
+	print("Generating ", str(rooms_amount),  " rooms", " ||| Direction: ", gen_direction)
+	Table.reroll()
+	
 	#gen_direction.x = 1
 	
 	if gen_direction.x == 1:
@@ -55,8 +55,9 @@ func gen_dungeon(rooms_amount, start_pos):
 	doors_height = randi_range(-2, 2)
 	
 	generate_room(room_anchor, room_size, room_doors, doors_height, false)
-	Table.global_position = (room_anchor + room_size + Vector2(-5, -1)) * 16 + Vector2(-8, 6)
-	GlobalVars.spawn_pos = Vector2((room_anchor + room_size + Vector2(-7, -1)) * 16 + Vector2(-8, 12))
+	Table.global_position = (room_anchor + room_size + Vector2(-5, -1)) * 16 + Vector2(8, 6)
+	Elevator_fake.global_position = (room_anchor + room_size + Vector2(-7, -1)) * 16 + Vector2(-8, 0)
+	GlobalVars.spawn_pos = Elevator_fake.global_position + Vector2(0, 12)
 	player.respawn()
 	
 	for o in range(rooms_amount):
@@ -99,8 +100,8 @@ func gen_dungeon(rooms_amount, start_pos):
 				generate_hall(hall_pos1, hall_pos2)
 	
 	print("Generation is finished")
-	$tada.play()
-	print(GlobalVars.camera_positions)
+	GlobalVars.time = 0.0
+	GlobalVars.is_time_running = true
 
 func generate_room(pos, size, doors, height, enemies):
 	GlobalVars.camera_positions.append(pos + size / 2)

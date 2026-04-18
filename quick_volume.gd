@@ -12,11 +12,11 @@ extends Node2D
 
 func _ready():
 	Vol_window.play("default")
+	Anim.play("RESET")
 	update()
 
 func update():
 	Blip.pitch_scale = 1.0 + AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) * 0.01
-	Vol_timer.start()
 	Percent.value = round((AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) + 25) / 50 * 100)
 	if AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) > 0:
 		Infinity.hide()
@@ -49,6 +49,7 @@ func _process(delta: float) -> void:
 		Blip.play()
 		update()
 		Cooldown.start()
+		Vol_timer.start()
 	elif Input.is_action_pressed("vol_down") and Cooldown.is_stopped():
 		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), max(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) - 1, -26))
 		if AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) == -26:
@@ -60,3 +61,13 @@ func _process(delta: float) -> void:
 		Blip.play()
 		update()
 		Cooldown.start()
+		Vol_timer.start()
+
+
+func _on_anim_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "show":
+		$display_timer.start()
+
+
+func _on_display_timer_timeout() -> void:
+	Anim.play("hide")

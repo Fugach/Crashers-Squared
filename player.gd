@@ -4,7 +4,9 @@ var SPEED : float = 165.0
 var SPEED_buffer : float = SPEED
 var JUMP_VELOCITY : float = -300.0
 var JUMP_VELOCITY_buffer : float = JUMP_VELOCITY
-var availible_jumps : int = 3
+var WEIGHT : float = 500
+var WALLJUMPS : int = 3
+var AVAILABLE_WALLJUMPS : int = 3
 var direction : int = 1
 
 const RL = preload("uid://b6yunx8h1pcdi")
@@ -37,7 +39,7 @@ func _ready() -> void:
 	GlobalVars.player = self
 
 func _physics_process(delta: float) -> void:
-	if velocity.y > 400:
+	if velocity.y > WEIGHT:
 		falling_speed = velocity.y
 		is_falling_fast = true
 		
@@ -45,6 +47,7 @@ func _physics_process(delta: float) -> void:
 		Camera.reset_smoothing()
 		Camera.global_position.y = global_position.y + 10
 		Camera.shake(0.1, 5)
+		$fall.pitch_scale = randf_range(0.7, 1.3)
 		$fall.play()
 		var new_fall = FALL_PARTICLES.instantiate()
 		new_fall.min_vel = 15 * (falling_speed / 50)
@@ -53,12 +56,14 @@ func _physics_process(delta: float) -> void:
 		get_parent().add_child(new_fall)
 		is_falling_fast = false
 		for body in get_parent().get_children():
-			if "Enemy" in str(body) and body.global_position.distance_to(global_position) < 50:
-				print(body.velocity.y)
-				body.velocity.y += -150
-				print(body.velocity.y)
+			if ("Enemy" in str(body) or body is RigidBody2D) and body.global_position.distance_to(global_position) < 50:
+				if not (body is RigidBody2D):
+					body.velocity.y += -150
+				else:
+					body.apply_impulse(Vector2(0, -150))
 				if body.global_position.distance_to(global_position) < 10:
-					body.damage(10)
+					if body.has_method("damage"):
+						body.damage(10)
 	if is_on_wall_only() and (not is_on_floor()) and velocity.y > 0 and\
 	(Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")):
 		is_sliding = true
@@ -96,7 +101,10 @@ func _physics_process(delta: float) -> void:
 		var collider = collision.get_collider()
 		if collider is RigidBody2D:
 			var normal = collision.get_normal()
-			collider.apply_central_impulse(previous_velocity * normal * -0.15)
+			if velocity.x + velocity.y > SPEED * 2:
+				collider.apply_impulse(previous_velocity * normal * -0.15)
+			else:
+				collider.apply_impulse(Vector2(SPEED, SPEED) * normal * -0.15)
 
 func _process(_delta: float) -> void:
 	jump()
@@ -130,15 +138,15 @@ func jump():
 			Anims.play("RESET")
 	if Input.is_action_just_released("jump") and not is_on_floor() and velocity.y < 0:
 		velocity.y *= 0.6
-	elif Input.is_action_just_pressed("jump") and is_sliding and availible_jumps > 0:
+	elif Input.is_action_just_pressed("jump") and is_sliding and AVAILABLE_WALLJUMPS > 0:
 		if is_slamming:
 			is_slamming = false
 			Anims.stop()
 		velocity.x = sign(get_wall_normal().x) * 200
 		velocity.y = -350
-		availible_jumps -= 1
+		AVAILABLE_WALLJUMPS -= 1
 	if is_on_floor():
-		availible_jumps = 3
+		AVAILABLE_WALLJUMPS = WALLJUMPS
 		$Coyote.start()
 
 func fall():

@@ -35,5 +35,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		targets.append(body)
 		if body.has_method("damage"):
 			body.damage(10)
+			if body is RigidBody2D:
+				body.apply_impulse(300 * Vector2.RIGHT.rotated(global_rotation))
 		if body.has_method("push"):
 			body.push(550, (body.global_position - global_position).normalized())

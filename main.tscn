@@ -32,8 +32,11 @@
 [ext_resource type="AudioStream" uid="uid://c73rscynw2ms" path="res://sounds/UI/table/paper3.ogg" id="16_facbu"]
 [ext_resource type="AudioStream" uid="uid://tfn46umjq7bd" path="res://sounds/UI/table/paper4.ogg" id="17_b1qrp"]
 [ext_resource type="AudioStream" uid="uid://b2bqsykegryfi" path="res://music/table1.ogg" id="17_ok6jj"]
+[ext_resource type="FontFile" uid="uid://b7t3o1ojv4rym" path="res://fonts/JetBrainsMono-Bold.ttf" id="18_wat4s"]
 [ext_resource type="Texture2D" uid="uid://xcabiap7vul7" path="res://textures/UI/QuickVolume/volume1.png" id="19_0cp0l"]
+[ext_resource type="Texture2D" uid="uid://c4unfjjs0h0k5" path="res://textures/UI/X.png" id="19_ywjan"]
 [ext_resource type="Texture2D" uid="uid://cie5c7i6jocr" path="res://textures/UI/QuickVolume/volume2.png" id="20_d2t1y"]
+[ext_resource type="Texture2D" uid="uid://btsihdgho6s3l" path="res://textures/UI/X_pressed.png" id="20_m74q3"]
 [ext_resource type="Texture2D" uid="uid://dixd5p4gofwpl" path="res://textures/UI/QuickVolume/volume3.png" id="21_gngh3"]
 [ext_resource type="Texture2D" uid="uid://cfr0uyc8g23nq" path="res://textures/UI/QuickVolume/progress.png" id="22_d2t1y"]
 [ext_resource type="AudioStream" uid="uid://csxql5nmexjnu" path="res://sounds/UI/blip/blipSelect-8.wav" id="23_gngh3"]
@@ -404,7 +407,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(2, 1),
+"transitions": PackedFloat32Array(2, 0),
 "update": 0,
 "values": [Vector2(326, 35), Vector2(326, -40)]
 }
@@ -416,12 +419,12 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"transitions": PackedFloat32Array(1, 0),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_0n3wm"]
+[sub_resource type="Animation" id="Animation_m74q3"]
 resource_name = "show"
 length = 0.5
 tracks/0/type = "value"
@@ -444,7 +447,7 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"transitions": PackedFloat32Array(1, 0),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
@@ -453,7 +456,7 @@ tracks/1/keys = {
 _data = {
 &"RESET": SubResource("Animation_d2t1y"),
 &"hide": SubResource("Animation_gngh3"),
-&"show": SubResource("Animation_0n3wm")
+&"show": SubResource("Animation_m74q3")
 }
 
 [sub_resource type="Animation" id="Animation_jbvwl"]
@@ -1082,7 +1085,7 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b1qrp"]
-size = Vector2(16, 28.5)
+size = Vector2(47, 33)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vjgyh"]
 animations = [{
@@ -1493,6 +1496,13 @@ frame_0/duration = 0.5
 frame_1/texture = ExtResource("44_6iyjs")
 frame_1/duration = 0.5
 
+[sub_resource type="Curve" id="Curve_m74q3"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_tko6h"]
+curve = SubResource("Curve_m74q3")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e71vb"]
 lifetime_randomness = 0.25
 particle_flag_disable_z = true
@@ -1500,6 +1510,7 @@ initial_velocity_max = 15.0
 gravity = Vector3(0, -10, 0)
 linear_accel_min = -2.2351742e-06
 linear_accel_max = 14.999997
+alpha_curve = SubResource("CurveTexture_tko6h")
 
 [sub_resource type="Curve" id="Curve_jbvwl"]
 _data = [Vector2(0, 0.9325843), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -1575,6 +1586,30 @@ texture_progress_offset = Vector2(7, 4)
 tint_over = Color(0.9234164, 0.9234164, 0.9234164, 1)
 metadata/_edit_use_anchors_ = true
 
+[node name="Console" type="RichTextLabel" parent="UI/HUD" unique_id=1718393781]
+modulate = Color(6.840123, 6.840123, 6.840123, 0)
+offset_right = 1280.0
+offset_bottom = 720.0
+scale = Vector2(0.5, 0.5)
+focus_mode = 2
+theme_override_colors/default_color = Color(0.4609375, 0.25970104, 0.05041504, 1)
+theme_override_colors/selection_color = Color(0.18275288, 0.088113904, 0, 0.56078434)
+theme_override_fonts/normal_font = ExtResource("12_cegan")
+text = "                         -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                      РРРРРРР    ЕЕЕЕЕЕЕЕ   ЗЗЗЗЗЗ       УУ       УУ        ЛЛЛЛЛЛЛ       ЬЬ                 ТТТТТТТТТТ       АААААА      ТТТТТТТТТТ   ЫЫ                   ЫЫ          
+                                       РР           Р  ЕЕ                         ЗЗ   УУ       УУ       ЛЛ        ЛЛ       ЬЬ                        ТТ            АА         АА           ТТ         ЫЫ                  ЫЫ      
+                                        РРРРРРР    ЕЕЕЕЕЕЕ      ЗЗЗЗЗ          УУУУУУ        ЛЛ        ЛЛ      ЬЬЬЬЬЬЬ           ТТ            АААААААА          ТТ         ЫЫЫЫЫЫ      ЫЫ      
+                                         РР               ЕЕ                         ЗЗ              УУ        ЛЛ        ЛЛ     ЬЬ         ЬЬ      ТТ            АА         АА         ТТ         ЫЫ         ЫЫ   ЫЫ           
+                                           РР              ЕЕЕЕЕЕЕЕ   ЗЗЗЗЗЗ       УУУУУУ      ЛЛЛ         ЛЛ    ЬЬЬЬЬЬЬ        ТТ           АА         АА        ТТ         ЫЫЫЫЫЫ      ЫЫ          
+                         ------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+scroll_active = false
+scroll_following = true
+scroll_following_visible_characters = true
+selection_enabled = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="UI/HUD/Console" unique_id=1539854180]
+stream = ExtResource("34_53bls")
+
 [node name="Slots" type="Node2D" parent="UI/HUD" unique_id=1140276173]
 script = ExtResource("25_hrvbo")
 
@@ -1602,6 +1637,7 @@ stream = ExtResource("25_abqjc")
 volume_db = -15.0
 
 [node name="Table" type="Node2D" parent="UI/HUD" unique_id=798900466]
+visible = false
 
 [node name="bg" type="ColorRect" parent="UI/HUD/Table" unique_id=2085793778]
 offset_left = -20.0
@@ -1614,6 +1650,26 @@ metadata/_edit_use_anchors_ = true
 [node name="table" type="Sprite2D" parent="UI/HUD/Table" unique_id=1062840491]
 position = Vector2(320, 180)
 texture = ExtResource("6_a6jrf")
+
+[node name="Title" type="Label" parent="UI/HUD/Table/table" unique_id=1781769448]
+offset_left = 61.0
+offset_top = -55.0
+offset_right = 205.0
+offset_bottom = -47.0
+theme_override_fonts/font = ExtResource("18_wat4s")
+theme_override_font_sizes/font_size = 5
+text = "Выберите улучшение"
+horizontal_alignment = 1
+
+[node name="TextureButton" type="TextureButton" parent="UI/HUD/Table/table" unique_id=46510825]
+offset_left = 196.0
+offset_top = -54.0
+offset_right = 204.0
+offset_bottom = -46.0
+texture_normal = ExtResource("19_ywjan")
+texture_pressed = ExtResource("20_m74q3")
+texture_hover = ExtResource("20_m74q3")
+texture_focused = ExtResource("19_ywjan")
 
 [node name="printed" type="Sprite2D" parent="UI/HUD/Table" unique_id=1255878504]
 position = Vector2(200, 150)
@@ -1665,19 +1721,48 @@ position = Vector2(320, 560)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("11_kq58d")
 
-[node name="paper_button" type="TextureButton" parent="UI/HUD/Table" unique_id=209918439]
-process_mode = 1
-offset_left = 525.0
-offset_top = 268.0
-offset_right = 555.0
-offset_bottom = 295.0
+[node name="paper_sfx" type="AudioStreamPlayer2D" parent="UI/HUD/Table" unique_id=32600976]
+stream = SubResource("AudioStreamRandomizer_come4")
+
+[node name="paper_button" type="TextureButton" parent="UI/HUD/Table" unique_id=1358567587]
+offset_left = 536.0
+offset_top = 261.0
+offset_right = 566.0
+offset_bottom = 288.0
 texture_normal = ExtResource("12_seu75")
 texture_pressed = ExtResource("12_seu75")
 texture_hover = ExtResource("12_seu75")
 texture_focused = ExtResource("12_seu75")
 
-[node name="paper_sfx" type="AudioStreamPlayer2D" parent="UI/HUD/Table" unique_id=32600976]
-stream = SubResource("AudioStreamRandomizer_come4")
+[node name="Upgrade1" type="Button" parent="UI/HUD/Table" unique_id=2107082386]
+offset_left = 383.0
+offset_top = 135.0
+offset_right = 429.0
+offset_bottom = 202.0
+theme_override_fonts/font = ExtResource("18_wat4s")
+theme_override_font_sizes/font_size = 5
+autowrap_mode = 3
+autowrap_trim_flags = 0
+
+[node name="Upgrade2" type="Button" parent="UI/HUD/Table" unique_id=1280053768]
+offset_left = 430.0
+offset_top = 135.0
+offset_right = 476.0
+offset_bottom = 202.0
+theme_override_fonts/font = ExtResource("18_wat4s")
+theme_override_font_sizes/font_size = 5
+autowrap_mode = 3
+autowrap_trim_flags = 0
+
+[node name="Upgrade3" type="Button" parent="UI/HUD/Table" unique_id=990676258]
+offset_left = 477.0
+offset_top = 135.0
+offset_right = 523.0
+offset_bottom = 202.0
+theme_override_fonts/font = ExtResource("18_wat4s")
+theme_override_font_sizes/font_size = 5
+autowrap_mode = 3
+autowrap_trim_flags = 0
 
 [node name="QuickVolume" type="Node2D" parent="UI/HUD" unique_id=161113036]
 modulate = Color(1, 1, 1, 0)
@@ -1732,35 +1817,11 @@ stream = ExtResource("33_k1udn")
 volume_db = 5.0
 
 [node name="cooldown" type="Timer" parent="UI/HUD/QuickVolume" unique_id=976853337]
-wait_time = 0.1
+wait_time = 0.03
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="UI/HUD" unique_id=570061909]
 libraries/ = SubResource("AnimationLibrary_yvsr8")
-
-[node name="Console" type="RichTextLabel" parent="UI/HUD" unique_id=1718393781]
-modulate = Color(6.840123, 6.840123, 6.840123, 0)
-offset_right = 1280.0
-offset_bottom = 720.0
-scale = Vector2(0.5, 0.5)
-focus_mode = 2
-theme_override_colors/default_color = Color(0.4609375, 0.25970104, 0.05041504, 1)
-theme_override_colors/selection_color = Color(0.18275288, 0.088113904, 0, 0.56078434)
-theme_override_fonts/normal_font = ExtResource("12_cegan")
-text = "                         -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                                      РРРРРРР    ЕЕЕЕЕЕЕЕ   ЗЗЗЗЗЗ       УУ       УУ        ЛЛЛЛЛЛЛ       ЬЬ                 ТТТТТТТТТТ       АААААА      ТТТТТТТТТТ   ЫЫ                   ЫЫ          
-                                       РР           Р  ЕЕ                         ЗЗ   УУ       УУ       ЛЛ        ЛЛ       ЬЬ                        ТТ            АА         АА           ТТ         ЫЫ                  ЫЫ      
-                                        РРРРРРР    ЕЕЕЕЕЕЕ      ЗЗЗЗЗ          УУУУУУ        ЛЛ        ЛЛ      ЬЬЬЬЬЬЬ           ТТ            АААААААА          ТТ         ЫЫЫЫЫЫ      ЫЫ      
-                                         РР               ЕЕ                         ЗЗ              УУ        ЛЛ        ЛЛ     ЬЬ         ЬЬ      ТТ            АА         АА         ТТ         ЫЫ         ЫЫ   ЫЫ           
-                                           РР              ЕЕЕЕЕЕЕЕ   ЗЗЗЗЗЗ       УУУУУУ      ЛЛЛ         ЛЛ    ЬЬЬЬЬЬЬ        ТТ           АА         АА        ТТ         ЫЫЫЫЫЫ      ЫЫ          
-                         ------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-scroll_active = false
-scroll_following = true
-scroll_following_visible_characters = true
-selection_enabled = true
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="UI/HUD/Console" unique_id=1539854180]
-stream = ExtResource("34_53bls")
 
 [node name="Restart" type="CanvasLayer" parent="UI" unique_id=1233357972]
 visible = false
@@ -1883,20 +1944,39 @@ scale = Vector2(10, 5.625)
 texture = ExtResource("7_ryguw")
 
 [node name="exit" type="Button" parent="UI/Pause/ColorRect" unique_id=1521017913]
+modulate = Color(6.840123, 6.840123, 6.840123, 1)
 layout_mode = 0
 offset_left = 252.0
 offset_top = 188.0
 offset_right = 377.0
 offset_bottom = 219.0
+theme_override_colors/font_color = Color(0.4627451, 0.25882354, 0.050980393, 1)
+theme_override_colors/font_focus_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
+theme_override_colors/font_pressed_color = Color(0.63529414, 0.3647059, 0.08627451, 1)
+theme_override_colors/font_hover_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.63529414, 0.3647059, 0.08627451, 1)
+theme_override_fonts/font = ExtResource("12_cegan")
+theme_override_font_sizes/font_size = 1
 text = "ВЫХОД"
+flat = true
+autowrap_mode = 3
 
 [node name="continue" type="Button" parent="UI/Pause/ColorRect" unique_id=636004402]
+modulate = Color(6.840123, 6.840123, 6.840123, 1)
 layout_mode = 0
-offset_left = 251.0
+offset_left = 228.0
 offset_top = 107.0
-offset_right = 376.0
+offset_right = 403.0
 offset_bottom = 138.0
+theme_override_colors/font_color = Color(0.4627451, 0.25882354, 0.050980393, 1)
+theme_override_colors/font_focus_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
+theme_override_colors/font_pressed_color = Color(0.63529414, 0.3647059, 0.08627451, 1)
+theme_override_colors/font_hover_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.63529414, 0.3647059, 0.08627451, 1)
+theme_override_fonts/font = ExtResource("12_cegan")
+theme_override_font_sizes/font_size = 1
 text = "ПРОДОЛЖИТЬ"
+flat = true
 
 [node name="CRT" type="ColorRect" parent="UI/Pause" unique_id=1727745782]
 modulate = Color(1, 1, 1, 0)
@@ -1974,8 +2054,7 @@ libraries/ = SubResource("AnimationLibrary_53bls")
 script = ExtResource("44_23xmf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Elevator" unique_id=961738373]
-visible = false
-position = Vector2(-0.5, -8.5)
+position = Vector2(-0.5, -1.5)
 shape = SubResource("RectangleShape2D_b1qrp")
 
 [node name="Inside" type="StaticBody2D" parent="Elevator" unique_id=184097870]
@@ -1994,7 +2073,6 @@ shadow_enabled = true
 texture = ExtResource("7_dg77c")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Elevator/Inside" unique_id=1497961156]
-visible = false
 position = Vector2(0, -39)
 polygon = PackedVector2Array(-32, 14, 32, 14, 32, 64, -32, 64, -27, 22, -27, 56, 27, 56, 27, 22, -27, 22, -32, 64)
 disabled = true
@@ -2171,8 +2249,14 @@ position_smoothing_speed = 2.0
 script = ExtResource("91_n5t1e")
 
 [connection signal="value_changed" from="UI/HUD/HPBar" to="." method="_on_hp_bar_value_changed"]
-[connection signal="animation_finished" from="UI/HUD/Table/animations" to="." method="_on_animation_player_animation_finished"]
+[connection signal="pressed" from="UI/HUD/Table/table/TextureButton" to="Table" method="_on_texture_button_pressed"]
+[connection signal="animation_finished" from="UI/HUD/Table/animations" to="Table" method="_on_animations_animation_finished"]
 [connection signal="pressed" from="UI/HUD/Table/paper_button" to="Table" method="_on_paper_button_pressed"]
+[connection signal="pressed" from="UI/HUD/Table/Upgrade1" to="Table" method="_on_upgrade_1_pressed"]
+[connection signal="pressed" from="UI/HUD/Table/Upgrade2" to="Table" method="_on_upgrade_2_pressed"]
+[connection signal="pressed" from="UI/HUD/Table/Upgrade3" to="Table" method="_on_upgrade_3_pressed"]
+[connection signal="timeout" from="UI/HUD/QuickVolume/display_timer" to="UI/HUD/QuickVolume" method="_on_display_timer_timeout"]
+[connection signal="animation_finished" from="UI/HUD/QuickVolume/anim" to="UI/HUD/QuickVolume" method="_on_anim_animation_finished"]
 [connection signal="finished" from="UI/HUD/QuickVolume/lost" to="." method="_on_lost_finished"]
 [connection signal="animation_finished" from="UI/HUD/AnimationPlayer" to="UI/HUD" method="_on_animation_player_animation_finished"]
 [connection signal="mouse_entered" from="UI/Restart/ColorRect/No" to="UI/Restart" method="_on_no_mouse_entered"]
@@ -2181,7 +2265,11 @@ script = ExtResource("91_n5t1e")
 [connection signal="mouse_entered" from="UI/Restart/ColorRect/Yes" to="UI/Restart" method="_on_yes_mouse_entered"]
 [connection signal="mouse_exited" from="UI/Restart/ColorRect/Yes" to="UI/Restart" method="_on_yes_mouse_exited"]
 [connection signal="pressed" from="UI/Restart/ColorRect/Yes" to="UI/Restart" method="_on_yes_pressed"]
+[connection signal="mouse_entered" from="UI/Pause/ColorRect/exit" to="." method="_on_exit_mouse_entered"]
+[connection signal="mouse_exited" from="UI/Pause/ColorRect/exit" to="." method="_on_exit_mouse_exited"]
 [connection signal="pressed" from="UI/Pause/ColorRect/exit" to="." method="_on_exit_pressed"]
+[connection signal="mouse_entered" from="UI/Pause/ColorRect/continue" to="." method="_on_continue_mouse_entered"]
+[connection signal="mouse_exited" from="UI/Pause/ColorRect/continue" to="." method="_on_continue_mouse_exited"]
 [connection signal="pressed" from="UI/Pause/ColorRect/continue" to="." method="_on_continue_pressed"]
 [connection signal="body_entered" from="Table/ActivationRange" to="Table" method="_on_activation_range_body_entered"]
 [connection signal="body_exited" from="Table/ActivationRange" to="Table" method="_on_activation_range_body_exited"]

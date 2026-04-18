@@ -5,6 +5,10 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hwob3"]
 size = Vector2(20, 1)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hwob3"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 98, 0)
+
 [node name="Bullet" type="Node2D" unique_id=1568785125]
 script = ExtResource("1_awion")
 
@@ -24,5 +28,8 @@ position = Vector2(10, -0.5)
 shape = SubResource("RectangleShape2D_hwob3")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=990872079]
+emitting = false
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_hwob3")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

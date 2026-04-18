@@ -33,7 +33,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		Console.text += "ВРЕМЯ"
 		await wait(0.5)
 		repeat(" ", 35)
-		Console.text += "99:99\n"
+		Console.text += str(int(GlobalVars.time) / 60) + " : " + str(int(GlobalVars.time) % 60) + " : " + str(int(GlobalVars.time) % 1)
 		await wait(1)
 		for x in range(randi_range(45, 150)):
 			Console.text += "РАБОТАЕМ НАД ЭТИМ "

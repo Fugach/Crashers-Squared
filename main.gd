@@ -9,8 +9,6 @@ extends Node2D
 @onready var HPLabel : Label = $UI/HUD/HPBar/HPLabel
 
 @onready var Table: Node2D = $UI/HUD/Table
-@onready var TablePaperAnim : AnimationPlayer = $UI/HUD/TABLE/papers_anim
-@onready var TableOtherAnim : AnimationPlayer = $UI/HUD/TABLE/other_anim
 
 @onready var Camera: Camera2D = $Camera2D
 
@@ -19,6 +17,7 @@ func _ready() -> void:
 	GlobalVars.main = self
 	GlobalVars.player.respawn()
 	$SubViewport.use_hdr_2d = true
+	$UI/Pause/AnimationPlayer.play_backwards("appear")
 	
 
 func load_config():
@@ -40,10 +39,11 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("shift"):
 		$TileMapLayer.gen_dungeon(1, Vector2(3, 2))
 		GlobalVars.player.respawn()
+		GlobalVars.time = 0.0
 	if Input.is_action_just_pressed("esc") and not Table.visible:
-		get_tree().paused = true
-		$UI/Pause/AnimationPlayer.play("appear")
 		$UI/Pause.show()
+		$UI/Pause/AnimationPlayer.play("appear")
+		get_tree().paused = true
 
 func death():
 	GlobalVars.player_hp = 0
@@ -53,12 +53,6 @@ func death():
 	$UI/Restart.death()
 	get_tree().paused = true
 
-
-func _on_button_pressed() -> void:
-	if not TablePaperAnim.is_playing() and not TableOtherAnim.is_playing():
-		TablePaperAnim.play("print")
-		$UI/HUD/TABLE/print_noise.play()
-		$UI/HUD/TABLE/table/Button.disabled = true
 
 func _on_exit_pressed() -> void:
 	get_tree().paused = false
@@ -78,3 +72,15 @@ func _on_hp_bar_value_changed(value: float) -> void:
 
 func _on_lost_finished() -> void:
 	get_tree().quit(-1)
+
+
+func _on_exit_mouse_entered() -> void:
+	$UI/Pause/ColorRect/exit.text = ">> ВЫХОД <<"
+func _on_exit_mouse_exited() -> void:
+	$UI/Pause/ColorRect/exit.text = "ВЫХОД"
+
+
+func _on_continue_mouse_entered() -> void:
+	$UI/Pause/ColorRect/continue.text = ">> ПРОДОЛЖИТЬ <<"
+func _on_continue_mouse_exited() -> void:
+	$UI/Pause/ColorRect/continue.text = "ПРОДОЛЖИТЬ"

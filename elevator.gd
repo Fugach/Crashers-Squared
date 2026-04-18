@@ -23,6 +23,7 @@ func _on_body_exited(body: Node2D) -> void:
 
 func _process(delta: float):
 	if Input.is_action_just_pressed("rmb") and Tip.visible:
+		GlobalVars.is_time_running = false
 		GlobalVars.player.goto_elevator()
 		Tip.hide()
 
@@ -35,6 +36,8 @@ func outside():
 	$AnimationPlayer.play("show_outside")
 	Camera.is_following = true
 	$Inside/CollisionPolygon2D.disabled = true
+	GlobalVars.time = 0.0
+	GlobalVars.is_time_running = true
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "show_inside":

@@ -16,9 +16,16 @@ var slots : Dictionary[String, Node2D] = {
 }
 var hand_slot : Node2D = null
 
+var is_time_running : bool = false
+var time : float = 0.0
+
 var player_velocity = Vector2(0, 0)
 var player_pos = Vector2(0, 0)
 var killed : int = 0
+
+func _process(delta: float) -> void:
+	if is_time_running:
+		time += delta
 
 func damage(amount : int):
 	if player_hp - amount > 0:

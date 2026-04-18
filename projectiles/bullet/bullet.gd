@@ -21,7 +21,6 @@ func _process(delta: float) -> void:
 func wall_particles():
 	Line.visible = false
 	is_colliding = true
-	#Particles.global_rotation = 0.0
 	Particles.emitting = true
 
 func _on_area_2d_body_entered(body: Node2D) -> void:

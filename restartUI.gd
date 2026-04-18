@@ -2,8 +2,6 @@ extends CanvasLayer
 
 @onready var Player = GlobalVars.player
 @onready var RestartUI : CanvasLayer = $"."
-@onready var TableHUD : Node2D = $"../HUD/TABLE"
-@onready var papers_anim: AnimationPlayer = $"../HUD/TABLE/papers_anim"
 @onready var CRT : ColorRect = $CRT
 @onready var choose : AudioStreamPlayer2D = $choose
 @onready var noise : AudioStreamPlayer = $noise
