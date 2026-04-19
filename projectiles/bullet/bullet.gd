@@ -12,7 +12,7 @@ var SPEED = 1000
 
 func _ready() -> void:
 	await get_tree().create_timer(60).timeout
-	free()
+	queue_free()
 
 func _process(delta: float) -> void:
 	if not is_colliding:

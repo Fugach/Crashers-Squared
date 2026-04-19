@@ -4,7 +4,7 @@ extends Node2D
 @onready var Spawnpoint : Marker2D = $Sprite2D/Spawnpoint
 @onready var Cooldown : Timer = $Cooldown
 
-const BULLET = preload("uid://csr8w1qcnqlbd")
+var BULLET = preload("uid://csr8w1qcnqlbd")
 var my_slot : String = ""
 var can_shoot : bool = true
 var is_friendly : bool = false
