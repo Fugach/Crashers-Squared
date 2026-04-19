@@ -84,17 +84,19 @@ func wait(x):
 func main_menu():
 	$settings_things.hide()
 	text.text = ""
-	text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	text.text = "-".repeat(100)
+	#text.horizontal_alignment = HO
+	text.text = "-".repeat(155)
 	await wait(0.2)
-	text.text += "\n" + "##       # ##     ##  #           #  ##       #####"
-	text.text += "\n" + "##     #   ##     ##    #   #     ##     #       ##"
-	text.text += "\n" + "##   #     ##     ##      #       ##       ##  ##"
-	text.text += "\n" + "## #       ##     ##             ##    #       ##"
+	text.text += "\n"
+	text.text += "     ##          -=     ##-=-=       #           #       #                #     ##             ##    -=-=-=-=-=    ##-=-=-=        -=-=-=-=     ##               ##       2
+     ##      -=         ##         #    #           #       #       #      #     ##        -= ##             #             ##                    #            #     ##         -= ##            
+     ##-=-=           ##==-=       #=-=-=#       #       #      #     ##    -=     ##             #             ##-=-=            #            #     ##     -=     ##         
+     ##      -=         ##                             #      #       #      #     ## -=        ##             #             ##                    #            #     ## -=         ##
+     ##          -=     ##               =-=-=-=-      #=-= #-=-#     ##             ##             #             ##-=-=-=     =-#            #    ##              ##"
 	await wait(0.2)
-	text.text += "\n" + "-".repeat(100)
-	text.text += "\n\n\n\n\n\n\n\n\n" + "НАЧАТЬ"
-	text.text += "\n\n\n" + "НАСТРОЙКИ"
+	text.text += "\n" + "-".repeat(155)
+	text.text += "\n\n\n" + "         НАЧАТЬ"
+	text.text += "\n\n\n" + "         НАСТРОЙКИ"
 	$settings.show()
 	$start.show()
 func settings():
@@ -131,7 +133,7 @@ func _on_start_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://main.tscn")
 func _on_start_button_mouse_entered() -> void:
 	$choose.play()
-	$start.text = ">>                 <<"
+	$start.text = ">>"
 func _on_start_button_mouse_exited() -> void:
 	$start.text = ""
 
@@ -143,7 +145,7 @@ func _on_settings_pressed() -> void:
 	settings()
 func _on_settings_mouse_entered() -> void:
 	$choose.play()
-	$settings.text = ">>                          <<"
+	$settings.text = ">>"
 func _on_settings_mouse_exited() -> void:
 	$settings.text = ""
 

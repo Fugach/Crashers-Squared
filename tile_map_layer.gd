@@ -10,7 +10,7 @@ const LIGHTS = preload("uid://cp0ivvdcjm3h4")
 
 var room_anchor = Vector2(0, 0)
 var room_size = Vector2(0, 0)
-var room_doors = ""
+var room_doors = "right"
 var doors_height = 0
 var hall_length = 0
 var hall_tilt = 0
@@ -24,6 +24,7 @@ var hall_pos2 = Vector2(0, 0)
 var total_enemies : int = 0
 var total_lights : int = 0
 var del_list = ["Enemy", "Rocket", "Bullet", "Light"]
+
 func _ready() -> void:
 	var rooms_amount = randi_range(3, 15)
 	gen_dungeon(rooms_amount, Vector2(3, 2))
@@ -39,20 +40,19 @@ func gen_dungeon(rooms_amount, start_pos):
 				if thing in str(body):
 					body.queue_free()
 	$bg.clear()
-		
+	
 	room_anchor = start_pos
 	room_size = Vector2(15, 8)
 	gen_direction.x = [-1, 1].pick_random()
 	print("Generating ", str(rooms_amount),  " rooms", " ||| Direction: ", gen_direction)
 	Table.reroll()
 	
-	#gen_direction.x = 1
-	
-	if gen_direction.x == 1:
-		room_doors = "right"
-	elif gen_direction.x == -1: 
-		room_doors = "left"
-	doors_height = randi_range(-2, 2)
+	# TODO:
+	#if gen_direction.x == 1:
+		#room_doors = "right"
+	#elif gen_direction.x == -1: 
+		#room_doors = "left"
+	#doors_height = randi_range(-2, 2)
 	
 	generate_room(room_anchor, room_size, room_doors, doors_height, false)
 	Table.global_position = (room_anchor + room_size + Vector2(-5, -1)) * 16 + Vector2(8, 6)
@@ -77,14 +77,10 @@ func gen_dungeon(rooms_amount, start_pos):
 				hall_pos1 = old_room_anchor + old_room_size
 				hall_pos2 = room_anchor + Vector2(0, room_size.y)
 				generate_hall(hall_pos1, hall_pos2)
-				#set_cell(hall_pos1, 0, Vector2(0, 1))
-				#set_cell(hall_pos2, 0, Vector2(0, 2))
 			elif gen_direction.x == -1:
 				hall_pos1 = room_anchor + room_size
 				hall_pos2 = old_room_anchor + Vector2(0, old_room_size.y)
 				generate_hall(hall_pos1, hall_pos2)
-				#set_cell(hall_pos1, 0, Vector2(0, 1))
-				#set_cell(hall_pos2, 0, Vector2(0, 2))
 		else:
 			if gen_direction.x == 1:
 				Elevator.global_position = (room_anchor - Vector2(3, 1) + room_size) * Vector2(16, 16)

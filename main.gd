@@ -36,7 +36,7 @@ func _process(delta: float) -> void:
 	HPBar.value = float(GlobalVars.player_hp)
 	if GlobalVars.player.global_position.y > 500:
 		$UI/HUD/QuickVolume/lost.play()
-	if Input.is_action_just_pressed("shift"):
+	if Input.is_action_just_pressed("mmb"):
 		$TileMapLayer.gen_dungeon(1, Vector2(3, 2))
 		GlobalVars.player.respawn()
 		GlobalVars.time = 0.0
