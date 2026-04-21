@@ -29,6 +29,7 @@ region_enabled = true
 region_rect = Rect2(33, 0, 19, 12)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=136794182]
+visible = false
 polygon = PackedVector2Array(-9, -6, -9, 6, 10, 6, 10, -6)
 
 [node name="soft" type="AudioStreamPlayer2D" parent="." unique_id=2004703508]

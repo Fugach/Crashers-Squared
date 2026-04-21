@@ -3,6 +3,7 @@ extends RigidBody2D
 @onready var player = GlobalVars.player
 const RL = preload("uid://brcehntt6lxn6")
 var check : bool = false
+var penetrable : bool = false
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if visible and body.name == "Player":
@@ -28,6 +29,7 @@ func _process(delta: float) -> void:
 				break
 func push(pwr, dir):
 	linear_velocity += dir * pwr
-
+func damage(amount):
+	pass
 func _on_pickup_finished() -> void:
 	queue_free()

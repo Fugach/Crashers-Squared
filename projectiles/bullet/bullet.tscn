@@ -1,9 +1,7 @@
 [gd_scene format=3 uid="uid://csr8w1qcnqlbd"]
 
 [ext_resource type="Script" uid="uid://c4lx4k1v2surv" path="res://projectiles/bullet/bullet.gd" id="1_awion"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hwob3"]
-size = Vector2(20, 1)
+[ext_resource type="AudioStream" uid="uid://c3g6t6qe5uhai" path="res://sounds/ricoshet.ogg" id="2_1mdu2"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hwob3"]
 particle_flag_disable_z = true
@@ -21,15 +19,13 @@ points = PackedVector2Array(0, 0, 25, 0)
 width = 0.5
 default_color = Color(1, 0.6666667, 0, 1)
 
-[node name="Area2D" type="Area2D" parent="." unique_id=1188911845]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=573145247]
-position = Vector2(10, -0.5)
-shape = SubResource("RectangleShape2D_hwob3")
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=1084103653]
+target_position = Vector2(20, 0)
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=990872079]
 emitting = false
 one_shot = true
 process_material = SubResource("ParticleProcessMaterial_hwob3")
 
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[node name="Ricoshet" type="AudioStreamPlayer2D" parent="." unique_id=578761210]
+stream = ExtResource("2_1mdu2")
