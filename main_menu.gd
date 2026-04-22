@@ -9,8 +9,8 @@ extends Node2D
 @onready var atm_volume: HSlider = $settings_things/atm_volume
 
 
-
 func _ready() -> void:
+	get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 	GlobalVars.apply_CRT(CRT_mat)
 	
 	load_config()

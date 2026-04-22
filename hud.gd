@@ -47,3 +47,11 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		TilesAnim.play("show")
 		Anim.play("show_hud")
 		Elevator.outside()
+
+
+func _on_upgrade_1_mouse_entered() -> void:
+	$Table/Upgrade1/choose.play()
+func _on_upgrade_2_mouse_entered() -> void:
+	$Table/Upgrade2/choose.play()
+func _on_upgrade_3_mouse_entered() -> void:
+	$Table/Upgrade3/choose.play()

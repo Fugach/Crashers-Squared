@@ -2,19 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bccve60gh6x3p" path="res://enemy.gd" id="1_4gyqm"]
 [ext_resource type="Texture2D" uid="uid://ckpacdte3gvhm" path="res://textures/idk2.png" id="2_qi2p4"]
-[ext_resource type="Texture2D" uid="uid://cjky8qu8fltcq" path="res://textures/particles/enemy_particle.png" id="3_qi2p4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iifgy"]
 size = Vector2(8, 8)
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qi2p4"]
-particle_flag_disable_z = true
-initial_velocity_min = 8.809999
-initial_velocity_max = 54.82
-gravity = Vector3(0, 98, 0)
-collision_mode = 1
-collision_friction = 0.0
-collision_bounce = 0.0
 
 [sub_resource type="Animation" id="Animation_qi2p4"]
 length = 0.001
@@ -117,18 +107,9 @@ region_rect = Rect2(0, 16, 8, 8)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=310853667]
 shape = SubResource("RectangleShape2D_iifgy")
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1861758047]
-emitting = false
-texture = ExtResource("3_qi2p4")
-one_shot = true
-explosiveness = 1.0
-process_material = SubResource("ParticleProcessMaterial_qi2p4")
-
 [node name="Label" type="Label" parent="." unique_id=1242712241]
-offset_left = -8.0
-offset_top = -8.0
-offset_right = 8.0
-offset_bottom = 4.0
+offset_right = 16.0
+offset_bottom = 12.0
 theme_override_font_sizes/font_size = 8
 horizontal_alignment = 1
 

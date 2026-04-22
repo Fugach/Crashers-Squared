@@ -51,8 +51,11 @@
 [ext_resource type="Texture2D" uid="uid://bbdi21tlcwtsq" path="res://textures/UI/tips_mouse.png" id="26_lswn8"]
 [ext_resource type="Texture2D" uid="uid://bmgalag65n3bi" path="res://textures/HUD/slots/RL.png" id="28_uypp3"]
 [ext_resource type="Texture2D" uid="uid://3hj22n845p05" path="res://textures/HUD/slots/shotgun.png" id="29_blkrb"]
+[ext_resource type="AudioStream" uid="uid://baih33bdm7vwc" path="res://sounds/UI/table/choose/1.ogg" id="30_8dc3g"]
 [ext_resource type="Texture2D" uid="uid://jy5ugiej6ajn" path="res://textures/HUD/slots/current.png" id="30_uypp3"]
+[ext_resource type="AudioStream" uid="uid://ualniibtjdp1" path="res://sounds/UI/table/choose/2.ogg" id="31_htgcl"]
 [ext_resource type="Script" uid="uid://bim328jq0h2y3" path="res://restartUI.gd" id="32_pjuso"]
+[ext_resource type="AudioStream" uid="uid://b5jra77qyt6yd" path="res://sounds/UI/table/choose/3.ogg" id="32_smeu8"]
 [ext_resource type="AudioStream" uid="uid://2d6i5kkmj6ia" path="res://sounds/abonent-vremenno-nedostupen.ogg" id="33_k1udn"]
 [ext_resource type="AudioStream" uid="uid://r0hr5q2kouw7" path="res://sounds/elevator/bilep.wav" id="34_53bls"]
 [ext_resource type="Texture2D" uid="uid://djjmrmoaufyg2" path="res://textures/tiles/tile_main.png" id="35_h8e4i"]
@@ -198,7 +201,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Table/paper:position")
+tracks/4/path = NodePath("paper:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -210,7 +213,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Table/paper:self_modulate")
+tracks/5/path = NodePath("paper:self_modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -226,7 +229,7 @@ length = 0.6667
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Table/paper:position")
+tracks/0/path = NodePath("paper:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -238,7 +241,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Table/paper:self_modulate")
+tracks/1/path = NodePath("paper:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -254,7 +257,7 @@ length = 0.6667
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Table/paper:position")
+tracks/0/path = NodePath("paper:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -266,7 +269,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Table/paper:self_modulate")
+tracks/1/path = NodePath("paper:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -1017,7 +1020,7 @@ texture = ExtResource("35_h8e4i")
 [sub_resource type="TileSet" id="TileSet_ycdy4"]
 occlusion_layer_0/light_mask = 1
 occlusion_layer_0/sdf_collision = true
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 3
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "terrain_0"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
@@ -1027,6 +1030,23 @@ sources/0 = SubResource("TileSetAtlasSource_4lmeg")
 texture = ExtResource("13_ycdy4")
 1:0/0 = 0
 0:0/0 = 0
+0:1/0 = 0
+0:2/0 = 0
+0:3/0 = 0
+0:4/0 = 0
+0:5/0 = 0
+0:6/0 = 0
+0:7/0 = 0
+0:8/0 = 0
+0:9/0 = 0
+0:10/0 = 0
+0:11/0 = 0
+0:12/0 = 0
+0:13/0 = 0
+0:14/0 = 0
+0:15/0 = 0
+1:1/0 = 0
+1:2/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_vivmo"]
 sources/0 = SubResource("TileSetAtlasSource_w48qg")
@@ -1644,7 +1664,7 @@ offset_left = -20.0
 offset_top = -20.0
 offset_right = 660.0
 offset_bottom = 380.0
-color = Color(0.043137256, 0.043137256, 0.047058824, 0.98039216)
+color = Color(0.043137256, 0.043137256, 0.047058824, 0.99607843)
 metadata/_edit_use_anchors_ = true
 
 [node name="table" type="Sprite2D" parent="UI/HUD/Table" unique_id=1062840491]
@@ -1716,11 +1736,6 @@ texture = ExtResource("26_lswn8")
 region_enabled = true
 region_rect = Rect2(16, 1, 10, 14)
 
-[node name="paper" type="Sprite2D" parent="UI/HUD/Table" unique_id=89602025]
-position = Vector2(320, 560)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("11_kq58d")
-
 [node name="paper_sfx" type="AudioStreamPlayer2D" parent="UI/HUD/Table" unique_id=32600976]
 stream = SubResource("AudioStreamRandomizer_come4")
 
@@ -1744,6 +1759,10 @@ theme_override_font_sizes/font_size = 5
 autowrap_mode = 3
 autowrap_trim_flags = 0
 
+[node name="choose" type="AudioStreamPlayer2D" parent="UI/HUD/Table/Upgrade1" unique_id=1006218431]
+position = Vector2(-383, -135)
+stream = ExtResource("30_8dc3g")
+
 [node name="Upgrade2" type="Button" parent="UI/HUD/Table" unique_id=1280053768]
 offset_left = 430.0
 offset_top = 135.0
@@ -1754,6 +1773,10 @@ theme_override_font_sizes/font_size = 5
 autowrap_mode = 3
 autowrap_trim_flags = 0
 
+[node name="choose" type="AudioStreamPlayer2D" parent="UI/HUD/Table/Upgrade2" unique_id=1882205195]
+position = Vector2(-383, -135)
+stream = ExtResource("31_htgcl")
+
 [node name="Upgrade3" type="Button" parent="UI/HUD/Table" unique_id=990676258]
 offset_left = 477.0
 offset_top = 135.0
@@ -1763,6 +1786,15 @@ theme_override_fonts/font = ExtResource("18_wat4s")
 theme_override_font_sizes/font_size = 5
 autowrap_mode = 3
 autowrap_trim_flags = 0
+
+[node name="choose" type="AudioStreamPlayer2D" parent="UI/HUD/Table/Upgrade3" unique_id=1123289394]
+position = Vector2(-383, -135)
+stream = ExtResource("32_smeu8")
+
+[node name="paper" type="Sprite2D" parent="UI/HUD" unique_id=89602025]
+position = Vector2(320, 560)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("11_kq58d")
 
 [node name="QuickVolume" type="Node2D" parent="UI/HUD" unique_id=161113036]
 modulate = Color(1, 1, 1, 0)
@@ -2035,6 +2067,7 @@ shadow_enabled = true
 texture = SubResource("GradientTexture2D_gngh3")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1062142319]
+light_mask = 3
 texture_filter = 1
 tile_set = SubResource("TileSet_ycdy4")
 script = ExtResource("10_efxa6")
@@ -2176,6 +2209,7 @@ shape = SubResource("RectangleShape2D_0hol4")
 texture = ExtResource("2_w48qg")
 region_enabled = true
 region_rect = Rect2(16, 16, 8, 8)
+region_filter_clip_enabled = true
 
 [node name="wall_slide_loop" type="AudioStreamPlayer2D" parent="Player" unique_id=7632907]
 stream = ExtResource("5_5vw27")
@@ -2195,12 +2229,6 @@ libraries/ = SubResource("AnimationLibrary_q6r6c")
 [node name="BoostTime" type="Timer" parent="Player" unique_id=2134869889]
 wait_time = 0.1
 one_shot = true
-
-[node name="PointLight2D" type="PointLight2D" parent="Player" unique_id=945701196]
-shadow_enabled = true
-shadow_filter = 1
-shadow_filter_smooth = 0.1
-texture = ExtResource("7_dg77c")
 
 [node name="Coyote" type="Timer" parent="Player" unique_id=503293756]
 wait_time = 0.1
@@ -2243,7 +2271,6 @@ process_material = SubResource("ParticleProcessMaterial_sn1fb")
 color = Color(0.37413925, 0.37413928, 0.37413922, 1)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=562808154]
-zoom = Vector2(0.65, 0.65)
 position_smoothing_enabled = true
 position_smoothing_speed = 2.0
 script = ExtResource("91_n5t1e")
@@ -2252,8 +2279,11 @@ script = ExtResource("91_n5t1e")
 [connection signal="pressed" from="UI/HUD/Table/table/TextureButton" to="Table" method="_on_texture_button_pressed"]
 [connection signal="animation_finished" from="UI/HUD/Table/animations" to="Table" method="_on_animations_animation_finished"]
 [connection signal="pressed" from="UI/HUD/Table/paper_button" to="Table" method="_on_paper_button_pressed"]
+[connection signal="mouse_entered" from="UI/HUD/Table/Upgrade1" to="UI/HUD" method="_on_upgrade_1_mouse_entered"]
 [connection signal="pressed" from="UI/HUD/Table/Upgrade1" to="Table" method="_on_upgrade_1_pressed"]
+[connection signal="mouse_entered" from="UI/HUD/Table/Upgrade2" to="UI/HUD" method="_on_upgrade_2_mouse_entered"]
 [connection signal="pressed" from="UI/HUD/Table/Upgrade2" to="Table" method="_on_upgrade_2_pressed"]
+[connection signal="mouse_entered" from="UI/HUD/Table/Upgrade3" to="UI/HUD" method="_on_upgrade_3_mouse_entered"]
 [connection signal="pressed" from="UI/HUD/Table/Upgrade3" to="Table" method="_on_upgrade_3_pressed"]
 [connection signal="timeout" from="UI/HUD/QuickVolume/display_timer" to="UI/HUD/QuickVolume" method="_on_display_timer_timeout"]
 [connection signal="animation_finished" from="UI/HUD/QuickVolume/anim" to="UI/HUD/QuickVolume" method="_on_anim_animation_finished"]

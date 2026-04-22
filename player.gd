@@ -275,7 +275,7 @@ func respawn():
 	Camera.global_position = global_position
 	Camera.reset_smoothing()
 	Anims.play("RESET")
-	GlobalVars.player_hp = 100
+	GlobalVars.player_hp = 1
 func show_damage():
 	$damage.play()
 	#$blood.emitting = true

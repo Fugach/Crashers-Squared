@@ -46,11 +46,13 @@ func get_input():
 		$"../UI/HUD/Table/table/Title".text = titles[str(randi_range(1, len(titles)))]
 		$"../UI/HUD/AnimationPlayer".play("show_table")
 		Table.show()
+		get_parent().get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 		GlobalVars.player.SPEED_buffer = GlobalVars.player.SPEED
 		GlobalVars.player.SPEED = 0
 		GlobalVars.player.JUMP_VELOCITY_buffer = GlobalVars.player.JUMP_VELOCITY
 		GlobalVars.player.JUMP_VELOCITY = 0
 	if Table.visible and Input.is_action_just_pressed("esc"):
+		get_parent().get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 		Table.hide()
 		GlobalVars.player.JUMP_VELOCITY = GlobalVars.player.JUMP_VELOCITY_buffer
 		GlobalVars.player.SPEED = GlobalVars.player.SPEED_buffer
@@ -74,11 +76,12 @@ func _on_activation_range_body_exited(body: Node2D) -> void:
 		$tip.hide()
 
 func _on_paper_button_pressed() -> void:
-	print("! ", Anim.current_animation)
 	if Anim.current_animation != "paper_show" and last_finished_animation != "paper_show":
 		Anim.play("paper_show")
+		$"../UI/HUD/Table/paper_sfx".play()
 	else:
 		Anim.play("paper_hide")
+		$"../UI/HUD/Table/paper_sfx".play()
 
 func _on_animations_animation_finished(anim_name: StringName) -> void:
 	last_finished_animation = anim_name
@@ -100,6 +103,7 @@ func _on_upgrade_3_pressed() -> void:
 	upgrade(upgrades[2])
 
 func _on_texture_button_pressed() -> void:
+	get_parent().get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 	Table.hide()
 	GlobalVars.player.JUMP_VELOCITY = GlobalVars.player.JUMP_VELOCITY_buffer
 	GlobalVars.player.SPEED = GlobalVars.player.SPEED_buffer

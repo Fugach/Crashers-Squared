@@ -13,6 +13,7 @@ extends Node2D
 @onready var Camera: Camera2D = $Camera2D
 
 func _ready() -> void:
+	get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 	load_config()
 	GlobalVars.main = self
 	GlobalVars.player.respawn()

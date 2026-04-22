@@ -11,6 +11,7 @@ extends CanvasLayer
 @onready var Tries: Label = $ColorRect/Tries
 
 func death():
+	get_parent().get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 	show()
 	$AnimationPlayer.play("appear")
 	noise.playing = true
@@ -42,11 +43,10 @@ func _on_no_mouse_exited() -> void:
 
 
 func _on_yes_pressed() -> void:
+	get_parent().get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 	Player = GlobalVars.player
 	get_tree().paused = false
 	Player.respawn()
-	#papers_anim.play("RESET")
-	#TableHUD.hide()
 	GlobalVars.lifes -= 1
 	$ColorRect.modulate.a = 0
 	CRT.modulate.a = 0

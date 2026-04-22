@@ -151,7 +151,15 @@ func generate_room(pos, size, doors, height, enemies):
 	
 	for x in range(size.x):
 		for y in range(size.y):
-			$bg.set_cell(pos + Vector2(x, y), 0, Vector2(0, 0))
+			if len(GlobalVars.camera_positions) > 1:
+				$bg.set_cell(pos + Vector2(x, y), 0, Vector2(0, randi_range(0, 15)))
+			else:
+				$bg.set_cell(pos + Vector2(x, y), 0, Vector2(1, 0))
+				if y > size.y - 4:
+					if gen_direction.x == -1 and x == 1:
+						$bg.set_cell(pos + Vector2(x, y), 0, Vector2(1, 1))
+					elif gen_direction.x == 1 and x == size.x - 1:
+						$bg.set_cell(pos + Vector2(x, y), 0, Vector2(1, 2))
 	
 	set_cell(pos + Vector2(-1, -1), 0, Vector2(6, 0))
 	set_cell(pos + Vector2(-1, size.y + 1), 0, Vector2(6, 0))
@@ -197,7 +205,7 @@ func generate_hall(pos1, pos2):
 	for x in range(3):
 		for y in range(3):
 			erase_cell(pos1 + Vector2(x, y - 3))
-			$bg.set_cell(pos1 + Vector2(x, y - 3), 0, Vector2(1, 0))
+			$bg.set_cell(pos1 + Vector2(x, y - 3), 0, Vector2(0, randi_range(0, 15)))
 	set_cell(pos1 + Vector2(0, -4), 0, Vector2(6, 1))
 	set_cell(pos1 + Vector2(1, -4), 0, Vector2(1, 2))
 	set_cell(pos1 + Vector2(2, -4), 0, Vector2(9, 1))
@@ -213,7 +221,7 @@ func generate_hall(pos1, pos2):
 	for x in range(3):
 		for y in range(3):
 			erase_cell(pos2 + Vector2(x - 2, y - 3))
-			$bg.set_cell(pos1 + Vector2(x + 3, y - 3), 0, Vector2(1, 0))
+			$bg.set_cell(pos1 + Vector2(x + 3, y - 3), 0, Vector2(0, randi_range(0, 15)))
 	set_cell(pos2 + Vector2(0, -4), 0, Vector2(5, 1))
 	set_cell(pos2 + Vector2(-1, -4), 0, Vector2(1, 2))
 	set_cell(pos2 + Vector2(-2, -4), 0, Vector2(9, 2))

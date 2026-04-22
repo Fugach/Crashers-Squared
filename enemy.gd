@@ -3,6 +3,7 @@ extends CharacterBody2D
 const Shotgun = preload("uid://bsecy8dw60b21")
 const RL = preload("uid://brcehntt6lxn6")
 const Pistol = preload("uid://cdavqdqek4rr5")
+const PARTS = preload("uid://o34nfwjqh6ot")
 
 
 @onready var weapons = [Shotgun, RL, Pistol]
@@ -15,6 +16,7 @@ var direction = Vector2(0, 0)
 var hp = 100
 var total_damage : int = 0
 var base_damage	 : int = 0
+var parts_amount : int = 0
 
 func _ready() -> void:
 	var get_WEAPON = my_weapon.instantiate()
@@ -32,20 +34,20 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor() and hp > 0:
 		velocity += get_gravity() * delta
 	if player != null and hp > 0:
-		if WEAPON.is_player_nearby and WEAPON.can_shoot and GlobalVars.player_hp > 0:
-			WEAPON.shoot(base_damage, false)
-		if global_position.y - player.global_position.y > 50 and is_on_floor() and $shock.is_stopped() and global_position.distance_to(player.global_position) < 100:
-			velocity.y = JUMP_VELOCITY
+		#if WEAPON.is_player_nearby and WEAPON.can_shoot and GlobalVars.player_hp > 0:
+			#WEAPON.shoot(base_damage, false)
+		#if global_position.y - player.global_position.y > 50 and is_on_floor() and $shock.is_stopped() and global_position.distance_to(player.global_position) < 100:
+			#velocity.y = JUMP_VELOCITY
 
 		direction = global_position.direction_to(player.global_position)
-		if $shock.is_stopped():
-			if (global_position.distance_to(player.global_position) < 300 and\
-			global_position.distance_to(player.global_position) > 150) and abs(velocity.x) < 300:
-				velocity.x += direction.x * SPEED * delta
-				if sign(velocity.x) != sign(global_position.direction_to(player.global_position).x):
-					velocity.x += velocity.x * -0.05
-			elif global_position.distance_to(player.global_position) < 50:
-				velocity.x -= direction.x * SPEED * delta
+		#if $shock.is_stopped():
+			#if (global_position.distance_to(player.global_position) < 300 and\
+			#global_position.distance_to(player.global_position) > 150) and abs(velocity.x) < 300:
+				#velocity.x += direction.x * SPEED * delta
+				#if sign(velocity.x) != sign(global_position.direction_to(player.global_position).x):
+					#velocity.x += velocity.x * -0.05
+			#elif global_position.distance_to(player.global_position) < 50:
+				#velocity.x -= direction.x * SPEED * delta
 		if hp > 0:
 			velocity.x *= 0.9
 	elif hp <= 0 and str(WEAPON) != "<Freed Object>":
@@ -68,13 +70,15 @@ func push(pwr, dir):
 	$shock.start()
 
 func damage(damage_amount):
-	$GPUParticles2D.emitting = true
+	var new_part = PARTS.instantiate()
+	new_part.power = damage_amount
+	new_part.global_position = global_position
+	new_part.heal = damage_amount * 0.25
+	new_part.name = name + "_part" + str(parts_amount)
+	parts_amount += 1
+	new_part.direction = Vector2(-1, -1)
+	get_parent().add_child(new_part)
 	hp -= damage_amount
-	if global_position.distance_to(GlobalVars.player.global_position) < 100 and GlobalVars.player_hp > 0:
-		if GlobalVars.player_hp + int(damage_amount * 0.33) <= 100:
-			GlobalVars.player_hp += int(damage_amount * 0.33)
-		else:
-			GlobalVars.player_hp = 100
 	total_damage += damage_amount
 	$Label.text = str(total_damage)
 	$damage.start()

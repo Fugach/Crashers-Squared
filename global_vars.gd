@@ -9,6 +9,7 @@ extends Node
 var camera_positions = []
 var current_slot_num = "slot1"
 var current_slot_node : Node2D = null
+
 var slots : Dictionary[String, Node2D] = {
 	"slot1": null,
 	"slot2": null,
@@ -35,6 +36,12 @@ func damage(amount : int):
 		print("POW! YOU ARE DEAD!")
 		main.death()
 	player.show_damage()
+
+func heal(amount : int):
+	if player_hp + amount < 100:
+		player_hp += amount
+	else:
+		player_hp = 100
 
 func apply_CRT(body_material):
 	if str(RenderingServer.get_current_rendering_method()) == "gl_compatibility":
