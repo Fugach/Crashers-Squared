@@ -7,7 +7,7 @@ extends Node2D
 var damage_amount : int = 0
 var is_friendly : bool = false
 var targets = []
-var SPEED = 1000
+var SPEED = 800
 
 func _ready() -> void:
 	await get_tree().create_timer(60).timeout
@@ -27,10 +27,14 @@ func _process(delta: float) -> void:
 				Raycast.enabled = false
 			elif "Enemy" in str(body):
 				body.damage(damage_amount)
+				body.push(75, Vector2(1, 0).rotated(global_rotation))
 				Raycast.enabled = false
+				queue_free()
 			elif body is RigidBody2D:
-				body.damage(damage_amount)
-				body.push(50, Vector2(1, 0).rotated(global_rotation))
+				if body.has_method("damage"):
+					body.damage(damage_amount)
+				if body.has_method("push"):
+					body.push(50, Vector2(1, 0).rotated(global_rotation))
 				if body.penetrable == false:
 					if randi_range(1, 4) > 1:
 						Raycast.enabled = false

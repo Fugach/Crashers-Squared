@@ -3,7 +3,7 @@ extends Node2D
 var is_spamming : bool = false
 func _ready():
 	$stop_sign.play("1")
-func _process(delta: float):
+func _process(_delta: float):
 	if Input.is_action_just_pressed("rmb") and $tip.visible:
 		if is_spamming:
 			$stop_sign.play(str(randi_range(3, 7)))

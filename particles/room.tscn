@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://cxn1pdnonmni6"]
+
+[ext_resource type="Script" uid="uid://cu0dqi5qkcj2g" path="res://particles/room.gd" id="1_lo83i"]
+[ext_resource type="Shader" uid="uid://d4dvg73lkf3jf" path="res://shaders/warped_noise.gdshader" id="2_hki8l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hki8l"]
+resource_local_to_scene = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4v7rv"]
+shader = ExtResource("2_hki8l")
+shader_parameter/speed = 0.1
+shader_parameter/pixelation = 1.0
+shader_parameter/zoom = 1.0
+shader_parameter/gradient_pixelation = 0.2630000124925
+shader_parameter/background_threshold = 0.0
+shader_parameter/color_low_threshold = 0.050000002375
+shader_parameter/color_mid_threshold = 0.6690000317775
+shader_parameter/color_low = Color(0, 0.0051666666, 0.01, 1)
+shader_parameter/color_mid = Color(0.03, 0.03, 0.15, 1)
+shader_parameter/color_high = Color(0, 0, 0, 1)
+
+[node name="Room" type="Node2D" unique_id=1533858004]
+script = ExtResource("1_lo83i")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=985603974]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=993383700]
+shape = SubResource("RectangleShape2D_hki8l")
+
+[node name="Darkness" type="ColorRect" parent="." unique_id=1814045179]
+z_index = 1
+material = SubResource("ShaderMaterial_4v7rv")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 21.0
+offset_bottom = 19.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 1, 1)
+
+[node name="Camera_pos" type="Marker2D" parent="." unique_id=278602264]
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

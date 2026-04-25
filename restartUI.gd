@@ -12,8 +12,9 @@ extends CanvasLayer
 
 func death():
 	get_parent().get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
-	show()
+	GlobalVars.apply_CRT($CRT.material)
 	$AnimationPlayer.play("appear")
+	show()
 	noise.playing = true
 	if GlobalVars.lifes != 0:
 		if GlobalVars.lifes > 1:

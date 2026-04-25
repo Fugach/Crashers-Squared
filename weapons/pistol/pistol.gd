@@ -7,7 +7,6 @@ extends Node2D
 var BULLET = preload("uid://csr8w1qcnqlbd")
 var my_slot : String = ""
 var can_shoot : bool = true
-var is_friendly : bool = false
 var weapon_owner : String = ""
 var current_angle = null
 var is_player_nearby : bool = false
@@ -36,12 +35,10 @@ func _process(delta: float) -> void:
 
 func logic(delta):
 	if weapon_owner == "Player":
-		global_rotation = lerp_angle(global_rotation, (get_global_mouse_position()\
-		- global_position).angle(), 18 * delta)
+		look_at(get_global_mouse_position())
 		current_angle = (get_global_mouse_position() - global_position).normalized().angle()
 	elif weapon_owner == "Enemy":
-		global_rotation = lerp_angle(global_rotation, (GlobalVars.player.global_position\
-		- global_position).angle(), 18 * delta)
+		look_at(GlobalVars.player.global_position)
 		current_angle = (GlobalVars.player.global_position - global_position).normalized().angle()
 	
 	if -1.5 <= current_angle and current_angle <= 1.5:

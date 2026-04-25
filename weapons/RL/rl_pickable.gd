@@ -12,7 +12,7 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body.name == "Player":
 		check = false
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if check:
 		for x in GlobalVars.slots:
 			if null == GlobalVars.slots[x]:
@@ -29,7 +29,5 @@ func _process(delta: float) -> void:
 				break
 func push(pwr, dir):
 	linear_velocity += dir * pwr
-func damage(amount):
-	pass
 func _on_pickup_finished() -> void:
 	queue_free()

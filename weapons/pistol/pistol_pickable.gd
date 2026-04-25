@@ -16,10 +16,7 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 func push(pwr, dir):
 	linear_velocity += dir * pwr
 
-func damage(amount):
-	pass
-
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if check:
 		for x in GlobalVars.slots:
 				if null == GlobalVars.slots[x]:
@@ -30,7 +27,6 @@ func _process(delta: float) -> void:
 					var new_pistol = pistol.instantiate()
 					new_pistol.weapon_owner = "Player"
 					new_pistol.name = "Pistol_" + str(x)
-					new_pistol.is_friendly = true
 					new_pistol.my_slot = x
 					player.add_child(new_pistol)
 					$pickup.play()

@@ -13,6 +13,13 @@ extends Node2D
 @onready var Camera: Camera2D = $Camera2D
 
 func _ready() -> void:
+	GlobalVars.slots = {
+	"slot1": null,
+	"slot2": null,
+	"slot3": null
+	}
+	GlobalVars.current_slot_node = null
+	GlobalVars.current_slot_num = "slot1"
 	get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 	load_config()
 	GlobalVars.main = self
@@ -27,21 +34,22 @@ func load_config():
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Sound"), GlobalConfig.get_value("audio", "Sound_volume_db"))
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Atmosphere"), GlobalConfig.get_value("audio", "Atmosphere_volume_db"))
 
-func _input(event: InputEvent) -> void:
+func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("crash"):
 		get_tree().quit(0)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	HUD.scale = Camera.scale
 	HPLabel.text = str(GlobalVars.player_hp)
 	HPBar.value = float(GlobalVars.player_hp)
-	if GlobalVars.player.global_position.y > 500:
+	if GlobalVars.player.global_position.y > 2000:
 		$UI/HUD/QuickVolume/lost.play()
 	if Input.is_action_just_pressed("mmb"):
 		$TileMapLayer.gen_dungeon(1, Vector2(3, 2))
 		GlobalVars.player.respawn()
 		GlobalVars.time = 0.0
 	if Input.is_action_just_pressed("esc") and not Table.visible:
+		get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 		$UI/Pause.show()
 		$UI/Pause/AnimationPlayer.play("appear")
 		get_tree().paused = true
@@ -50,18 +58,19 @@ func death():
 	GlobalVars.player_hp = 0
 	$UI/HUD/HPBar/HPLabel.text = str(GlobalVars.player_hp)
 	$UI/HUD/HPBar.value =  GlobalVars.player_hp
-	GlobalVars.apply_CRT(CRT_mat)
 	$UI/Restart.death()
 	get_tree().paused = true
 
 
 func _on_exit_pressed() -> void:
 	get_tree().paused = false
+	get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 	get_tree().change_scene_to_file("res://main_menu.tscn")
 
 func _on_continue_pressed() -> void:
 	$UI/Pause.hide()
 	get_tree().paused = false
+	get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 
 
 func _on_hp_bar_value_changed(value: float) -> void:
@@ -85,3 +94,10 @@ func _on_continue_mouse_entered() -> void:
 	$UI/Pause/ColorRect/continue.text = ">> ПРОДОЛЖИТЬ <<"
 func _on_continue_mouse_exited() -> void:
 	$UI/Pause/ColorRect/continue.text = "ПРОДОЛЖИТЬ"
+
+func _on_restart_pressed() -> void:
+	GlobalVars.player.respawn()
+func _on_restart_mouse_entered() -> void:
+	$UI/Pause/ColorRect/restart.text = ">> ПЕРЕЗАПУСК <<"
+func _on_restart_mouse_exited() -> void:
+	$UI/Pause/ColorRect/restart.text = "ПЕРЕЗАПУСК"

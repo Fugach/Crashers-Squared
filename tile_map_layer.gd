@@ -1,11 +1,12 @@
 extends TileMapLayer
 
-const ENEMY = preload("uid://x2aibfdis1lc")
 @onready var Elevator : Area2D = $"../Elevator"
 @onready var Table: Sprite2D = $"../Table"
 @onready var Elevator_fake: Node2D = $"../elevator_fake"
 const LIGHTS = preload("uid://cp0ivvdcjm3h4")
 @onready var player: CharacterBody2D = $"../Player"
+const DOOR = preload("uid://lf2qgrhjy7sd")
+const ROOM = preload("uid://cxn1pdnonmni6")
 
 
 var room_anchor = Vector2(0, 0)
@@ -21,18 +22,21 @@ var stairs_length : int = 0
 var gen_direction := Vector2(0, 0)
 var hall_pos1 = Vector2(0, 0)
 var hall_pos2 = Vector2(0, 0)
-var total_enemies : int = 0
 var total_lights : int = 0
-var del_list = ["Enemy", "Rocket", "Bullet", "Light"]
+var total_rooms : int = 0
+var total_doors : int = 0
+var del_list = ["Enemy", "Rocket", "Bullet", "Light", "Door", "Room"]
 
 func _ready() -> void:
 	var rooms_amount = randi_range(3, 15)
 	gen_dungeon(rooms_amount, Vector2(3, 2))
 
 func gen_dungeon(rooms_amount, start_pos):
-	GlobalVars.camera_positions = []
+	total_rooms = 0
+	total_lights = 0
+	total_doors = 0
 	clear()
-	for body in get_parent().get_children():
+	for body in get_children():
 		if body is RigidBody2D:
 			body.queue_free()
 		else:
@@ -46,13 +50,6 @@ func gen_dungeon(rooms_amount, start_pos):
 	gen_direction.x = [-1, 1].pick_random()
 	print("Generating ", str(rooms_amount),  " rooms", " ||| Direction: ", gen_direction)
 	Table.reroll()
-	
-	# TODO:
-	#if gen_direction.x == 1:
-		#room_doors = "right"
-	#elif gen_direction.x == -1: 
-		#room_doors = "left"
-	#doors_height = randi_range(-2, 2)
 	
 	generate_room(room_anchor, room_size, room_doors, doors_height, false)
 	Table.global_position = (room_anchor + room_size + Vector2(-5, -1)) * 16 + Vector2(8, 6)
@@ -100,13 +97,39 @@ func gen_dungeon(rooms_amount, start_pos):
 	GlobalVars.is_time_running = true
 
 func generate_room(pos, size, doors, height, enemies):
-	GlobalVars.camera_positions.append(pos + size / 2)
+	var new_room = ROOM.instantiate()
+	new_room.activation_range = (room_size + Vector2(1, 1)) * 16
+	new_room.global_position = room_anchor * 16
+	new_room.name = "Room" + str(total_rooms)
+	new_room.room_number = total_rooms
+	total_rooms += 1
+	add_child(new_room)
+	
+	if gen_direction.x == -1 or total_rooms > 1:
+		var new_door = DOOR.instantiate()
+		new_door.scale.x = [-1, 1].pick_random()
+		new_door.global_position = (pos + Vector2(0, size.y - 1)) * Vector2(16, 16)
+		new_door.name = "Door" + str(total_doors)
+		total_doors += 1
+		new_room.door1 = new_door
+		add_child(new_door)
+	if gen_direction.x == 1 or total_rooms > 1:
+		var new_door = DOOR.instantiate()
+		new_door.scale.x = [-1, 1].pick_random()
+		new_door.global_position = (pos + Vector2(size.x + 1, size.y - 1)) * Vector2(16, 16)
+		new_door.name = "Door" + str(total_doors)
+		total_doors += 1
+		new_room.door2 = new_door
+		add_child(new_door)
+	
+	if total_rooms > 0:
+		GlobalVars.cleared_rooms["Room" + str(total_rooms)] = false
 	var new_light = LIGHTS.instantiate()
 	new_light.global_position = pos * 16 + Vector2(size.x / 2, 1) * 16
 	new_light.light_scale = size.y / 5
 	new_light.name = "Light_" + str(total_lights)
 	total_lights += 1
-	get_parent().add_child.call_deferred(new_light)
+	add_child(new_light)
 	
 	for x in range(size.x):
 		if x == 0:
@@ -151,7 +174,7 @@ func generate_room(pos, size, doors, height, enemies):
 	
 	for x in range(size.x):
 		for y in range(size.y):
-			if len(GlobalVars.camera_positions) > 1:
+			if total_rooms > 1:
 				$bg.set_cell(pos + Vector2(x, y), 0, Vector2(0, randi_range(0, 15)))
 			else:
 				$bg.set_cell(pos + Vector2(x, y), 0, Vector2(1, 0))
@@ -186,24 +209,9 @@ func generate_room(pos, size, doors, height, enemies):
 	set_cell(pos + Vector2(size.x + 2, -1), 0, Vector2(8, 2))
 	set_cell(pos + Vector2(size.x + 2, -2), 0, Vector2(8, 4))
 	
-	#if enemies:
-		#for x in range(randi_range(1, 5)):
-			#var new_enemy = ENEMY.instantiate()
-			#new_enemy.global_position = pos + Vector2(room_size.x / 2, -5)
-			#new_enemy.name = "Enemy" + str(total_enemies)
-			#total_enemies += 1
-			#print(new_enemy)
-			#get_parent().add_child.call_deferred(new_enemy)
-	
 func generate_hall(pos1, pos2):
-	var new_light = LIGHTS.instantiate()
-	new_light.global_position = pos1 * 16 + Vector2(1, -3) * 16
-	new_light.light_scale = 0.8
-	new_light.name = "Light_" + str(total_lights)
-	total_lights += 1
-	get_parent().add_child.call_deferred(new_light)
 	for x in range(3):
-		for y in range(3):
+		for y in range(-1, 3):
 			erase_cell(pos1 + Vector2(x, y - 3))
 			$bg.set_cell(pos1 + Vector2(x, y - 3), 0, Vector2(0, randi_range(0, 15)))
 	set_cell(pos1 + Vector2(0, -4), 0, Vector2(6, 1))
@@ -212,12 +220,7 @@ func generate_hall(pos1, pos2):
 	set_cell(pos1 + Vector2(0, 0), 0, Vector2(2, 2))
 	set_cell(pos1 + Vector2(1, 0), 0, Vector2(2, 2))
 	set_cell(pos1 + Vector2(2, 0), 0, Vector2(2, 2))
-	new_light = LIGHTS.instantiate()
-	new_light.global_position = pos2 * 16 - Vector2(0, 3) * 16
-	new_light.light_scale = 0.8
-	new_light.name = "Light_" + str(total_lights)
-	total_lights += 1
-	get_parent().add_child.call_deferred(new_light)
+	
 	for x in range(3):
 		for y in range(3):
 			erase_cell(pos2 + Vector2(x - 2, y - 3))
@@ -228,6 +231,27 @@ func generate_hall(pos1, pos2):
 	set_cell(pos2 + Vector2(0, 0), 0, Vector2(2, 2))
 	set_cell(pos2 + Vector2(-1, 0), 0, Vector2(2, 2))
 	set_cell(pos2 + Vector2(-2, 0), 0, Vector2(2, 2))
+	
+	set_cell(pos1 + Vector2(1, -4), 0, Vector2(2, 1))
+	set_cell(pos2 + Vector2(-1, -4), 0, Vector2(3, 1))
+	
+	set_cell(pos1 + Vector2(1, -3), 0, Vector2(1, 1))
+	set_cell(pos2 + Vector2(-1, -3), 0, Vector2(4, 1))
+	var new_light = LIGHTS.instantiate()
+	new_light.global_position = pos1 * 16 + Vector2(1, -3) * 16 - Vector2(2, -8)
+	new_light.global_rotation = PI / 2
+	new_light.light_scale = 0.8
+	new_light.name = "Light_" + str(total_lights)
+	total_lights += 1
+	add_child(new_light)
+	
+	new_light = LIGHTS.instantiate()
+	new_light.global_position = pos2 * 16 - Vector2(0, 3) * 16 + Vector2(2, 8)
+	new_light.global_rotation = PI / -2
+	new_light.light_scale = 0.8
+	new_light.name = "Light_" + str(total_lights)
+	total_lights += 1
+	add_child(new_light)
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "hide":

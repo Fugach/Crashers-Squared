@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bvfh321h5rhem" path="res://weapons/shotgun/shotgun.gd" id="1_hwrt3"]
 [ext_resource type="Texture2D" uid="uid://ckpacdte3gvhm" path="res://textures/idk2.png" id="2_okyed"]
 [ext_resource type="AudioStream" uid="uid://dgbmjh6wm6g2i" path="res://sounds/shotgun/shotgun_shoot.ogg" id="3_apfrx"]
+[ext_resource type="Texture2D" uid="uid://8n022y3ipke3" path="res://textures/particles/ammo/shotgun.png" id="4_ggjqm"]
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_rxqsx"]
 points = PackedVector2Array(13, -2, 13, 0, 150, 15, 160, 0, 150, -15)
@@ -97,6 +98,24 @@ _data = {
 &"shoot_right": SubResource("Animation_apfrx")
 }
 
+[sub_resource type="Curve" id="Curve_ggjqm"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_f42wg"]
+curve = SubResource("Curve_ggjqm")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f42wg"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 10.0
+initial_velocity_min = 100.0
+initial_velocity_max = 150.0
+gravity = Vector3(0, 198, 0)
+alpha_curve = SubResource("CurveTexture_f42wg")
+collision_mode = 2
+
 [node name="Shotgun" type="Node2D" unique_id=1263487316]
 script = ExtResource("1_hwrt3")
 
@@ -111,7 +130,7 @@ region_enabled = true
 region_rect = Rect2(0, 0, 20, 7)
 
 [node name="spawnpoint" type="Marker2D" parent="Sprite2D" unique_id=1903406102]
-position = Vector2(15, -1)
+position = Vector2(3, -1)
 
 [node name="Area2D" type="Area2D" parent="Sprite2D" unique_id=830060615]
 
@@ -123,6 +142,14 @@ libraries/ = SubResource("AnimationLibrary_ggjqm")
 
 [node name="shoot" type="AudioStreamPlayer2D" parent="." unique_id=173016495]
 stream = ExtResource("3_apfrx")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1307837274]
+emitting = false
+amount = 1
+texture = ExtResource("4_ggjqm")
+one_shot = true
+interpolate = false
+process_material = SubResource("ParticleProcessMaterial_f42wg")
 
 [connection signal="timeout" from="cooldown" to="." method="_on_cooldown_timeout"]
 [connection signal="body_entered" from="Sprite2D/Area2D" to="." method="_on_area_2d_body_entered"]

@@ -1,71 +1,87 @@
 extends Node2D
 
 @onready var hand: Node2D = $hand
-@onready var hand_area_2d : Area2D = $hand/hand_area2D
 @onready var hand_anim : AnimatedSprite2D = $hand/Hand_anim
-@onready var hammer_smash: AudioStreamPlayer2D = $hammer/smash
+@onready var hammer_raycast1: RayCast2D = $hammer/Hammer_anim/Hammer_raycast
+@onready var hammer_raycast2: RayCast2D = $hammer/Hammer_anim/Hammer_raycast/second_one
 
+@onready var Camera: Camera2D = $"../../Camera2D"
 @onready var hammer: Node2D = $hammer
 @onready var hammer_anim: AnimatedSprite2D = $hammer/Hammer_anim
-@onready var hammer_area_2d: Area2D = $hammer/hammer_area2D
 
-var targets = []
+var last_slot_num = ""
+var is_spinning : bool = false
 
 func _ready() -> void:
-	pass
+	hammer.hide()
+	hand.hide()
 
+func _input(_event: InputEvent) -> void:
+	if Input.is_action_just_pressed("shift") and $hammer/attack_cooldown.time_left <= 0:
+		attack()
+	if not Input.is_action_pressed("shift") and is_spinning:
+		hammer_raycast1.enabled = false
+		hammer_raycast2.enabled = false
+		$hammer/attack_cooldown.start()
+		is_spinning = false
+		GlobalVars.player.can_jump = true
+		hammer.hide()
+		hammer_anim.stop()
+		$hammer/spin_sfx.stop()
 
-func _process(delta: float) -> void:
-	pass
+func _process(_delta: float) -> void:
+	if hammer_raycast1.enabled and $hammer/attack_cooldown.time_left <= 0:
+		hammer_logic(hammer_raycast1.get_collider(), hammer_raycast1)
+		if is_spinning and hammer_raycast2.enabled:
+			hammer_logic(hammer_raycast2.get_collider(), hammer_raycast2)
 
-func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("smash_hand") and not hand_anim.is_playing():
-		hand_area_2d.monitoring = true
-		hand_anim.scale.x = -1
-		var current_angle = (get_global_mouse_position() - global_position).normalized().angle()
-		if -1.5 <= current_angle and current_angle <= 1.5:
-			hand_anim.scale.y = 1
-		else:
-			hand_anim.scale.y = -1
-		look_at(get_global_mouse_position())
-		hand_anim.play("smash_hand")
-	if Input.is_action_just_pressed("shift") and not hammer_anim.is_playing() and $hammer/Timer.is_stopped():
-		hammer.show()
-		$hammer/Timer.start()
-		look_at(get_global_mouse_position())
-		#$hammer/hammer_area2D/CollisionShape2D.position.x = sign(global_position.x - get_global_mouse_position().x) * -14
-		#hammer_anim.scale.x = sign(global_position.x - get_global_mouse_position().x) * -1
-		hammer_anim.play("hit")
-		hammer_smash.play()
-		hammer_area_2d.monitoring = true
-
-
-func _on_hand_area_2d_body_entered(body: Node2D) -> void:
-	hand_area_2d.monitoring = false
-	targets = []
-
-
-func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body not in targets and body != GlobalVars.player:
-		targets.append(body)
+func hammer_logic(body, raycast):
+	if "Enemy" in str(body):
+		#if Camera.is_following:
+		Camera.shake(0.1, 3)
+		body.damage(10)
+		body.push(250, raycast.get_collision_normal() + Vector2(PI, 0).rotated(global_rotation))
+		hammer_raycast1.enabled = false
+		hammer_raycast2.enabled = false
+		$hammer/damage_cooldown.start()
+		$hammer/damage_sfx.pitch_scale = randf_range(0.7, 1.3)
+		$hammer/damage_sfx.play()
+	elif body is TileMapLayer:
+		$hammer/wall_hit_sfx.pitch_scale = randf_range(0.7, 1.3)
+		$hammer/wall_hit_sfx.play()
+		GlobalVars.player.push(600, raycast.get_collision_normal())
+		hammer_raycast1.enabled = false
+		hammer_raycast2.enabled = false
+		$hammer/damage_cooldown.start()
+	elif body is RigidBody2D:
 		if body.has_method("damage"):
 			body.damage(10)
-			if body is RigidBody2D:
-				body.apply_impulse(300 * Vector2.RIGHT.rotated(global_rotation))
-		if body.has_method("push"):
-			body.push(550, (body.global_position - global_position).normalized())
-
+		body.apply_central_impulse(250 * raycast.get_collision_normal() + Vector2(PI, 0).rotated(global_rotation))
+		hammer_raycast1.enabled = false
+		hammer_raycast2.enabled = false
+		$hammer/damage_cooldown.start()
 
 func _on_hammer_anim_animation_finished() -> void:
-	hammer.hide()
-	hammer_area_2d.monitoring = false
-	targets = []
+	if not Input.is_action_pressed("shift"):
+		hammer_raycast1.enabled = false
+		$hammer/attack_cooldown.start()
+		hammer.hide()
+	else:
+		global_rotation = 0.0
+		hammer_anim.play("loop")
+		is_spinning = true
+		$hammer/spin_sfx.play()
+		hammer_raycast2.enabled = true
 
+func attack():
+	GlobalVars.player.can_jump = false
+	look_at(get_global_mouse_position())
+	hammer_raycast1.enabled = true
+	hammer_anim.play("hit")
+	hammer.show()
+	$hammer/attack_sfx.play()
 
-func _on_hammer_area_2d_body_entered(body: Node2D) -> void:
-	if "Enemy" in str(body):
-		body.damage(10)
-		body.push(250, (body.global_position - global_position))
-	elif body is TileMapLayer:
-		hammer_area_2d.monitoring = false
-		GlobalVars.player.push(600, global_position.normalized())
+func _on_damage_cooldown_timeout() -> void:
+	if is_spinning:
+		hammer_raycast1.enabled = true
+		hammer_raycast2.enabled = true

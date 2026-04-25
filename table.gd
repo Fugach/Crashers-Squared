@@ -38,11 +38,11 @@ func _ready() -> void:
 	Table.hide()
 	$"../UI/HUD/AnimationPlayer".play_backwards("show_table")
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	get_input()
 
 func get_input():
-	if Tip.visible and Input.is_action_just_pressed("rmb"):
+	if Tip.visible and Input.is_action_just_pressed("rmb") and Table.visible == false:
 		$"../UI/HUD/Table/table/Title".text = titles[str(randi_range(1, len(titles)))]
 		$"../UI/HUD/AnimationPlayer".play("show_table")
 		Table.show()
@@ -51,11 +51,14 @@ func get_input():
 		GlobalVars.player.SPEED = 0
 		GlobalVars.player.JUMP_VELOCITY_buffer = GlobalVars.player.JUMP_VELOCITY
 		GlobalVars.player.JUMP_VELOCITY = 0
+		GlobalVars.player.can_jump = false
 	if Table.visible and Input.is_action_just_pressed("esc"):
+		$"../UI/HUD/Table/close".play()
 		get_parent().get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 		Table.hide()
 		GlobalVars.player.JUMP_VELOCITY = GlobalVars.player.JUMP_VELOCITY_buffer
 		GlobalVars.player.SPEED = GlobalVars.player.SPEED_buffer
+		GlobalVars.player.can_jump = true
 
 func reroll():
 	Upgrade1.disabled = false
@@ -103,6 +106,7 @@ func _on_upgrade_3_pressed() -> void:
 	upgrade(upgrades[2])
 
 func _on_texture_button_pressed() -> void:
+	$"../UI/HUD/Table/close".play()
 	get_parent().get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 	Table.hide()
 	GlobalVars.player.JUMP_VELOCITY = GlobalVars.player.JUMP_VELOCITY_buffer

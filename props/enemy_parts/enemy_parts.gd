@@ -16,7 +16,7 @@ func _ready() -> void:
 	Sprite_big.modulate = Splash_small.modulate
 	apply_impulse(power * direction)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body == GlobalVars.player:
@@ -27,8 +27,8 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	elif body is TileMapLayer:
 		Splash_small.hide()
 		$Area2D_small.hide()
-		freeze = true
-		$Area2D_small.call_deferred("monitoring", false)
+		#call_deferred("freeze", true)
+		#$Area2D_small.call_deferred("monitoring", false)
 
-func _on_anim_animation_finished(anim_name: StringName) -> void:
+func _on_anim_animation_finished(_anim_name: StringName) -> void:
 	queue_free()

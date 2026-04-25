@@ -4,10 +4,12 @@ var RL_PICKABLE = preload("uid://b6yunx8h1pcdi")
 var SHOTGUN_PICKABLE = preload("uid://dhjphrjas8n7d")
 var ENEMY = preload("uid://x2aibfdis1lc")
 
+
+var penetrable = true
 var hp : int = 25
 func damage(amount):
 	hp -= amount
-	if hp <= 0:
+	if hp <= 0 and modulate.a != 0:
 		var chance = randi_range(1, 100)
 		if chance < 20:
 			var new_pistol = PISTOL_PICKABLE.instantiate()

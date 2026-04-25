@@ -6,10 +6,11 @@ extends Node
 @onready var lifes : int = 3
 @onready var spawn_pos : Vector2 = Vector2(0, 0)
 
-var camera_positions = []
+var cleared_rooms : Dictionary = {}
+
+
 var current_slot_num = "slot1"
 var current_slot_node : Node2D = null
-
 var slots : Dictionary[String, Node2D] = {
 	"slot1": null,
 	"slot2": null,
@@ -45,7 +46,7 @@ func heal(amount : int):
 
 func apply_CRT(body_material):
 	if str(RenderingServer.get_current_rendering_method()) == "gl_compatibility":
-		body_material.shader = preload("res://shaders/crt_OpenGL.gdshader")
+		body_material.shader = preload("uid://dwmr157brsa3w")
 		body_material.set_shader_parameter("brightness", 0.8)
 		body_material.set_shader_parameter("contrast", 1.095)
 		body_material.set_shader_parameter("saturation", 1.0)
@@ -63,7 +64,7 @@ func apply_CRT(body_material):
 		body_material.set_shader_parameter("glow_strength", 1.5)
 		body_material.set_shader_parameter("glow_threshold", 0.05)
 	elif str(RenderingServer.get_current_rendering_method()) == "forward_plus":
-		body_material.shader =  preload("res://shaders/crt_Vulkan.gdshader")
+		body_material.shader = preload("uid://difxyhauojrf4")
 		body_material.set_shader_parameter("resolution", Vector2(1280, 720))
 		body_material.set_shader_parameter("warp_amount", 0.257)
 		body_material.set_shader_parameter("noise_amount", 0.02)

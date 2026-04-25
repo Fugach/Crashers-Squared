@@ -8,6 +8,7 @@ var WEIGHT : float = 500
 var WALLJUMPS : int = 3
 var AVAILABLE_WALLJUMPS : int = 3
 var direction : int = 1
+var last_animation : String = ""
 
 const RL = preload("uid://b6yunx8h1pcdi")
 const shotgun = preload("uid://dhjphrjas8n7d")
@@ -25,6 +26,7 @@ var is_going_to_elevator : bool = false
 var is_sliding : bool = false
 var is_slamming : bool = false
 var is_falling_fast : bool = false
+var can_jump : bool = true
 var falling_speed : float = 0.0
 
 var throw_power : Vector2 = Vector2(-10000, -10000)
@@ -44,8 +46,6 @@ func _physics_process(delta: float) -> void:
 		is_falling_fast = true
 		
 	if is_falling_fast and velocity.y <= 0 and is_on_floor():
-		Camera.reset_smoothing()
-		Camera.global_position.y = global_position.y + 10
 		Camera.shake(0.1, 5)
 		$fall.pitch_scale = randf_range(0.7, 1.3)
 		$fall.play()
@@ -128,11 +128,10 @@ func _process(_delta: float) -> void:
 
 
 func jump():
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and is_on_floor() and can_jump:
 		velocity.y += JUMP_VELOCITY
-		if Anims.current_animation == "slam_stop":
-			Anims.play("RESET")
-	elif $Coyote.time_left > 0 and Input.is_action_just_pressed("jump"):
+		Anims.play("RESET")
+	elif $Coyote.time_left > 0 and Input.is_action_just_pressed("jump") and can_jump:
 		velocity.y += JUMP_VELOCITY
 		if Anims.current_animation == "slam_stop":
 			Anims.play("RESET")
@@ -152,12 +151,12 @@ func jump():
 func fall():
 	if not is_on_floor() and not is_on_ceiling():
 		wind.volume_db = min((abs(velocity.x) + abs(velocity.y)) * 0.025 - 35, 7.5)
-		wind.pitch_scale = (velocity.x + velocity.y) * 0.0001 + 1.0
+		wind.pitch_scale = (abs(velocity.x) + abs(velocity.y)) * 0.0001 + 1.0
 	else:
 		wind.volume_db = -80
 	if Input.is_action_just_pressed("interact"):
 		global_position.y += 100
-	if position.y > 30000:
+	if position.y > 5000:
 		respawn()
 		is_sliding = false
 		is_slamming = false
@@ -187,6 +186,12 @@ func get_input(delta: float) -> void:
 			for body in get_parent().get_children():
 				if "Light" in str(body):
 					body.queue_free()
+	
+	if Input.is_action_just_pressed("down") and is_on_floor():
+		Anims.play("squish")
+	elif Input.is_action_just_released("down") and (Anims.current_animation == "squish" or last_animation == "squish"):
+		Anims.play("unsquish")
+	
 	if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
 		direction = -1
 		if sign(velocity.x) != direction:
@@ -213,7 +218,7 @@ func get_input(delta: float) -> void:
 		Anims.stop()
 		$slam.emitting = false
 		is_slamming = false
-	if Anims.current_animation == "slam_stop" and Input.is_action_just_pressed("jump"):
+	if Anims.current_animation == "slam_stop" and Input.is_action_just_pressed("jump") and can_jump:
 		velocity.y += JUMP_VELOCITY * 0.3
 	
 	if int(Input.is_action_pressed("move_left")) == int(Input.is_action_pressed("move_right")):
@@ -256,9 +261,6 @@ func get_input(delta: float) -> void:
 			GlobalVars.slots[GlobalVars.current_slot_num] = null
 			Camera.position_smoothing_speed = 2
 			SlotsHUD.update()
-	
-	if Input.is_action_just_pressed("respawn"):
-		respawn()
 
 func respawn():
 	if Camera == null:
@@ -275,22 +277,22 @@ func respawn():
 	Camera.global_position = global_position
 	Camera.reset_smoothing()
 	Anims.play("RESET")
-	GlobalVars.player_hp = 1
+	GlobalVars.player_hp = 100000
 func show_damage():
 	$damage.play()
 	#$blood.emitting = true
 	pass
 
 func animation_finished(anim_name: StringName) -> void:
+	last_animation = anim_name
 	if anim_name == "slam_start" and is_on_floor():
 		Anims.play("slam_stop")
 func _on_slide_coyote_timeout() -> void:
 	is_sliding = false
 func goto_elevator():
 	SPEED_buffer = SPEED
-	JUMP_VELOCITY_buffer = JUMP_VELOCITY
+	can_jump = false
 	SPEED = 0
-	JUMP_VELOCITY = 0
 	is_going_to_elevator = true
 func camera_impact(amount, dir):
 	Camera.global_position += amount * dir

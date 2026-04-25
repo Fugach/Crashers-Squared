@@ -21,7 +21,6 @@ var parts_amount : int = 0
 func _ready() -> void:
 	var get_WEAPON = my_weapon.instantiate()
 	get_WEAPON.weapon_owner = "Enemy"
-	get_WEAPON.is_friendly = false
 	add_child(get_WEAPON)
 	WEAPON = get_WEAPON.get_child(1).get_parent()
 	if my_weapon == Shotgun:
@@ -34,28 +33,42 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor() and hp > 0:
 		velocity += get_gravity() * delta
 	if player != null and hp > 0:
-		#if WEAPON.is_player_nearby and WEAPON.can_shoot and GlobalVars.player_hp > 0:
-			#WEAPON.shoot(base_damage, false)
-		#if global_position.y - player.global_position.y > 50 and is_on_floor() and $shock.is_stopped() and global_position.distance_to(player.global_position) < 100:
-			#velocity.y = JUMP_VELOCITY
+		if WEAPON.is_player_nearby and WEAPON.can_shoot and GlobalVars.player_hp > 0:
+			WEAPON.shoot(base_damage, false)
+		if global_position.y - player.global_position.y > 50 and is_on_floor() and $shock.is_stopped() and global_position.distance_to(player.global_position) < 100:
+			velocity.y = JUMP_VELOCITY
 
 		direction = global_position.direction_to(player.global_position)
-		#if $shock.is_stopped():
-			#if (global_position.distance_to(player.global_position) < 300 and\
-			#global_position.distance_to(player.global_position) > 150) and abs(velocity.x) < 300:
-				#velocity.x += direction.x * SPEED * delta
-				#if sign(velocity.x) != sign(global_position.direction_to(player.global_position).x):
-					#velocity.x += velocity.x * -0.05
-			#elif global_position.distance_to(player.global_position) < 50:
-				#velocity.x -= direction.x * SPEED * delta
+		if $shock.is_stopped():
+			if (global_position.distance_to(player.global_position) < 300 and\
+			global_position.distance_to(player.global_position) > 150) and abs(velocity.x) < 300:
+				velocity.x += direction.x * SPEED * delta
+				if sign(velocity.x) != sign(global_position.direction_to(player.global_position).x):
+					velocity.x += velocity.x * -0.05
+			elif global_position.distance_to(player.global_position) < 50:
+				velocity.x -= direction.x * SPEED * delta
 		if hp > 0:
 			velocity.x *= 0.9
 	elif hp <= 0 and str(WEAPON) != "<Freed Object>":
 		kill()
+	
+	var previous_velocity = velocity
 	move_and_slide()
-
-func _process(delta: float) -> void:
-	pass
+	
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		var normal = collision.get_normal()
+		if collider is RigidBody2D:
+			if velocity.x + velocity.y > SPEED * 2:
+				collider.apply_impulse(previous_velocity * normal * -0.15)
+			else:
+				collider.apply_impulse(Vector2(SPEED, SPEED) * normal * -0.15)
+		elif "Enemy" in str(collider):
+			if velocity.x + velocity.y > SPEED:
+				collider.velocity += previous_velocity * normal * -0.3
+			else:
+				collider.velocity += Vector2(SPEED, SPEED) * normal * -0.3
 
 func kill():
 	GlobalVars.killed += 1
@@ -77,7 +90,7 @@ func damage(damage_amount):
 	new_part.name = name + "_part" + str(parts_amount)
 	parts_amount += 1
 	new_part.direction = Vector2(-1, -1)
-	get_parent().add_child(new_part)
+	get_parent().add_child.call_deferred(new_part)
 	hp -= damage_amount
 	total_damage += damage_amount
 	$Label.text = str(total_damage)

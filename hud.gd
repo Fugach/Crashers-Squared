@@ -7,14 +7,13 @@ extends CanvasLayer
 @onready var Elevator : Area2D = $"../../Elevator"
 @onready var Camera : Camera2D = $"../../Camera2D"
 
-func _process(delta: float) -> void:
-	pass
 func wait(time):
 	await get_tree().create_timer(time).timeout
 func repeat(text, amount):
 	for x in range(amount):
 		Console.text += text
 func results():
+	$"../..".get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 	Console.text = "                         -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                                       РРРРРРР    ЕЕЕЕЕЕЕЕ   ЗЗЗЗЗЗ       УУ       УУ        ЛЛЛЛЛЛЛ       ЬЬ                 ТТТТТТТТТТ       АААААА      ТТТТТТТТТТ   ЫЫ                   ЫЫ          
                                        РР           Р  ЕЕ                         ЗЗ   УУ       УУ       ЛЛ        ЛЛ       ЬЬ                        ТТ            АА         АА           ТТ         ЫЫ                  ЫЫ      
@@ -47,11 +46,15 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		TilesAnim.play("show")
 		Anim.play("show_hud")
 		Elevator.outside()
+		$"../..".get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 
 
 func _on_upgrade_1_mouse_entered() -> void:
-	$Table/Upgrade1/choose.play()
+	if not $Table/Upgrade1.disabled:
+		$Table/Upgrade1/choose.play()
 func _on_upgrade_2_mouse_entered() -> void:
-	$Table/Upgrade2/choose.play()
+	if not $Table/Upgrade1.disabled:
+		$Table/Upgrade2/choose.play()
 func _on_upgrade_3_mouse_entered() -> void:
-	$Table/Upgrade3/choose.play()
+	if not $Table/Upgrade1.disabled:
+		$Table/Upgrade3/choose.play()

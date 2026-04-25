@@ -37,7 +37,7 @@ func update():
 	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Sound")),\
 	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Atmosphere")))
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_pressed("vol_up") and Cooldown.is_stopped():
 		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), min(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) + 1, 25))
 		if AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")) <= -75:

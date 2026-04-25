@@ -37,12 +37,10 @@ func _process(delta: float) -> void:
 
 func RL_logic(delta):
 	if weapon_owner == "Player":
-		global_rotation = lerp_angle(global_rotation, (get_global_mouse_position()\
-		- global_position).angle(), 20 * delta)
+		look_at(get_global_mouse_position())
 		current_angle = (get_global_mouse_position() - global_position).normalized().angle()
 	elif weapon_owner == "Enemy":
-		global_rotation = lerp_angle(global_rotation, (GlobalVars.player.global_position\
-		- global_position).angle(), 20 * delta)
+		look_at(GlobalVars.player.global_position)
 		current_angle = (GlobalVars.player.global_position - global_position).normalized().angle()
 	
 	if -1.5 <= current_angle and current_angle <= 1.5:

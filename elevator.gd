@@ -21,7 +21,7 @@ func _on_body_exited(body: Node2D) -> void:
 		Tip.hide()
 		Elevator.play("close")
 
-func _process(delta: float):
+func _process(_delta: float):
 	if Input.is_action_just_pressed("rmb") and Tip.visible:
 		GlobalVars.is_time_running = false
 		GlobalVars.player.goto_elevator()
@@ -34,6 +34,7 @@ func results():
 
 func outside():
 	$AnimationPlayer.play("show_outside")
+	GlobalVars.player.can_jump = true
 	Camera.is_following = true
 	$Inside/CollisionPolygon2D.disabled = true
 	GlobalVars.time = 0.0
@@ -46,4 +47,4 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		Camera.global_position = global_position + Vector2(0, -85)
 		GlobalVars.player.Anims.play("show")
 		GlobalVars.player.SPEED = GlobalVars.player.SPEED_buffer
-		GlobalVars.player.JUMP_VELOCITY = GlobalVars.player.JUMP_VELOCITY_buffer
+		GlobalVars.player.can_jump = false

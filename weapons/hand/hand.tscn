@@ -34,6 +34,9 @@
 [ext_resource type="Texture2D" uid="uid://q18qlh6oiios" path="res://textures/hammer/hammer_0014.png" id="32_firw5"]
 [ext_resource type="Texture2D" uid="uid://cj2t568hiy40s" path="res://textures/hammer/hammer_0015.png" id="33_4c2pu"]
 [ext_resource type="AudioStream" uid="uid://c0fpxhrtqt7r6" path="res://sounds/smash/smash_hammer.ogg" id="34_ho7na"]
+[ext_resource type="AudioStream" uid="uid://br7phr0u08hvl" path="res://sounds/smash/wall_hit.wav" id="35_1pmif"]
+[ext_resource type="AudioStream" uid="uid://cmh3r4j41xgh" path="res://sounds/smash/spin.wav" id="36_m3gm7"]
+[ext_resource type="AudioStream" uid="uid://rwxo8as1yi7g" path="res://sounds/smash/hammer_damage.ogg" id="37_kowy6"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_m3gm7"]
 animations = [{
@@ -101,9 +104,6 @@ animations = [{
 "name": &"smash_hand",
 "speed": 30.0
 }]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kowy6"]
-size = Vector2(14, 8)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vbuvb"]
 animations = [{
@@ -187,17 +187,13 @@ animations = [{
 }],
 "loop": true,
 "name": &"loop",
-"speed": 40.0
+"speed": 60.0
 }]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_akrml"]
-size = Vector2(28, 13.5)
 
 [node name="weapon" type="Node2D" unique_id=63557002]
 script = ExtResource("1_ror0l")
 
 [node name="hand" type="Node2D" parent="." unique_id=1028997208]
-visible = false
 
 [node name="Hand_anim" type="AnimatedSprite2D" parent="hand" unique_id=2138082270]
 position = Vector2(7, 0)
@@ -206,36 +202,43 @@ animation = &"smash_hand"
 frame = 9
 frame_progress = 1.0
 
-[node name="hand_area2D" type="Area2D" parent="hand" unique_id=1795136917]
-position = Vector2(7, 0)
-monitoring = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hand/hand_area2D" unique_id=1958045399]
-position = Vector2(-2, 0)
-shape = SubResource("RectangleShape2D_kowy6")
-
 [node name="hammer" type="Node2D" parent="." unique_id=1583315776]
-visible = false
 
 [node name="Hammer_anim" type="AnimatedSprite2D" parent="hammer" unique_id=1603683193]
 sprite_frames = SubResource("SpriteFrames_vbuvb")
 animation = &"loop"
 
-[node name="hammer_area2D" type="Area2D" parent="hammer" unique_id=2050176575]
-monitoring = false
+[node name="Hammer_raycast" type="RayCast2D" parent="hammer/Hammer_anim" unique_id=1026045911]
+position = Vector2(2, 0)
+target_position = Vector2(21, 0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hammer/hammer_area2D" unique_id=947160561]
-position = Vector2(14, 0)
-shape = SubResource("RectangleShape2D_akrml")
+[node name="second_one" type="RayCast2D" parent="hammer/Hammer_anim/Hammer_raycast" unique_id=1903746511]
+position = Vector2(-4, 0)
+enabled = false
+target_position = Vector2(-21, 0)
 
-[node name="Timer" type="Timer" parent="hammer" unique_id=1528279913]
+[node name="attack_cooldown" type="Timer" parent="hammer" unique_id=1528279913]
 wait_time = 0.5
 one_shot = true
 
-[node name="smash" type="AudioStreamPlayer2D" parent="hammer" unique_id=185630710]
+[node name="attack_sfx" type="AudioStreamPlayer2D" parent="hammer" unique_id=185630710]
 stream = ExtResource("34_ho7na")
 
+[node name="wall_hit_sfx" type="AudioStreamPlayer2D" parent="hammer" unique_id=1832745449]
+stream = ExtResource("35_1pmif")
+volume_db = -10.0
+
+[node name="spin_sfx" type="AudioStreamPlayer2D" parent="hammer" unique_id=577130061]
+stream = ExtResource("36_m3gm7")
+bus = &"Sound"
+
+[node name="damage_cooldown" type="Timer" parent="hammer" unique_id=1526340920]
+wait_time = 0.25
+one_shot = true
+
+[node name="damage_sfx" type="AudioStreamPlayer2D" parent="hammer" unique_id=459170253]
+stream = ExtResource("37_kowy6")
+
 [connection signal="animation_finished" from="hand/Hand_anim" to="." method="_on_animated_sprite_2d_animation_finished"]
-[connection signal="body_entered" from="hand/hand_area2D" to="." method="_on_hand_area_2d_body_entered"]
 [connection signal="animation_finished" from="hammer/Hammer_anim" to="." method="_on_hammer_anim_animation_finished"]
-[connection signal="body_entered" from="hammer/hammer_area2D" to="." method="_on_hammer_area_2d_body_entered"]
+[connection signal="timeout" from="hammer/damage_cooldown" to="." method="_on_damage_cooldown_timeout"]

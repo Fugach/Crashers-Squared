@@ -63,5 +63,5 @@ func _on_collision_body_entered(body: Node2D):
 		var force = 800.0 / max(distance * 0.08, 1.0)
 		if body.has_method("push"):
 			body.push(force, dir)
-func _on_animation_finished(anim_name: StringName) -> void:
+func _on_animation_finished(_anim_name: StringName) -> void:
 	can_push = false

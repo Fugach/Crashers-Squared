@@ -59,7 +59,7 @@ region_enabled = true
 region_rect = Rect2(0, 0, 21, 11)
 
 [node name="shoot_pos" type="Marker2D" parent="RL_sprite" unique_id=427160559]
-position = Vector2(8, -3)
+position = Vector2(3, -3)
 
 [node name="Area2D" type="Area2D" parent="RL_sprite" unique_id=816954710]
 

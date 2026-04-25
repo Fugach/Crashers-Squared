@@ -41,6 +41,7 @@
 [ext_resource type="Texture2D" uid="uid://cfr0uyc8g23nq" path="res://textures/UI/QuickVolume/progress.png" id="22_d2t1y"]
 [ext_resource type="AudioStream" uid="uid://csxql5nmexjnu" path="res://sounds/UI/blip/blipSelect-8.wav" id="23_gngh3"]
 [ext_resource type="Texture2D" uid="uid://cphoabg3r0xx2" path="res://textures/UI/QuickVolume/infinity.png" id="24_0n3wm"]
+[ext_resource type="AudioStream" uid="uid://citm056lggy6f" path="res://sounds/UI/close.ogg" id="24_htgcl"]
 [ext_resource type="Texture2D" uid="uid://dj576ntgm1cqk" path="res://textures/micro-table.png" id="25_0odxb"]
 [ext_resource type="AudioStream" uid="uid://bgnc62heiaiq5" path="res://sounds/UI/blip/blipSelect.wav" id="25_abqjc"]
 [ext_resource type="AudioStream" uid="uid://hcfvvronc0xu" path="res://sounds/throw.wav" id="25_blkrb"]
@@ -56,9 +57,9 @@
 [ext_resource type="AudioStream" uid="uid://ualniibtjdp1" path="res://sounds/UI/table/choose/2.ogg" id="31_htgcl"]
 [ext_resource type="Script" uid="uid://bim328jq0h2y3" path="res://restartUI.gd" id="32_pjuso"]
 [ext_resource type="AudioStream" uid="uid://b5jra77qyt6yd" path="res://sounds/UI/table/choose/3.ogg" id="32_smeu8"]
-[ext_resource type="AudioStream" uid="uid://2d6i5kkmj6ia" path="res://sounds/abonent-vremenno-nedostupen.ogg" id="33_k1udn"]
 [ext_resource type="AudioStream" uid="uid://r0hr5q2kouw7" path="res://sounds/elevator/bilep.wav" id="34_53bls"]
 [ext_resource type="Texture2D" uid="uid://djjmrmoaufyg2" path="res://textures/tiles/tile_main.png" id="35_h8e4i"]
+[ext_resource type="AudioStream" uid="uid://qwcl0hllj2ng" path="res://sounds/lost.ogg" id="41_htgcl"]
 [ext_resource type="Texture2D" uid="uid://b73eakvkvyx8r" path="res://textures/particles/slide/4.png" id="42_blkrb"]
 [ext_resource type="Script" uid="uid://b551vcxxyjwcu" path="res://table.gd" id="42_wat4s"]
 [ext_resource type="Texture2D" uid="uid://b3ivou6ton8fs" path="res://textures/particles/slide/6.png" id="44_6iyjs"]
@@ -779,14 +780,23 @@ polygon = PackedVector2Array(-4.023594, -8, 8, -8, 8, 8, -3.9968586, 8)
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_wnkbs"]
 polygon = PackedVector2Array(-8, -4, 8, -4.001159, 8, 2.0078125, -8, 1.9806099)
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_8dc3g"]
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_f6a44"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 4.0159836, -8, 4.0159836)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_d2t1y"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_htgcl"]
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_0cbny"]
 polygon = PackedVector2Array(-8, -3.983492, 8, -3.9834914, 8, 8, -8, 8)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_smeu8"]
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_hrvbo"]
 polygon = PackedVector2Array(-8, -8, 3.9716053, -8, 4.040251, 8, -8, 8)
@@ -1016,6 +1026,18 @@ texture = ExtResource("35_h8e4i")
 10:1/0 = 0
 10:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_gngh3")
 10:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0 = 0
+1:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_8dc3g")
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:1/0 = 0
+2:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_htgcl")
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:1/0 = 0
+3:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_smeu8")
+3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+4:1/0 = 0
+4:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_smeu8")
+4:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_ycdy4"]
 occlusion_layer_0/light_mask = 1
@@ -1485,7 +1507,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.0333, 0.1, 0.1333),
 "transitions": PackedFloat32Array(1, -2, -2, -2),
 "update": 0,
-"values": [Vector2(0.8, 1.4), Vector2(1.6, 0.6), Vector2(0.9, 1.1), Vector2(1, 1)]
+"values": [Vector2(0.8, 1.4), Vector2(2, 0.6), Vector2(0.9, 1.1), Vector2(1, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1500,13 +1522,71 @@ tracks/1/keys = {
 "values": [Vector2(0, 0), Vector2(0, 1), Vector2(0, -1), Vector2(0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_8dc3g"]
+resource_name = "squish"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 2)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(0.5, 0),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.5, 0.5)]
+}
+
+[sub_resource type="Animation" id="Animation_htgcl"]
+resource_name = "unsquish"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(2, 0.5),
+"update": 0,
+"values": [Vector2(0, 2), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.099999994),
+"transitions": PackedFloat32Array(2, 0.5),
+"update": 0,
+"values": [Vector2(1.5, 0.5), Vector2(1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_q6r6c"]
 _data = {
 &"RESET": SubResource("Animation_epypp"),
 &"hide": SubResource("Animation_23xmf"),
 &"show": SubResource("Animation_swlj1"),
 &"slam_start": SubResource("Animation_0e48y"),
-&"slam_stop": SubResource("Animation_0hol4")
+&"slam_stop": SubResource("Animation_0hol4"),
+&"squish": SubResource("Animation_8dc3g"),
+&"unsquish": SubResource("Animation_htgcl")
 }
 
 [sub_resource type="AnimatedTexture" id="AnimatedTexture_4w656"]
@@ -1611,7 +1691,6 @@ modulate = Color(6.840123, 6.840123, 6.840123, 0)
 offset_right = 1280.0
 offset_bottom = 720.0
 scale = Vector2(0.5, 0.5)
-focus_mode = 2
 theme_override_colors/default_color = Color(0.4609375, 0.25970104, 0.05041504, 1)
 theme_override_colors/selection_color = Color(0.18275288, 0.088113904, 0, 0.56078434)
 theme_override_fonts/normal_font = ExtResource("12_cegan")
@@ -1625,7 +1704,7 @@ text = "                         -----------------------------------------------
 scroll_active = false
 scroll_following = true
 scroll_following_visible_characters = true
-selection_enabled = true
+shortcut_keys_enabled = false
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="UI/HUD/Console" unique_id=1539854180]
 stream = ExtResource("34_53bls")
@@ -1736,6 +1815,9 @@ texture = ExtResource("26_lswn8")
 region_enabled = true
 region_rect = Rect2(16, 1, 10, 14)
 
+[node name="close" type="AudioStreamPlayer2D" parent="UI/HUD/Table" unique_id=1438930877]
+stream = ExtResource("24_htgcl")
+
 [node name="paper_sfx" type="AudioStreamPlayer2D" parent="UI/HUD/Table" unique_id=32600976]
 stream = SubResource("AudioStreamRandomizer_come4")
 
@@ -1845,7 +1927,7 @@ position = Vector2(21, 27)
 texture = ExtResource("24_0n3wm")
 
 [node name="lost" type="AudioStreamPlayer2D" parent="UI/HUD/QuickVolume" unique_id=1446167603]
-stream = ExtResource("33_k1udn")
+stream = ExtResource("41_htgcl")
 volume_db = 5.0
 
 [node name="cooldown" type="Timer" parent="UI/HUD/QuickVolume" unique_id=976853337]
@@ -1975,13 +2057,31 @@ position = Vector2(320, 180)
 scale = Vector2(10, 5.625)
 texture = ExtResource("7_ryguw")
 
+[node name="restart" type="Button" parent="UI/Pause/ColorRect" unique_id=1726040145]
+modulate = Color(6.840123, 6.840123, 6.840123, 1)
+layout_mode = 0
+offset_left = 234.0
+offset_top = 154.0
+offset_right = 397.0
+offset_bottom = 185.0
+theme_override_colors/font_color = Color(0.4627451, 0.25882354, 0.050980393, 1)
+theme_override_colors/font_focus_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
+theme_override_colors/font_pressed_color = Color(0.63529414, 0.3647059, 0.08627451, 1)
+theme_override_colors/font_hover_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.63529414, 0.3647059, 0.08627451, 1)
+theme_override_fonts/font = ExtResource("12_cegan")
+theme_override_font_sizes/font_size = 1
+text = "ПЕРЕЗАПУСК"
+flat = true
+autowrap_mode = 3
+
 [node name="exit" type="Button" parent="UI/Pause/ColorRect" unique_id=1521017913]
 modulate = Color(6.840123, 6.840123, 6.840123, 1)
 layout_mode = 0
-offset_left = 252.0
-offset_top = 188.0
-offset_right = 377.0
-offset_bottom = 219.0
+offset_left = 251.0
+offset_top = 206.0
+offset_right = 376.0
+offset_bottom = 237.0
 theme_override_colors/font_color = Color(0.4627451, 0.25882354, 0.050980393, 1)
 theme_override_colors/font_focus_color = Color(0.56078434, 0.31764707, 0.06666667, 1)
 theme_override_colors/font_pressed_color = Color(0.63529414, 0.3647059, 0.08627451, 1)
@@ -2268,7 +2368,7 @@ randomness = 1.0
 process_material = SubResource("ParticleProcessMaterial_sn1fb")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=48622774]
-color = Color(0.37413925, 0.37413928, 0.37413922, 1)
+color = Color(0.101960786, 0.101960786, 0.101960786, 1)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=562808154]
 position_smoothing_enabled = true
@@ -2295,6 +2395,9 @@ script = ExtResource("91_n5t1e")
 [connection signal="mouse_entered" from="UI/Restart/ColorRect/Yes" to="UI/Restart" method="_on_yes_mouse_entered"]
 [connection signal="mouse_exited" from="UI/Restart/ColorRect/Yes" to="UI/Restart" method="_on_yes_mouse_exited"]
 [connection signal="pressed" from="UI/Restart/ColorRect/Yes" to="UI/Restart" method="_on_yes_pressed"]
+[connection signal="mouse_entered" from="UI/Pause/ColorRect/restart" to="." method="_on_restart_mouse_entered"]
+[connection signal="mouse_exited" from="UI/Pause/ColorRect/restart" to="." method="_on_restart_mouse_exited"]
+[connection signal="pressed" from="UI/Pause/ColorRect/restart" to="." method="_on_restart_pressed"]
 [connection signal="mouse_entered" from="UI/Pause/ColorRect/exit" to="." method="_on_exit_mouse_entered"]
 [connection signal="mouse_exited" from="UI/Pause/ColorRect/exit" to="." method="_on_exit_mouse_exited"]
 [connection signal="pressed" from="UI/Pause/ColorRect/exit" to="." method="_on_exit_pressed"]
