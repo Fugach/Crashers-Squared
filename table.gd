@@ -11,6 +11,7 @@ extends Sprite2D
 
 var all_upgrades = ["SPEED_UP", "JUMP_UP", "FREE_WEAPON", "WALLJUMPS_UP"]
 var upgrades = []
+var rerolling_upgrade = ""
 var last_finished_animation : String = ""
 var names = {
 	"SPEED_UP" : "СКОРОСТЬ\n\nСкорость бега +10%",
@@ -66,7 +67,8 @@ func reroll():
 	Upgrade3.disabled = false
 	upgrades = []
 	for x in range(3):
-		upgrades.append(all_upgrades.pick_random())
+		rerolling_upgrade = all_upgrades.pick_random()
+		upgrades.append(rerolling_upgrade)
 	print("Current options: ", upgrades)
 	Upgrade1.text = names[upgrades[0]]
 	Upgrade2.text = names[upgrades[1]]
@@ -109,6 +111,7 @@ func _on_texture_button_pressed() -> void:
 	$"../UI/HUD/Table/close".play()
 	get_parent().get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 	Table.hide()
+	GlobalVars.player.can_jump = true
 	GlobalVars.player.JUMP_VELOCITY = GlobalVars.player.JUMP_VELOCITY_buffer
 	GlobalVars.player.SPEED = GlobalVars.player.SPEED_buffer
 

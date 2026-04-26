@@ -28,11 +28,14 @@ func _process(_delta: float):
 		Tip.hide()
 
 func results():
+	$noise.play()
 	$Inside/CollisionPolygon2D.disabled = false
 	$AnimationPlayer.play("show_inside")
 	GlobalVars.player.velocity = Vector2(0, 0)
 
 func outside():
+	$noise.stop()
+	$"../elevator_fake/done".play()
 	$AnimationPlayer.play("show_outside")
 	GlobalVars.player.can_jump = true
 	Camera.is_following = true

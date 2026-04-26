@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cu0dqi5qkcj2g" path="res://particles/room.gd" id="1_lo83i"]
 [ext_resource type="Shader" uid="uid://d4dvg73lkf3jf" path="res://shaders/warped_noise.gdshader" id="2_hki8l"]
+[ext_resource type="FontFile" uid="uid://o5jco35hc1te" path="res://fonts/Blocky.ttf" id="3_m5ciy"]
+[ext_resource type="AudioStream" uid="uid://d3fm20triww15" path="res://sounds/UI/remind.ogg" id="4_yppk4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hki8l"]
 resource_local_to_scene = true
@@ -18,6 +20,42 @@ shader_parameter/color_mid_threshold = 0.6690000317775
 shader_parameter/color_low = Color(0, 0.0051666666, 0.01, 1)
 shader_parameter/color_mid = Color(0.03, 0.03, 0.15, 1)
 shader_parameter/color_high = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_m5ciy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("move:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_yppk4"]
+resource_name = "remind"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("move:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.019607844), Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 1), Color(0.33333334, 0.33333334, 0.33333334, 1), Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.19607843), Color(0.33333334, 0.33333334, 0.33333334, 1), Color(0.33, 0.33, 0.33, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jikdh"]
+_data = {
+&"RESET": SubResource("Animation_m5ciy"),
+&"remind": SubResource("Animation_yppk4")
+}
 
 [node name="Room" type="Node2D" unique_id=1533858004]
 script = ExtResource("1_lo83i")
@@ -42,5 +80,28 @@ grow_vertical = 2
 color = Color(0, 0, 1, 1)
 
 [node name="Camera_pos" type="Marker2D" parent="." unique_id=278602264]
+
+[node name="move" type="Label" parent="." unique_id=1929075825]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -18.0
+offset_right = 60.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_m5ciy")
+theme_override_font_sizes/font_size = 32
+text = " <<             >>"
+
+[node name="remind" type="AudioStreamPlayer2D" parent="." unique_id=1301347974]
+stream = ExtResource("4_yppk4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1590263749]
+libraries/ = SubResource("AnimationLibrary_jikdh")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

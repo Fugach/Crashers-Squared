@@ -77,6 +77,7 @@ func kill():
 	$Label.add_theme_color_override("font_color", Color(1.535, 0.325, 0.325, 6.5))
 	WEAPON.queue_free()
 	velocity = Vector2(0, 0)
+	queue_free()
 
 func push(pwr, dir):
 	velocity += pwr * dir
@@ -86,7 +87,7 @@ func damage(damage_amount):
 	var new_part = PARTS.instantiate()
 	new_part.power = damage_amount
 	new_part.global_position = global_position
-	new_part.heal = damage_amount * 0.25
+	new_part.heal = damage_amount
 	new_part.name = name + "_part" + str(parts_amount)
 	parts_amount += 1
 	new_part.direction = Vector2(-1, -1)

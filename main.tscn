@@ -64,6 +64,7 @@
 [ext_resource type="Script" uid="uid://b551vcxxyjwcu" path="res://table.gd" id="42_wat4s"]
 [ext_resource type="Texture2D" uid="uid://b3ivou6ton8fs" path="res://textures/particles/slide/6.png" id="44_6iyjs"]
 [ext_resource type="Script" uid="uid://bo53c62y7a207" path="res://elevator.gd" id="44_23xmf"]
+[ext_resource type="Texture2D" uid="uid://bg6u1yluf7c10" path="res://textures/home_tip.png" id="51_cpm2s"]
 [ext_resource type="Texture2D" uid="uid://bv2hxdygufa4q" path="res://textures/elevator/elevator_bg.png" id="53_5yh34"]
 [ext_resource type="Texture2D" uid="uid://ddxctqpkgg2lg" path="res://textures/elevator/open/open_0001.png" id="54_pjuso"]
 [ext_resource type="Texture2D" uid="uid://p8r84j0vjtn4" path="res://textures/elevator/close/close_0001.png" id="55_23xmf"]
@@ -110,6 +111,8 @@
 [ext_resource type="Texture2D" uid="uid://cqclbfhiv8ou3" path="res://textures/elevator/no/no_0007.png" id="90_m74q3"]
 [ext_resource type="Script" uid="uid://dxet2vmqwq67g" path="res://camera.gd" id="91_n5t1e"]
 [ext_resource type="AudioStream" uid="uid://bn2pr4r4xqr0b" path="res://sounds/auf.wav" id="92_k1udn"]
+[ext_resource type="AudioStream" uid="uid://cg5qplgq7skyv" path="res://sounds/elevator/noise_loop.ogg" id="92_smeu8"]
+[ext_resource type="AudioStream" uid="uid://eceg8rmatom1" path="res://sounds/plink.wav" id="93_f3y11"]
 [ext_resource type="AudioStream" uid="uid://dwtdt7kwqp6ub" path="res://sounds/damage.wav" id="93_lwnsi"]
 [ext_resource type="AudioStream" uid="uid://n1irdk3ygua0" path="res://sounds/fall.wav" id="94_41lik"]
 [ext_resource type="Texture2D" uid="uid://c8h7vr4you8c5" path="res://textures/particles/slam_fall.png" id="95_jbvwl"]
@@ -2166,6 +2169,10 @@ rotation = -1.5707964
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_gngh3")
 
+[node name="home_tip" type="Sprite2D" parent="Table" unique_id=957584673]
+position = Vector2(-40, -46)
+texture = ExtResource("51_cpm2s")
+
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1062142319]
 light_mask = 3
 texture_filter = 1
@@ -2245,6 +2252,10 @@ region_rect = Rect2(29, 1, 10, 14)
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Elevator" unique_id=427103295]
 libraries/ = SubResource("AnimationLibrary_jbvwl")
 
+[node name="noise" type="AudioStreamPlayer2D" parent="Elevator" unique_id=173628582]
+stream = ExtResource("92_smeu8")
+volume_db = -5.0
+
 [node name="elevator_fake" type="Node2D" parent="." unique_id=1719233789]
 position = Vector2(151, 144)
 script = ExtResource("84_dij0e")
@@ -2297,6 +2308,10 @@ shape = SubResource("RectangleShape2D_b1qrp")
 
 [node name="Timer" type="Timer" parent="elevator_fake" unique_id=1781958216]
 one_shot = true
+
+[node name="done" type="AudioStreamPlayer2D" parent="elevator_fake" unique_id=1290823597]
+position = Vector2(-151, -144)
+stream = ExtResource("93_f3y11")
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=2101440871]
 process_mode = 1

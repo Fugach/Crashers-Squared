@@ -33,16 +33,21 @@ func _ready() -> void:
 
 func gen_dungeon(rooms_amount, start_pos):
 	total_rooms = 0
-	total_lights = 0
-	total_doors = 0
+	#total_lights = 0
+	#total_doors = 0
 	clear()
+	print(get_children())
 	for body in get_children():
 		if body is RigidBody2D:
 			body.queue_free()
 		else:
 			for thing in del_list:
-				if thing in str(body):
-					body.queue_free()
+				if str(thing) in str(body):
+					body.free()
+			#if body.is_queued_for_deletion():
+				#pass
+			#else:
+				#print("SAVING", body)
 	$bg.clear()
 	
 	room_anchor = start_pos

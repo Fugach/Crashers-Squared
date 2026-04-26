@@ -11,6 +11,10 @@ extends Node2D
 @onready var Cooldown: Timer = $cooldown
 
 func _ready():
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), GlobalConfig.get_value("audio", "Master_volume_db"))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), GlobalConfig.get_value("audio", "Music_volume_db"))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Sound"), GlobalConfig.get_value("audio", "Sound_volume_db"))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Atmosphere"), GlobalConfig.get_value("audio", "Atmosphere_volume_db"))
 	Vol_window.play("default")
 	Anim.play("RESET")
 	update()
@@ -71,3 +75,7 @@ func _on_anim_animation_finished(anim_name: StringName) -> void:
 
 func _on_display_timer_timeout() -> void:
 	Anim.play("hide")
+	GlobalConfig.save_audio(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")),\
+	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Music")),\
+	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Sound")),\
+	AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Atmosphere")))

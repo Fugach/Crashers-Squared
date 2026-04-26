@@ -84,7 +84,7 @@ func _physics_process(delta: float) -> void:
 	
 	if is_sliding and GlobalVars.player_hp > 0:
 		wall_slide_loop.volume_db = 0.0
-		wall_slide_loop.pitch_scale = 1.0 + velocity.y / 100
+		wall_slide_loop.pitch_scale = 1.0 + abs(velocity.y) / 100
 	else:
 		wall_slide_loop.volume_db = -80.0
 	
@@ -108,23 +108,6 @@ func _physics_process(delta: float) -> void:
 
 func _process(_delta: float) -> void:
 	jump()
-	if Input.is_action_just_pressed("spawn_RL"):
-		var new_RL = RL.instantiate()
-		new_RL.global_position = get_global_mouse_position()
-		get_parent().add_child(new_RL)
-	elif Input.is_action_just_pressed("spawn_ENEMY"):
-		var new_enemy = Enemy.instantiate()
-		new_enemy.global_position = get_global_mouse_position()
-		get_parent().add_child(new_enemy)
-		new_enemy.name = "Enemy" + str(GlobalVars.killed)
-	elif Input.is_action_just_pressed("spawn_SHOTGUN"):
-		var new_shotgun = shotgun.instantiate()
-		new_shotgun.global_position = get_global_mouse_position()
-		get_parent().add_child(new_shotgun)
-	elif Input.is_action_just_pressed("spawn_PISTOL"):
-		var new_pistol = pistol.instantiate()
-		new_pistol.global_position = get_global_mouse_position()
-		get_parent().add_child(new_pistol)
 
 
 func jump():
@@ -226,7 +209,22 @@ func get_input(delta: float) -> void:
 			velocity.x *= 0.8
 		else:
 			velocity.x *= 0.99
-	
+	if Input.is_action_just_released("scroll_up"):
+		match GlobalVars.current_slot_num:
+			"slot1":
+				GlobalVars.current_slot_num = "slot2"
+			"slot2":
+				GlobalVars.current_slot_num = "slot3"
+			"slot3":
+				GlobalVars.current_slot_num = "slot1"
+	elif Input.is_action_just_released("scroll_down"):
+		match GlobalVars.current_slot_num:
+			"slot1":
+				GlobalVars.current_slot_num = "slot3"
+			"slot2":
+				GlobalVars.current_slot_num = "slot1"
+			"slot3":
+				GlobalVars.current_slot_num = "slot2"
 	if Input.is_action_just_pressed("slot1"):
 		GlobalVars.current_slot_num = "slot1"
 		SlotsHUD.update()
@@ -277,7 +275,7 @@ func respawn():
 	Camera.global_position = global_position
 	Camera.reset_smoothing()
 	Anims.play("RESET")
-	GlobalVars.player_hp = 100000
+	GlobalVars.player_hp = 100
 func show_damage():
 	$damage.play()
 	#$blood.emitting = true
