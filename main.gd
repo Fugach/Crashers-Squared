@@ -61,11 +61,17 @@ func _process(_delta: float) -> void:
 		$TileMapLayer.gen_dungeon(1, Vector2(3, 2))
 		GlobalVars.player.respawn()
 		GlobalVars.time = 0.0
-	if Input.is_action_just_pressed("esc") and not Table.visible:
-		get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
-		$UI/Pause.show()
-		$UI/Pause/AnimationPlayer.play("appear")
-		get_tree().paused = true
+	if Input.is_action_just_pressed("esc"):
+		if not Table.visible and not get_tree().paused:
+			get_tree().paused = true
+			get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+			$UI/Pause.show()
+			$UI/Pause/AnimationPlayer.play("appear")
+		#else:
+			#Engine.time_scale = 0.5
+			#$UI/Pause.hide()
+			#get_tree().paused = false
+			#get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 	if Engine.time_scale != 1.0:
 		if Engine.time_scale < 0.5:
 			Engine.time_scale = lerpf(Engine.time_scale, 1.0, 0.005)
@@ -86,6 +92,7 @@ func _on_exit_pressed() -> void:
 	get_tree().change_scene_to_file("res://main_menu.tscn")
 
 func _on_continue_pressed() -> void:
+	Engine.time_scale = 0.5
 	$UI/Pause.hide()
 	get_tree().paused = false
 	get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT

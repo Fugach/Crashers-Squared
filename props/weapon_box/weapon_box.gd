@@ -9,6 +9,7 @@ var penetrable = true
 var hp : int = 25
 func damage(amount, type):
 	hp -= amount
+	$soft.pitch_scale = randf_range(0.7, 1.3)
 	$soft.play()
 	if hp <= 0 and modulate.a != 0:
 		var chance = randi_range(1, 100)
@@ -31,6 +32,7 @@ func damage(amount, type):
 			var new_enemy = ENEMY.instantiate()
 			new_enemy.global_position = global_position
 			get_parent().add_child(new_enemy)
+		$break.pitch_scale = randf_range(0.7, 1.3)
 		$break.play()
 		$CollisionPolygon2D.disabled = true
 		modulate.a = 0

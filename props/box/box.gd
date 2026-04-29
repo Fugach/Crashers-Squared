@@ -36,7 +36,7 @@ func damage(amount, type):
 		$soft.play()
 	else:
 		$break.play()
-		$CollisionShape2D.disabled = true
+		$CollisionShape2D.set_deferred("disabled", true)
 		modulate.a = 0
 
 
