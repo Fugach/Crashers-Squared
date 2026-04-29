@@ -12,7 +12,19 @@ func wait(time):
 func repeat(text, amount):
 	for x in range(amount):
 		Console.text += text
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("lmb") and Console.text != "" and $"../MUSIC/results".playing:
+		$"../MUSIC/results".stop()
+		Console.clear()
+		Camera.is_following = true
+		await wait(1)
+		await Tiles.gen_dungeon(randi_range(3, 15), Elevator.global_position / 16 + Vector2(-7, -7))
+		TilesAnim.play("show")
+		Anim.play("show_hud")
+		Elevator.outside()
+		$"../..".get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 func results():
+	$"../MUSIC/results".play()
 	$"../..".get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 	Console.text = "                         -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                                       РРРРРРР    ЕЕЕЕЕЕЕЕ   ЗЗЗЗЗЗ       УУ       УУ        ЛЛЛЛЛЛЛ       ЬЬ                 ТТТТТТТТТТ       АААААА      ТТТТТТТТТТ   ЫЫ                   ЫЫ          
@@ -29,24 +41,31 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "hide_hud":
 		Console.text += "\n\n\n\n"
 		repeat(" ", 125)
-		Console.text += "ВРЕМЯ"
+		Console.text += "ВРЕМЯ |"
 		await wait(0.5)
 		repeat(" ", 35)
-		Console.text += str(int(GlobalVars.time) / 60) + " : " + str(int(GlobalVars.time) % 60) + " : " + str(int(GlobalVars.time) % 1)
-		await wait(1)
-		for x in range(randi_range(45, 150)):
-			Console.text += "РАБОТАЕМ НАД ЭТИМ "
-			await wait(0.015)
-			if randi_range(1, 6) == 6:
-				Console.text += "\n"
-		Console.clear()
-		Camera.is_following = true
-		await wait(1)
-		await Tiles.gen_dungeon(randi_range(3, 15), Elevator.global_position / 16 + Vector2(-7, -7))
-		TilesAnim.play("show")
-		Anim.play("show_hud")
-		Elevator.outside()
-		$"../..".get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
+		if GlobalVars.time >= 60:
+			Console.text += str(int(GlobalVars.time) / 60)
+		else:
+			Console.text += "00"
+		Console.text += " : "
+		await wait(0.5)
+		if GlobalVars.time >= 10:
+			Console.text += str(int(GlobalVars.time) % 60)
+		else:
+			Console.text += "0" + str(int(GlobalVars.time) % 60)
+		await wait(0.5)
+		Console.text += "\n"
+		repeat(" ", 125)
+		Console.text += "ВРАГОВ УНИЧТОЖЕНО"
+		await wait(0.5)
+		Console.text += "             " + str(GlobalVars.killed)
+		Console.text += "\n"
+		repeat(" ", 125)
+		await wait(0.5)
+		Console.text += "ДО КОНЦА ОСТАЛОСЬ"
+		await wait(0.5)
+		Console.text += "              " + str(3 - GlobalVars.passed_layers)
 
 
 func _on_upgrade_1_mouse_entered() -> void:

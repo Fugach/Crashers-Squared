@@ -97,6 +97,7 @@ func main_menu():
 	text.text += "\n" + "-".repeat(155)
 	text.text += "\n\n\n" + "         НАЧАТЬ"
 	text.text += "\n\n\n" + "         НАСТРОЙКИ"
+	text.text += "\n\n\n" + "         ВЫХОД"
 	$settings.show()
 	$start.show()
 func settings():
@@ -168,3 +169,12 @@ func _on_snd_volume_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Sound"), round(50 * (value / 100) - 25))
 func _on_atm_volume_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Atmosphere"), round(50 * (value / 100) - 25))
+
+
+func _on_exit_pressed() -> void:
+	get_tree().quit(0)
+func _on_exit_mouse_entered() -> void:
+	$choose.play()
+	$exit.text = ">>"
+func _on_exit_mouse_exited() -> void:
+	$exit.text = ""

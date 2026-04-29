@@ -8,6 +8,8 @@ var pending_enemies : int = 0
 var total_enemies : int = 0
 var my_enemies = []
 const ENEMY = preload("uid://x2aibfdis1lc")
+const BOX = preload("uid://bf1hvay56ii3f")
+
 
 @onready var Camera_pos: Marker2D = $Camera_pos
 @onready var Camera: Camera2D = $"../../Camera2D"
@@ -22,6 +24,12 @@ func _ready() -> void:
 	$Area2D/CollisionShape2D.shape.size = activation_range - Vector2(32, 32)
 	$Darkness.set_anchors_preset(Control.PRESET_CENTER)
 	$move.set_anchors_preset(Control.PRESET_CENTER)
+	if room_number != 0:
+		for x in range(randi_range(0, 15)):
+			var new_BOX = BOX.instantiate()
+			new_BOX.name = "Box_" + str(x)
+			new_BOX.global_position = global_position + Vector2((activation_range.x / 2) + randi_range(activation_range.x / (-0.3 * x), activation_range.x / (0.3 * x)), activation_range.y - 20)
+			$"..".add_child(new_BOX)
 
 func _process(delta: float) -> void:
 	while pending_enemies > 0:
@@ -38,6 +46,8 @@ func _process(delta: float) -> void:
 			print("Enemy is dead! ", len(my_enemies), " left.")
 		if my_enemies == []:
 			GlobalVars.cleared_rooms[name] = true
+			Engine.time_scale = 0.2
+			AudioServer.playback_speed_scale = Engine.time_scale
 			$move.global_position = GlobalVars.player.global_position - $move.size / 2
 			$remind.play()
 			$AnimationPlayer.play("remind")

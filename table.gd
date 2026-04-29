@@ -66,9 +66,17 @@ func reroll():
 	Upgrade2.disabled = false
 	Upgrade3.disabled = false
 	upgrades = []
-	for x in range(3):
-		rerolling_upgrade = all_upgrades.pick_random()
-		upgrades.append(rerolling_upgrade)
+	while len(upgrades) < 3:
+		var repeated = false
+		while not repeated:
+			rerolling_upgrade = all_upgrades.pick_random()
+			for thing in upgrades:
+				if thing == rerolling_upgrade:
+					repeated = true
+			if not repeated:
+				print("ADDING ", rerolling_upgrade)
+				upgrades.append(rerolling_upgrade)
+				break
 	print("Current options: ", upgrades)
 	Upgrade1.text = names[upgrades[0]]
 	Upgrade2.text = names[upgrades[1]]

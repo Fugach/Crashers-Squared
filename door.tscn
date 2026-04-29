@@ -117,9 +117,8 @@ stream_8/stream = ExtResource("22_vrr3g")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ejk4w"]
 size = Vector2(3, 31)
 
-[node name="Door" type="Node2D" unique_id=1513458591 node_paths=PackedStringArray("Collision")]
+[node name="Door" type="Node2D" unique_id=1513458591]
 script = ExtResource("1_1kubd")
-Collision = NodePath("StaticBody2D/Collision")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1739917062]
 z_index = 1
@@ -131,9 +130,9 @@ offset = Vector2(7, 0)
 [node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=400928302]
 occluder = SubResource("OccluderPolygon2D_ejk4w")
 
-[node name="Area2D" type="Area2D" parent="." unique_id=238382299]
+[node name="Door_Area2D" type="Area2D" parent="." unique_id=238382299]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=380549107]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door_Area2D" unique_id=380549107]
 shape = SubResource("RectangleShape2D_rvwyb")
 
 [node name="locked" type="AudioStreamPlayer2D" parent="." unique_id=336602338]
@@ -152,7 +151,6 @@ stream = ExtResource("13_hwcea")
 [node name="Collision" type="CollisionShape2D" parent="StaticBody2D" unique_id=101509080]
 position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_ejk4w")
-disabled = true
 
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="Door_Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="finished" from="open" to="." method="_on_open_finished"]

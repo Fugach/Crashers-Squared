@@ -83,23 +83,37 @@ func push(pwr, dir):
 	velocity += pwr * dir
 	$shock.start()
 
-func damage(damage_amount):
-	var new_part = PARTS.instantiate()
-	new_part.power = damage_amount
-	new_part.global_position = global_position
-	new_part.heal = damage_amount
-	new_part.name = name + "_part" + str(parts_amount)
-	parts_amount += 1
-	new_part.direction = Vector2(-1, -1)
-	get_parent().add_child.call_deferred(new_part)
+func damage(damage_amount, type):
 	hp -= damage_amount
+	match type:
+		"bullet":
+			GlobalVars.heal(int(damage_amount * 0.25))
+		"explosion":
+			if hp <= 0:
+				GlobalVars.heal(int(damage_amount * 1.25))
+		"hammer":
+			GlobalVars.heal(damage_amount * 0.8)
+	var new_splatter = Sprite2D.new()
+	new_splatter.texture = load("res://textures/particles/enemy_parts/splash" +\
+	str(randi_range(1, 41)) + ".png")
+	new_splatter.global_position = global_position + Vector2(randi_range(-10, 10), randf_range(-10, 10))
+	new_splatter.scale = Vector2(1, 1) * randf_range(1.0, 2.0)
+	new_splatter.modulate = Color(1.0, 0.898, 0.414 + randf_range(-0.200, 0.200), randf_range(0.4, 0.7))
+	new_splatter.z_index = -1
+	get_parent().add_child(new_splatter)
+	#var new_part = PARTS.instantiate()
+	#new_part.power = damage_amount * 5
+	#new_part.global_position = global_position
+	#new_part.heal = damage_amount
+	#new_part.name = name + "_part" + str(parts_amount)
+	#parts_amount += 1
+	#new_part.direction = Vector2(-1, -1)
+	#get_parent().add_child.call_deferred(new_part)
 	total_damage += damage_amount
 	$Label.text = str(total_damage)
 	$damage.start()
 	if $AnimationPlayer.current_animation != "show_damage":
 		$AnimationPlayer.play("show_damage")
-
-
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "show_damage":

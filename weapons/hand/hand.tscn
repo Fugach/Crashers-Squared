@@ -1,23 +1,6 @@
 [gd_scene format=3 uid="uid://bbxbw8j8ubuiv"]
 
 [ext_resource type="Script" uid="uid://de6hgt8vyw8vx" path="res://weapons/hand/hand.gd" id="1_ror0l"]
-[ext_resource type="Texture2D" uid="uid://capn7qmvt5gux" path="res://textures/particles/smash/smash_0001.png" id="2_wlcvl"]
-[ext_resource type="Texture2D" uid="uid://q6bfhuhm2mfn" path="res://textures/particles/smash/smash_0002.png" id="3_vkch5"]
-[ext_resource type="Texture2D" uid="uid://5o8cod6255do" path="res://textures/particles/smash/smash_0003.png" id="4_sk64d"]
-[ext_resource type="Texture2D" uid="uid://ilgf42lnox1e" path="res://textures/particles/smash/smash_0004.png" id="5_btrtj"]
-[ext_resource type="Texture2D" uid="uid://bg0s5p0mnkjms" path="res://textures/particles/smash/smash_0005.png" id="6_myvnh"]
-[ext_resource type="Texture2D" uid="uid://dlpd4764orm2u" path="res://textures/particles/smash/smash_0006.png" id="7_i8d08"]
-[ext_resource type="Texture2D" uid="uid://mvi6rglp5roq" path="res://textures/particles/smash/smash_0007.png" id="8_saujc"]
-[ext_resource type="Texture2D" uid="uid://dgxphigp6jptr" path="res://textures/particles/smash/smash_0008.png" id="9_hoac7"]
-[ext_resource type="Texture2D" uid="uid://c5mgj21yfa83i" path="res://textures/particles/smash/hand/hand_0001.png" id="10_68g3x"]
-[ext_resource type="Texture2D" uid="uid://l0rym08nllns" path="res://textures/particles/smash/hand/hand_0002.png" id="11_axgtg"]
-[ext_resource type="Texture2D" uid="uid://daxsymotqvh56" path="res://textures/particles/smash/hand/hand_0003.png" id="12_idwub"]
-[ext_resource type="Texture2D" uid="uid://bxuu6q6uikqaw" path="res://textures/particles/smash/hand/hand_0004.png" id="13_qo3os"]
-[ext_resource type="Texture2D" uid="uid://c4xq5evmmjpuw" path="res://textures/particles/smash/hand/hand_0005.png" id="14_rv4af"]
-[ext_resource type="Texture2D" uid="uid://dv6gek0e8hta1" path="res://textures/particles/smash/hand/hand_0006.png" id="15_gbxyb"]
-[ext_resource type="Texture2D" uid="uid://ckbcn37uuvv14" path="res://textures/particles/smash/hand/hand_0007.png" id="16_y38kr"]
-[ext_resource type="Texture2D" uid="uid://bir815gvd61bf" path="res://textures/particles/smash/hand/hand_0008.png" id="17_ho7na"]
-[ext_resource type="Texture2D" uid="uid://cdwqit6hb4xti" path="res://textures/particles/smash/hand/hand_0009.png" id="18_1pmif"]
 [ext_resource type="Texture2D" uid="uid://57p2npki1p7e" path="res://textures/hammer/hammer_0001.png" id="19_y38kr"]
 [ext_resource type="Texture2D" uid="uid://cqhw5y6pu5y1j" path="res://textures/hammer/hammer_0002.png" id="20_ho7na"]
 [ext_resource type="Texture2D" uid="uid://cug3mqxpc36id" path="res://textures/hammer/hammer_0003.png" id="21_1pmif"]
@@ -37,73 +20,6 @@
 [ext_resource type="AudioStream" uid="uid://br7phr0u08hvl" path="res://sounds/smash/wall_hit.wav" id="35_1pmif"]
 [ext_resource type="AudioStream" uid="uid://cmh3r4j41xgh" path="res://sounds/smash/spin.wav" id="36_m3gm7"]
 [ext_resource type="AudioStream" uid="uid://rwxo8as1yi7g" path="res://sounds/smash/hammer_damage.ogg" id="37_kowy6"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_m3gm7"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_wlcvl")
-}, {
-"duration": 1.0,
-"texture": ExtResource("3_vkch5")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_sk64d")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_btrtj")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_myvnh")
-}, {
-"duration": 1.0,
-"texture": ExtResource("7_i8d08")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8_saujc")
-}, {
-"duration": 1.0,
-"texture": ExtResource("9_hoac7")
-}],
-"loop": false,
-"name": &"smash",
-"speed": 60.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("10_68g3x")
-}, {
-"duration": 1.0,
-"texture": ExtResource("11_axgtg")
-}, {
-"duration": 1.0,
-"texture": ExtResource("12_idwub")
-}, {
-"duration": 1.0,
-"texture": ExtResource("13_qo3os")
-}, {
-"duration": 1.0,
-"texture": ExtResource("14_rv4af")
-}, {
-"duration": 1.0,
-"texture": ExtResource("15_gbxyb")
-}, {
-"duration": 1.0,
-"texture": ExtResource("16_y38kr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("17_ho7na")
-}, {
-"duration": 1.0,
-"texture": ExtResource("18_1pmif")
-}, {
-"duration": 1.0,
-"texture": ExtResource("10_68g3x")
-}],
-"loop": false,
-"name": &"smash_hand",
-"speed": 30.0
-}]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vbuvb"]
 animations = [{
@@ -190,55 +106,41 @@ animations = [{
 "speed": 60.0
 }]
 
-[node name="weapon" type="Node2D" unique_id=63557002]
+[node name="Hammer" type="Node2D" unique_id=63557002]
 script = ExtResource("1_ror0l")
 
-[node name="hand" type="Node2D" parent="." unique_id=1028997208]
-
-[node name="Hand_anim" type="AnimatedSprite2D" parent="hand" unique_id=2138082270]
-position = Vector2(7, 0)
-sprite_frames = SubResource("SpriteFrames_m3gm7")
-animation = &"smash_hand"
-frame = 9
-frame_progress = 1.0
-
-[node name="hammer" type="Node2D" parent="." unique_id=1583315776]
-
-[node name="Hammer_anim" type="AnimatedSprite2D" parent="hammer" unique_id=1603683193]
+[node name="Hammer_anim" type="AnimatedSprite2D" parent="." unique_id=1603683193]
 sprite_frames = SubResource("SpriteFrames_vbuvb")
 animation = &"loop"
 
-[node name="Hammer_raycast" type="RayCast2D" parent="hammer/Hammer_anim" unique_id=1026045911]
-position = Vector2(2, 0)
-target_position = Vector2(21, 0)
+[node name="Hammer_raycast" type="RayCast2D" parent="Hammer_anim" unique_id=1026045911]
+target_position = Vector2(24, 0)
 
-[node name="second_one" type="RayCast2D" parent="hammer/Hammer_anim/Hammer_raycast" unique_id=1903746511]
-position = Vector2(-4, 0)
+[node name="second_one" type="RayCast2D" parent="Hammer_anim/Hammer_raycast" unique_id=1903746511]
 enabled = false
-target_position = Vector2(-21, 0)
+target_position = Vector2(-24, 0)
 
-[node name="attack_cooldown" type="Timer" parent="hammer" unique_id=1528279913]
+[node name="attack_cooldown" type="Timer" parent="." unique_id=1528279913]
 wait_time = 0.5
 one_shot = true
 
-[node name="attack_sfx" type="AudioStreamPlayer2D" parent="hammer" unique_id=185630710]
+[node name="attack_sfx" type="AudioStreamPlayer2D" parent="." unique_id=185630710]
 stream = ExtResource("34_ho7na")
 
-[node name="wall_hit_sfx" type="AudioStreamPlayer2D" parent="hammer" unique_id=1832745449]
+[node name="wall_hit_sfx" type="AudioStreamPlayer2D" parent="." unique_id=1832745449]
 stream = ExtResource("35_1pmif")
 volume_db = -10.0
 
-[node name="spin_sfx" type="AudioStreamPlayer2D" parent="hammer" unique_id=577130061]
+[node name="spin_sfx" type="AudioStreamPlayer2D" parent="." unique_id=577130061]
 stream = ExtResource("36_m3gm7")
 bus = &"Sound"
 
-[node name="damage_cooldown" type="Timer" parent="hammer" unique_id=1526340920]
+[node name="damage_cooldown" type="Timer" parent="." unique_id=1526340920]
 wait_time = 0.25
 one_shot = true
 
-[node name="damage_sfx" type="AudioStreamPlayer2D" parent="hammer" unique_id=459170253]
+[node name="damage_sfx" type="AudioStreamPlayer2D" parent="." unique_id=459170253]
 stream = ExtResource("37_kowy6")
 
-[connection signal="animation_finished" from="hand/Hand_anim" to="." method="_on_animated_sprite_2d_animation_finished"]
-[connection signal="animation_finished" from="hammer/Hammer_anim" to="." method="_on_hammer_anim_animation_finished"]
-[connection signal="timeout" from="hammer/damage_cooldown" to="." method="_on_damage_cooldown_timeout"]
+[connection signal="animation_finished" from="Hammer_anim" to="." method="_on_hammer_anim_animation_finished"]
+[connection signal="timeout" from="damage_cooldown" to="." method="_on_damage_cooldown_timeout"]

@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://cr5282jvlokx7" path="res://sounds/physics/cardboard/cardboard_box_impact_soft5.ogg" id="7_1vrji"]
 [ext_resource type="AudioStream" uid="uid://bex2r2r4jec27" path="res://sounds/physics/cardboard/cardboard_box_impact_soft6.ogg" id="8_fslqm"]
 [ext_resource type="AudioStream" uid="uid://rjrdvhnd8olf" path="res://sounds/physics/cardboard/cardboard_box_impact_soft7.ogg" id="9_nn6ii"]
+[ext_resource type="AudioStream" uid="uid://bhs3lhbxu2caq" path="res://sounds/physics/cardboard/cardboard_box_break.ogg" id="10_hfhap"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_3fq7s"]
 streams_count = 7
@@ -35,4 +36,7 @@ polygon = PackedVector2Array(-9, -6, -9, 6, 10, 6, 10, -6)
 [node name="soft" type="AudioStreamPlayer2D" parent="." unique_id=2004703508]
 stream = SubResource("AudioStreamRandomizer_3fq7s")
 
-[connection signal="finished" from="soft" to="." method="_on_soft_finished"]
+[node name="break" type="AudioStreamPlayer2D" parent="." unique_id=669011685]
+stream = ExtResource("10_hfhap")
+
+[connection signal="finished" from="break" to="." method="_on_break_finished"]

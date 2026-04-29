@@ -56,19 +56,24 @@ func _physics_process(delta: float) -> void:
 		get_parent().add_child(new_fall)
 		is_falling_fast = false
 		for body in get_parent().get_children():
-			if ("Enemy" in str(body) or body is RigidBody2D) and body.global_position.distance_to(global_position) < 50:
+			if ("Enemy" in str(body) or body is RigidBody2D) and body.global_position.distance_to(global_position) < 100:
 				if not (body is RigidBody2D):
 					body.velocity.y += -150
 				else:
 					body.apply_impulse(Vector2(0, -150))
-				if body.global_position.distance_to(global_position) < 10:
+				if body.global_position.distance_to(global_position) < 25:
 					if body.has_method("damage"):
 						body.damage(10)
+			else:
+				print(body)
 	if is_on_wall_only() and (not is_on_floor()) and velocity.y > 0 and\
 	(Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")):
 		is_sliding = true
 		$SlideCoyote.start()
-		
+		if Input.is_action_pressed("move_left"):
+			rotation = 0.2
+		elif Input.is_action_pressed("move_right"):
+			rotation = -0.2
 		if randi_range(1, 8) == 6:
 			$slide.global_position = global_position + Vector2(5 * direction, 5)
 			$slide.scale.x = direction * -1
@@ -77,9 +82,11 @@ func _physics_process(delta: float) -> void:
 		
 		velocity.y += get_gravity().y * delta * 0.1 # скользим по стенам
 	elif not is_on_floor():
+		rotation = 0.0
 		$slide.emitting = false
 		velocity.y += get_gravity().y * delta # базовое падение
 	else:
+		rotation = 0.0
 		$slide.emitting = false
 	
 	if is_sliding and GlobalVars.player_hp > 0:
@@ -137,8 +144,8 @@ func fall():
 		wind.pitch_scale = (abs(velocity.x) + abs(velocity.y)) * 0.0001 + 1.0
 	else:
 		wind.volume_db = -80
-	if Input.is_action_just_pressed("interact"):
-		global_position.y += 100
+	if Input.is_action_just_pressed("debug_thingy"):
+		Engine.time_scale = 0.0
 	if position.y > 5000:
 		respawn()
 		is_sliding = false
@@ -154,8 +161,16 @@ func push(pwr, _dir):
 	else:
 		velocity += pwr * _dir / 2
 
-func damage(amount):
-	GlobalVars.player_hp -= amount
+func damage(amount, type):
+	if $damage_cooldown.is_stopped():
+		GlobalVars.player_hp -= amount
+		if GlobalVars.player_hp - amount > 0:
+			GlobalVars.player_hp -= amount
+		else:
+			GlobalVars.player_hp = 0
+			main.death()
+		show_damage()
+		$damage_cooldown.start()
 
 func get_input(delta: float) -> void:
 	if is_going_to_elevator:
@@ -265,7 +280,7 @@ func respawn():
 		Camera = $"../Camera2D"
 		Anims = $AnimationPlayer
 
-	for body in get_parent().get_children():
+	for body in get_node("../TileMapLayer").get_children():
 		if "Bullet" in body.name or "Rocket" in body.name or "Enemy" in body.name or "Bullet" in body.name:
 			body.free()
 	is_slamming = false
@@ -287,7 +302,11 @@ func animation_finished(anim_name: StringName) -> void:
 		Anims.play("slam_stop")
 func _on_slide_coyote_timeout() -> void:
 	is_sliding = false
+	$Sprite2D.rotation = 0
 func goto_elevator():
+	for body in get_node("../TileMapLayer").get_children():
+		if "Bullet" in body.name or "Rocket" in body.name or "Enemy" in body.name or "Bullet" in body.name:
+			body.free()
 	SPEED_buffer = SPEED
 	can_jump = false
 	SPEED = 0

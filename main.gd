@@ -12,6 +12,12 @@ extends Node2D
 
 @onready var Camera: Camera2D = $Camera2D
 
+var default = preload("res://textures/cursors/default.png")
+var pointer = preload("res://textures/cursors/pointer.png")
+var grabbing = preload("res://textures/cursors/grabbing.png")
+var text = preload("res://textures/cursors/text.png")
+var no = preload("res://textures/cursors/no.png")
+
 func _ready() -> void:
 	GlobalVars.slots = {
 	"slot1": null,
@@ -42,8 +48,15 @@ func _process(_delta: float) -> void:
 	HUD.scale = Camera.scale
 	HPLabel.text = str(GlobalVars.player_hp)
 	HPBar.value = float(GlobalVars.player_hp)
+	if GlobalVars.passed_layers > 3:
+		get_tree().paused = false
+		get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+		get_tree().change_scene_to_file("res://main_menu.tscn")
 	if GlobalVars.player.global_position.y > 2000:
+		GlobalVars.player.respawn()
 		$UI/HUD/QuickVolume/lost.play()
+		Input.set_custom_mouse_cursor(no)
+		
 	if Input.is_action_just_pressed("mmb"):
 		$TileMapLayer.gen_dungeon(1, Vector2(3, 2))
 		GlobalVars.player.respawn()
@@ -53,7 +66,12 @@ func _process(_delta: float) -> void:
 		$UI/Pause.show()
 		$UI/Pause/AnimationPlayer.play("appear")
 		get_tree().paused = true
-
+	if Engine.time_scale != 1.0:
+		if Engine.time_scale < 0.5:
+			Engine.time_scale = lerpf(Engine.time_scale, 1.0, 0.005)
+		else:
+			Engine.time_scale = lerpf(Engine.time_scale, 1.0, 0.2)
+		AudioServer.playback_speed_scale = Engine.time_scale
 func death():
 	GlobalVars.player_hp = 0
 	$UI/HUD/HPBar/HPLabel.text = str(GlobalVars.player_hp)

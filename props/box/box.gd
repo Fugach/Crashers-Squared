@@ -3,6 +3,11 @@ extends RigidBody2D
 @onready var player = GlobalVars.player
 var is_touching_cursor : bool = false
 var is_grabbed : bool = false
+var hp : int = 25
+var penetrable : bool = true
+func _ready() -> void:
+	$Sprite2D.rotation = (PI / 2) * randi_range(0, 4)
+
 func _process(delta: float) -> void:
 	if player != null and global_position.distance_to(player.global_position) < 100 and is_touching_cursor and\
 	Input.is_action_just_pressed("interact") and\
@@ -15,15 +20,25 @@ func _process(delta: float) -> void:
 	
 	if is_grabbed:
 		linear_velocity.x = (global_position.x - get_global_mouse_position().x) * -2
-		print((global_position - get_global_mouse_position()) * -25)
 		linear_velocity.y = (global_position.y - get_global_mouse_position().y) * -2
+
 func push(pwr, dir):
 	linear_velocity += dir * pwr
 
-
-func _on_control_mouse_entered():
+func _on_area_2d_mouse_entered() -> void:
 	is_touching_cursor = true
-
-
-func _on_control_mouse_exited():
+func _on_area_2d_mouse_exited() -> void:
 	is_touching_cursor = false
+
+func damage(amount, type):
+	hp -= amount
+	if hp > 0:
+		$soft.play()
+	else:
+		$break.play()
+		$CollisionShape2D.disabled = true
+		modulate.a = 0
+
+
+func _on_break_finished() -> void:
+	queue_free()

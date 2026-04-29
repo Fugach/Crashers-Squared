@@ -36,11 +36,11 @@ func destroy():
 	Collision.monitoring = true
 	Particles.emitting = true
 	is_emitting = true
+	ExplosionPos.rotate(randf_range(0.00, 2.00 * PI))
 	ExplosionPos.show()
 	$Babax/AnimationPlayer.play("explostion_increasing")
 	$Babax/AudioStreamPlayer2D.pitch_scale = randfn(1.0, 0.2)
 	$Babax/AudioStreamPlayer2D.play()
-	#print(clamp(1 - (global_position.distance_to(GlobalVars.player.global_position) / 500) * 3, 0.0, 5.0))
 	GlobalVars.player.Camera.shake(0.05, clamp((1 - (global_position.distance_to(GlobalVars.player.global_position) / 500)) * 3, 0.0, 1.0))
 
 func _on_distance_timeout():
@@ -50,13 +50,13 @@ func _on_cpu_particles_2d_finished():
 	queue_free()
 
 func _on_collision_body_entered(body: Node2D):
-	if ((body is CharacterBody2D) or (body is RigidBody2D) or ("Bullet" in body.name)) and can_push:
+	if ((body is CharacterBody2D) or (body is RigidBody2D) or ("Bullet" in body.name) or body is StaticBody2D or "Door" in str(body)) and can_push:
 		if body.has_method("damage") and body not in targets:
 			targets.append(body)
 			if body == GlobalVars.player and is_friendly:
-				body.damage(8)
+				body.damage(8, "explosion")
 			else:
-				body.damage(25)
+				body.damage(25, "explosion")
 		var explosion_pos = ExplosionPos.global_position
 		var dir = (body.global_position - explosion_pos).normalized()
 		var distance = explosion_pos.distance_to(body.global_position)

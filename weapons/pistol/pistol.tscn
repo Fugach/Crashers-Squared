@@ -108,7 +108,7 @@ texture = ExtResource("2_og3ej")
 offset = Vector2(7, 0)
 
 [node name="Spawnpoint" type="Marker2D" parent="Sprite2D" unique_id=1560848576]
-position = Vector2(5, -2)
+position = Vector2(4, -2)
 
 [node name="Area2D" type="Area2D" parent="Sprite2D" unique_id=1009109331]
 

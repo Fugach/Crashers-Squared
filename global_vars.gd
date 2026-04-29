@@ -8,7 +8,7 @@ extends Node
 
 var cleared_rooms : Dictionary = {}
 
-
+var passed_layers : int = 0
 var current_slot_num = "slot1"
 var current_slot_node : Node2D = null
 var slots : Dictionary[String, Node2D] = {
@@ -17,7 +17,6 @@ var slots : Dictionary[String, Node2D] = {
 	"slot3": null
 }
 var hand_slot : Node2D = null
-
 var is_time_running : bool = false
 var time : float = 0.0
 
@@ -28,15 +27,6 @@ var killed : int = 0
 func _process(delta: float) -> void:
 	if is_time_running:
 		time += delta
-
-func damage(amount : int):
-	if player_hp - amount > 0:
-		player_hp -= amount
-	else:
-		player_hp = 0
-		print("POW! YOU ARE DEAD!")
-		main.death()
-	player.show_damage()
 
 func heal(amount : int):
 	if player_hp + amount < 100:
